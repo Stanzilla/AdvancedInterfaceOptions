@@ -1,0 +1,13 @@
+## Interface: 70000
+## Title: Advanced Interface Options
+## Author: Stanzilla
+## Version: @project-version@
+## Notes: Restores access to removed interface options in Legion
+## X-Email: staneck AT gmail DOT com
+## X-Category: Interface Enhancements
+## X-Website: http://www.curse.com/addons/wow/weakauras-2
+## DefaultState: Enabled
+## LoadOnDemand: 0
+## SavedVariables: AdvancedInterfaceOptionsSaved
+
+core.lua
