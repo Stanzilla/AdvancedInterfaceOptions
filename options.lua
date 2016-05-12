@@ -2,48 +2,54 @@
 local addonName, addon = ...
 local L = addon.L
 local _G = _G
+local AIO = CreateFrame('Frame', 'AIOptions')
+local frame = AIO
+frame:Hide()
+
+-- GLOBALS: LibStub, UIDropDownMenu_AddButton
 
 addon.hiddenOptions = {
 	UnitNameOwn = { default = "0", text = "UNIT_NAME_OWN", value = "1" },
-	UnitNamePlayerGuild = { default = "1", text = "UNIT_NAME_PLAYER_GUILD", value = "0" },
-    UnitNameGuildTitle = 0,
-    UnitNamePlayerPVPTitle = 0,
-	reverseCleanupBags = true,
-	stopAutoAttackOnTargetChange = 1,
-	assistAttack = 1,
-	autoSelfCast = 1,
-	ActionButtonUseKeyDown = 1,
-	mapFade = 1,
-	trackQuestSorting = {1, 2, 3},
-	removeChatDelay = 1,
-	secureAbilityToggle = 1,
-	scriptErrors = 1,
-	chatBubbles = 0,
-	chatBubblesParty = 0,
+	UnitNamePlayerGuild = { default = "1", text = "UNIT_NAME_GUILD", value = "0" },
+    UnitNameGuildTitle = { default = "1", text = "UNIT_NAME_GUILD_TITLE", value = "0" },
+    UnitNamePlayerPVPTitle = { default = "1", text = "UNIT_NAME_PLAYER_TITLE", value = "0" },
+	reverseCleanupBags = { default = "1", text = "UNIT_NAME_PLAYER_GUILD", value = "0" },
+	stopAutoAttackOnTargetChange = { default = "1", text = "STOP_AUTO_ATTACK", value = "0" },
+	assistAttack = { default = "1", text = "ASSIST_ATTACK", value = "0" },
+	autoSelfCast = { default = "1", text = "AUTO_SELF_CAST_TEXT", value = "0" },
+	ActionButtonUseKeyDown = { default = "1", text = "ACTION_BUTTON_USE_KEY_DOWN", value = "0" },
+	mapFade = { default = "1", text = "MAP_FADE_TEXT", value = "0" },
+	trackQuestSorting = { mode = "proximity", mode = "top" },
+	removeChatDelay = { default = "1", text = "REMOVE_CHAT_DELAY_TEXT", value = "0" },
+	secureAbilityToggle = { default = "1", text = "SECURE_ABILITY_TOGGLE", value = "0" },
+	scriptErrors = { default = "1", text = "SHOW_LUA_ERRORS", value = "0" },
+	chatBubbles = { default = "1", text = "CHAT_BUBBLES_TEXT", value = "0" },
+	chatBubblesParty = { default = "1", text = "PARTY_CHAT_BUBBLES_TEXT", value = "0" },
+
+	deselectOnClick = { default = "1", text = "GAMEFIELD_DESELECT_TEXT", value = "0" },
+	autoLootDefault = { default = "1", text = "AUTO_LOOT_DEFAULT_TEXT", value = "1" },
+	autoDismountFlying = { default = "1", text = "AUTO_DISMOUNT_FLYING_TEXT", value = "1" },
+	threatShowNumeric = { default = "1", text = "SHOW_NUMERIC_THREAT", value = "1" },
+	showLootSpam = { default = "1", text = "SHOW_LOOT_SPAM", value = "0" },
+	advancedWatchFrame = { default = "1", text = "ADVANCED_OBJECTIVES_TEXT", value = "1" },
+	watchFrameIgnoreCursor = { default = "1", text = "OBJECTIVES_IGNORE_CURSOR_TEXT", value = "1" },
+	profanityFilter = { default = "1", text = "PROFANITY_FILTER", value = "0" },
+	spamFilter = { default = "1", text = "DISABLE_SPAM_FILTER", value = "0" },
+	removeChatDelay = { default = "1", text = "REMOVE_CHAT_DELAY_TEXT", value = "1" },
+	guildMemberNotify = { default = "1", text = "GUILDMEMBER_ALERT", value = "1" },
+	CombatDamage = { default = "1", text = "SHOW_DAMAGE_TEXT", value = "0" },
+	combatHealing = { default = "1", text = "SHOW_COMBAT_HEALING", value = "1" },
+	showArenaEnemyFrames = { default = "1", text = "SHOW_ARENA_ENEMY_FRAMES_TEXT", value = "0" },
 }
 
--- GLOBALS: LibStub, UIDropDownMenu_AddButton
 --[[ CVAR LIST:
 -- Things that exist in the Interface Options
-'deselectOnClick 0 GAMEFIELD_DESELECT_TEXT',
-'autoLootDefault 1 AUTO_LOOT_DEFAULT_TEXT',
-'autoDismountFlying 1 AUTO_DISMOUNT_FLYING_TEXT',
-'threatShowNumeric 1 SHOW_NUMERIC_THREAT',
-'showLootSpam 0 SHOW_LOOT_SPAM',
-'advancedWatchFrame 1 ADVANCED_OBJECTIVES_TEXT',
-'watchFrameIgnoreCursor 1 OBJECTIVES_IGNORE_CURSOR_TEXT',
-'profanityFilter 0 PROFANITY_FILTER',
-'spamFilter 0 DISABLE_SPAM_FILTER',
-'removeChatDelay 1 REMOVE_CHAT_DELAY_TEXT',
-'guildMemberNotify 1 GUILDMEMBER_ALERT',
-'CombatDamage 0 SHOW_DAMAGE_TEXT',
-'CombatHealing 1 SHOW_COMBAT_HEALING',
-'showArenaEnemyFrames 0 SHOW_ARENA_ENEMY_FRAMES_TEXT',
-'cameraDistanceMax 20',
-'cameraDistanceMaxFactor 4',
-'cameraWaterCollision 0 WATER_COLLISION',
+
+cameraDistanceMax value = "20",
+cameraDistanceMaxFactor value = "4",
+cameraWaterCollision value = "0 ", text = "WATER_COLLISION",
   ["LOCK_ACTIONBAR"] = { default = "0", cvar = "lockActionBars", event = "LOCK_ACTIONBAR_TEXT" },
-  ["SHOW_BUFF_DURATIONS"] = { default = "1", cvar = "buffDurations", event = "SHOW_BUFF_DURATION_TEXT", func = function () SHOW_BUFF_DURATIONS = GetCVar("buffDurations"); BuffFrame_UpdatePositions(); end},
+  ["SHOW_BUFF_DURATIONS"] = { default = "1", cvar = "buffDurations", event = "SHOW_BUFF_DURATION_TEXT", GetCVar("buffDurations"); },
   ["ALWAYS_SHOW_MULTIBARS"] = { default = "0", cvar = "alwaysShowActionBars", event = "ALWAYS_SHOW_MULTIBARS_TEXT" },
   ["SHOW_PARTY_PETS"] = { default = "1", cvar = "showPartyPets", event = "SHOW_PARTY_PETS_TEXT" },
   ["SHOW_PARTY_BACKGROUND"] = { default = "0", cvar = "showPartyBackground", event = "SHOW_PARTY_BACKGROUND_TEXT" },
@@ -106,12 +112,7 @@ addon.hiddenOptions = {
   nameplateShowEnemyTotems = { text = "UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS" },
   nameplateShowEnemyMinus = { text = "UNIT_NAMEPLATES_SHOW_ENEMY_MINUS" },
   ShowClassColorInNameplate = { text = "SHOW_CLASS_COLOR_IN_V_KEY" },
-}
 ]]--
-
-local frame = addon.frame
-frame.name = addonName
-frame:Hide()
 
 frame:SetScript("OnShow", function(frame)
 	local function newCheckbox(label, description, onClick)

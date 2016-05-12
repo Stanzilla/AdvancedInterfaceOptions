@@ -4,7 +4,7 @@
 ## Version: @project-version@
 ## Notes: Restores access to removed interface options in Legion
 ## X-Category: Interface Enhancements
-## X-Website: http://www.curse.com/addons/wow/weakauras-2
+## X-Website: http://www.curse.com/addons/wow/advancedinterfaceoptions
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: AdvancedInterfaceOptionsSaved
