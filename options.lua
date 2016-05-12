@@ -87,6 +87,7 @@ cameraWaterCollision value = "0 ", text = "WATER_COLLISION",
  wholeChatWindowClickable = { text = "CHAT_WHOLE_WINDOW_CLICKABLE" },
  chatMouseScroll = { text = "CHAT_MOUSE_WHEEL_SCROLL" },
  enableTwitter = { text = "SOCIAL_ENABLE_TWITTER_FUNCTIONALITY" },
+ 
   UnitNameNPC = { text = "UNIT_NAME_NPC" },
   UnitNameNonCombatCreatureName = { text = "UNIT_NAME_NONCOMBAT_CREATURE" },
 
