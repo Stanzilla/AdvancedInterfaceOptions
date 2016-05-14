@@ -2,3 +2,4 @@ package-as: AdvancedInterfaceOptions
 
 ignore:
   - readme.md
+  - cvars.dump

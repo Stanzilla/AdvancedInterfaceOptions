@@ -2,11 +2,8 @@
 local addonName, addon = ...
 local L = addon.L
 local _G = _G
-local AIO = CreateFrame('Frame', 'AIOptions')
-local frame = AIO
-frame:Hide()
 
--- GLOBALS: LibStub, UIDropDownMenu_AddButton
+-- GLOBALS: UIDropDownMenu_AddButton
 
 addon.hiddenOptions = {
 	["UnitNameOwn"] = { prettyName = "UNIT_NAME_OWN", description = "OPTION_TOOLTIP_UNIT_NAME_OWN", type = "boolean" },
@@ -215,9 +212,9 @@ addon.hiddenOptions = {
 	["colorblindSimulator"] = { prettyName = "", description = "OPTION_TOOLTIP_COLORBLIND_FILTER", type = "boolean" },
 }
 
-frame:SetScript("OnShow", function(frame)
+OptionsPanel:SetScript("OnShow", function(OptionsPanel)
 	local function newCheckbox(label, description, onClick)
-		local check = CreateFrame("CheckButton", "AIOCheck" .. label, frame, "InterfaceOptionsCheckButtonTemplate")
+		local check = CreateFrame("CheckButton", "AIOCheck" .. label, OptionsPanel, "InterfaceOptionsCheckButtonTemplate")
 		check:SetScript("OnClick", function(self)
 			PlaySound(self:GetChecked() and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
 			onClick(self, self:GetChecked() and true or false)
@@ -229,7 +226,7 @@ frame:SetScript("OnShow", function(frame)
 		return check
 	end
 
-	local title = frame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+	local title = OptionsPanel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 	title:SetPoint("TOPLEFT", 16, -16)
 	title:SetText(addonName)
 
@@ -241,15 +238,15 @@ frame:SetScript("OnShow", function(frame)
 	playerName:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
 
 	local chatFrame = newCheckbox(
-		L["Chatframe output"],
+		L["ChatOptionsPanel output"],
 		L.chatFrameDesc,
-		function(self, value) addon.db.chatframe = value end)
-	chatFrame:SetChecked(addon.db.chatframe)
+		function(self, value) addon.db.chatOptionsPanel = value end)
+	chatFrame:SetChecked(addon.db.chatOptionsPanel)
 	chatFrame:SetPoint("TOPLEFT", playerName, "BOTTOMLEFT", 0, -8)
 
 	local info = {}
-	local fontSizeDropdown = CreateFrame("Frame", "BugSackFontSize", frame, "UIDropDownMenuTemplate")
-	fontSizeDropdown:SetPoint("TOPLEFT", mute, "BOTTOMLEFT", -15, -10)
+	local fontSizeDropdown = CreateFrame("Frame", "BugSackFontSize", OptionsPanel, "UIDropDownMenuTemplate")
+	fontSizeDropdown:SetPoint("TOPLEFT", "BOTTOMLEFT", -15, -10)
 	fontSizeDropdown.initialize = function()
 		wipe(info)
 		local fonts = {"GameFontHighlightSmall", "GameFontHighlight", "GameFontHighlightMedium", "GameFontHighlightLarge"}
@@ -258,19 +255,14 @@ frame:SetScript("OnShow", function(frame)
 			info.text = names[i]
 			info.value = font
 			info.func = function(self)
-				addon.db.fontSize = self.value
-				if _G.BugSackFrameScrollText then
-					_G.BugSackFrameScrollText:SetFontObject(_G[self.value])
-				end
-				BugSackFontSizeText:SetText(self:GetText())
+
 			end
 			info.checked = font == addon.db.fontSize
 			UIDropDownMenu_AddButton(info)
 		end
 	end
-	BugSackFontSizeText:SetText(L["Font size"])
 
-	local reset = CreateFrame("Button", "AIOResetButton", frame, "UIPanelButtonTemplate")
+	local reset = CreateFrame("Button", "AIOResetButton", OptionsPanel, "UIPanelButtonTemplate")
 	reset:SetText(L["Reset to default"])
 	reset:SetWidth(177)
 	reset:SetHeight(24)
@@ -281,5 +273,5 @@ frame:SetScript("OnShow", function(frame)
 	reset.tooltipText = L["Reset Advanced Interface Options to Blizzard defaults"]
 	reset.newbieText = L.wipeDesc
 
-	frame:SetScript("OnShow", nil)
+	OptionsPanel:SetScript("OnShow", nil)
 end)

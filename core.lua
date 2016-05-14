@@ -1,7 +1,7 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: ListFrame CVarTable
+-- GLOBALS: ListFrame
 
 -- Create an options panel and insert it into the interface menu
 local OptionsPanel = CreateFrame('Frame', addonName .. 'Panel', InterfaceOptionsFramePanelContainer)
@@ -25,6 +25,7 @@ SubText:SetPoint('RIGHT', -32, 0)
 SubText:SetText('These options allow you to modify various CVars within the game.')
 
 InterfaceOptions_AddCategory(OptionsPanel, addonName)
+
 local CVarTable = {}
 local ListFrame = addon:CreateListFrame(OptionsPanel, 615, 450, {{NAME, 200}, {'Description', 260, 'RIGHT'}, {'Value', 100, 'RIGHT'}})
 --ListFrame:SetPoint('TOP', SubText, 'BOTTOM', 0, -40)
@@ -44,5 +45,3 @@ function E:PLAYER_ENTERING_WORLD()
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
 end
-
-do return end
