@@ -1,7 +1,14 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: ListFrame
+-- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
+
+SlashCmdList.AIO = function(msg)
+	msg = msg:lower()
+	InterfaceOptionsFrame_OpenToCategory(addonName)
+	InterfaceOptionsFrame_OpenToCategory(addonName)
+end
+SLASH_AIO1 = "/aio"
 
 -- Create an options panel and insert it into the interface menu
 local OptionsPanel = CreateFrame('Frame', addonName .. 'Panel', InterfaceOptionsFramePanelContainer)
@@ -46,7 +53,7 @@ function E:PLAYER_LOGIN()
 	end
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
-	
+
 	ListFrame:SetScripts({
 		OnEnter = function(self)
 			if self.value ~= '' then
