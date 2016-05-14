@@ -120,7 +120,12 @@ local function scroll(self, arg1)
 end
 
 function addon:CreateListFrame(parent, w, h, cols)
+	-- Contents of the list frame should be completely contained within the outer frame
 	local frame = CreateFrame('Frame', nil, parent, 'InsetFrameTemplate')
+	
+	local inset = CreateFrame('Frame', nil, frame, 'InsetFrameTemplate')
+	
+	
 	frame:SetSize(w, h)
 	frame:SetFrameLevel(1)
 	
@@ -131,7 +136,7 @@ function addon:CreateListFrame(parent, w, h, cols)
 	frame.items = {}
 	frame.itemcount = 0
 	frame.minValue = 0
-	frame.itemheight = 15
+	frame.itemheight = 15 -- todo: base this on font size
 	frame.slots = floor((frame:GetHeight()-10)/frame.itemheight)
 	frame.slot = {}
 	frame.stepValue = min(frame.slots, max(floor(frame.itemcount / frame.slots), 1))
@@ -159,16 +164,17 @@ function addon:CreateListFrame(parent, w, h, cols)
 	scrollDownBg:SetPoint('BOTTOMRIGHT', 0, 1)
 	scrollDownBg:SetTexCoord(0.53125, 1, 0.03125, 1)
 	scrollDownBg:SetSize(30, 123)
+	--scrollDownBg:SetAlpha(0)
 	
 	
-	local scrollMidBg = frame:CreateTexture(nil, nil, 0) -- fill in the middle gap, a bit hacky
+	local scrollMidBg = frame:CreateTexture(nil, nil, 2) -- fill in the middle gap, a bit hacky
 	scrollMidBg:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]], false, true)
 	--scrollMidBg:SetPoint('RIGHT', -1, 0)
-	scrollMidBg:SetTexCoord(0, 0.445, 0.75, 1)
+	scrollMidBg:SetTexCoord(0, 0.44, 0.75, 0.98)
 	--scrollMidBg:SetSize(28, 80)
 	--scrollMidBg:SetWidth(28)
-	scrollMidBg:SetPoint('TOPLEFT', scrollUpBg, 'BOTTOMLEFT', 1, 0)
-	scrollMidBg:SetPoint('BOTTOMRIGHT', scrollDownBg, 'TOPRIGHT', -1, 0)
+	scrollMidBg:SetPoint('TOPLEFT', scrollUpBg, 'BOTTOMLEFT', 1, 2)
+	scrollMidBg:SetPoint('BOTTOMRIGHT', scrollDownBg, 'TOPRIGHT', -1, -2)
 	
 	
 	

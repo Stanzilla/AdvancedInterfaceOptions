@@ -33,9 +33,11 @@ ListFrame:SetPoint('BOTTOMLEFT', 4, 6)
 --ListFrame:SetPoint('BOTTOMRIGHT', -4, 6)
 ListFrame:SetItems(CVarTable)
 
+ListFrame.Bg:SetAlpha(0.8)
+
 -- Events
 local E = addon:Eve()
-function E:PLAYER_ENTERING_WORLD()
+function E:PLAYER_LOGIN()
 	wipe(CVarTable)
 	for cvar, val in pairs(addon.hiddenOptions) do
 		-- ["UnitNameOwn"] = { prettyName = "UNIT_NAME_OWN", description = "OPTION_TOOLTIP_UNIT_NAME_OWN", type = "boolean" },
@@ -44,4 +46,27 @@ function E:PLAYER_ENTERING_WORLD()
 	end
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
+	
+	ListFrame:SetScripts({
+		OnEnter = function(self)
+			if self.value ~= '' then
+				GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
+				local cvarTable = addon.hiddenOptions[self.value]
+				if cvarTable['prettyName'] and _G[ cvarTable['prettyName'] ] then
+					GameTooltip:AddLine(_G[ cvarTable['prettyName'] ], nil, nil, nil, false)
+				else
+					GameTooltip:AddLine(self.value, nil, nil, nil, false)
+				end
+				if cvarTable['description'] and _G[ cvarTable['description'] ] then
+					GameTooltip:AddLine(_G[ cvarTable['description'] ], nil, nil, nil, true)
+				end
+				GameTooltip:Show()
+			end
+			self.bg:Show()
+		end,
+		OnLeave = function(self)
+			GameTooltip:Hide()
+			self.bg:Hide()
+		end,
+	})
 end
