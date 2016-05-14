@@ -211,8 +211,8 @@ addon.hiddenOptions = {
 	["enableMovePad"] = { prettyName = "", description = "OPTION_TOOLTIP_MOVE_PAD", type = "boolean" },
 	["colorblindSimulator"] = { prettyName = "", description = "OPTION_TOOLTIP_COLORBLIND_FILTER", type = "boolean" },
 }
-
-OptionsPanel:SetScript("OnShow", function(OptionsPanel)
+--[[
+	OptionsPanel:SetScript("OnShow", function(OptionsPanel)
 	local function newCheckbox(label, description, onClick)
 		local check = CreateFrame("CheckButton", "AIOCheck" .. label, OptionsPanel, "InterfaceOptionsCheckButtonTemplate")
 		check:SetScript("OnClick", function(self)
@@ -275,3 +275,4 @@ OptionsPanel:SetScript("OnShow", function(OptionsPanel)
 
 	OptionsPanel:SetScript("OnShow", nil)
 end)
+]]--
