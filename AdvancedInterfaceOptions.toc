@@ -8,6 +8,6 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: AdvancedInterfaceOptionsSaved
-
+semlib\semlib.xml
 core.lua
 options.lua
