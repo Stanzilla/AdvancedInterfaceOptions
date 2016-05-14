@@ -283,5 +283,3 @@ frame:SetScript("OnShow", function(frame)
 
 	frame:SetScript("OnShow", nil)
 end)
-InterfaceOptions_AddCategory(frame)
-

@@ -1,6 +1,6 @@
 ## Interface: 70000
 ## Title: Advanced Interface Options
-## Author: Stanzilla
+## Author: Stanzilla, Semlar
 ## Version: @project-version@
 ## Notes: Restores access to removed interface options in Legion
 ## X-Category: Interface Enhancements
