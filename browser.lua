@@ -1,6 +1,5 @@
 local addonName, addon = ...
 local _G = _G
-local L = AIO.L
 
 -- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
 

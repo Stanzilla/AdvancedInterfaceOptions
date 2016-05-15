@@ -1,6 +1,5 @@
 local addonName, addon = ...
 local _G = _G
-local L = AIO.L
 
 -- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
 
@@ -37,12 +36,14 @@ subText:SetPoint('RIGHT', -32, 0)
 subText:SetText('These options allow you to toggle various options that have been removed from the game in Legion.')
 
 local playerName = newCheckbox(
-	L["Your own name"],
+	"Your Own Name", -- TODO Get prettyName from the hiddenOptions table
 	"UNIT_NAME_OWN",
 	function(self, value) addon.hiddenOptions["UNIT_NAME_OWN"] = value end)
 playerName:SetChecked(true) -- TODO
 playerName:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
 end)
+
+InterfaceOptions_AddCategory(AIO, addonName)
 
 --[[
 local info = {}

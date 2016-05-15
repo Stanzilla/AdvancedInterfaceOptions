@@ -1,6 +1,5 @@
 
 local addonName, addon = ...
-local L = addon.L
 local _G = _G
 
 -- GLOBALS: UIDropDownMenu_AddButton
