@@ -59,6 +59,7 @@ function E:PLAYER_LOGIN()
 			if self.value ~= '' then
 				GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 				local cvarTable = addon.hiddenOptions[self.value]
+				local _, defaultValue = GetCVarInfo(self.value)
 				if cvarTable['prettyName'] and _G[ cvarTable['prettyName'] ] then
 					GameTooltip:AddLine(_G[ cvarTable['prettyName'] ], nil, nil, nil, false)
 					GameTooltip:AddLine(" ")
@@ -68,9 +69,9 @@ function E:PLAYER_LOGIN()
 				end
 				if cvarTable['description'] and _G[ cvarTable['description'] ] then
 					GameTooltip:AddLine("|cFFFFFFFF" .. _G[ cvarTable['description'] ] .. "|r", nil, nil, nil, true)
-					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", GetCVarInfo(self.value), nil, nil, nil, false)
+					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
 				else
-					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", GetCVarInfo(self.value), nil, nil, nil, false)
+					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
 				end
 				GameTooltip:Show()
 			end
