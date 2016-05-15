@@ -11,4 +11,5 @@
 
 semlib\semlib.xml
 core.lua
-options.lua
+basicOptions.lua
+browser.lua
