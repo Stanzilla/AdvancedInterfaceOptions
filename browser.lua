@@ -4,7 +4,7 @@ local _G = _G
 -- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
 
 -- Create an options panel and insert it into the interface menu
-local OptionsPanel = CreateFrame('Frame', addonName .. 'Panel', InterfaceOptionsFramePanelContainer)
+local OptionsPanel = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 OptionsPanel:Hide()
 OptionsPanel:SetAllPoints()
 OptionsPanel.name = "CVar Browser"
@@ -14,7 +14,7 @@ local Title = OptionsPanel:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge
 Title:SetJustifyV('TOP')
 Title:SetJustifyH('LEFT')
 Title:SetPoint('TOPLEFT', 16, -16)
-Title:SetText(addonName)
+Title:SetText(OptionsPanel.name)
 
 local SubText = OptionsPanel:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 SubText:SetMaxLines(3)

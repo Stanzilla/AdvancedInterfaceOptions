@@ -3,12 +3,11 @@ local _G = _G
 
 -- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
 
-local AIO = CreateFrame('Frame', addonName .. 'Panel', InterfaceOptionsFramePanelContainer)
+local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
 AIO:SetAllPoints()
 AIO.name = addonName
 
-AIO:SetScript("OnShow", function(AIO)
 local function newCheckbox(label, description, onClick)
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, AIO, "InterfaceOptionsCheckButtonTemplate")
 	check:SetScript("OnClick", function(self)
@@ -24,7 +23,7 @@ end
 
 local title = AIO:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 title:SetPoint("TOPLEFT", 16, -16)
-title:SetText(addonName)
+title:SetText(AIO.name)
 
 local subText = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 subText:SetMaxLines(3)
@@ -41,7 +40,7 @@ local playerName = newCheckbox(
 	function(self, value) addon.hiddenOptions["UNIT_NAME_OWN"] = value end)
 playerName:SetChecked(true) -- TODO
 playerName:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -2, -16)
-end)
+
 
 InterfaceOptions_AddCategory(AIO, addonName)
 
