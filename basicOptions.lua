@@ -8,19 +8,27 @@ AIO:Hide()
 AIO:SetAllPoints()
 AIO.name = addonName
 
-local function newCheckbox(cvar)
+-- Some wrapper functions
+local function checkboxGetCVar(self) return GetCVarBool(self.cvar) end
+local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
+local function checkboxSetCVar(self, checked) SetCVar(self.cvar, checked) end
+local function checkboxOnClick(self)
+	local checked = self:GetChecked()
+	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	self:SetValue(checked)
+end
+
+local function newCheckbox(cvar, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = _G[cvarTable['prettyName']] or cvar
 	local description = _G[cvarTable['description']] or 'No description'
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, AIO, "InterfaceOptionsCheckButtonTemplate")
-	check:SetScript('OnShow', function(self)
-		self:SetChecked(GetCVarInfo(cvar) == '1')
-	end)
-	check:SetScript("OnClick", function(self)
-		PlaySound(self:GetChecked() and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
-		SetCVar(cvar, self:GetChecked() and '1' or '0')
-		--print(GetCVarInfo(cvar) == '1' and 'Enabled after OnClick' or 'Disabled after OnClick')
-	end)
+	
+	check.cvar = cvar
+	check.GetValue = getValue or checkboxGetCVar
+	check.SetValue = setValue or checkboxSetCVar
+	check:SetScript('OnShow', checkboxSetChecked)
+	check:SetScript("OnClick", checkboxOnClick)
 	check.label = _G[check:GetName() .. "Text"]
 	check.label:SetText(label)
 	check.tooltipText = label
@@ -55,6 +63,18 @@ local luaErrors = newCheckbox('scriptErrors')
 local lootUnderMouse = newCheckbox('lootUnderMouse')
 local targetDebuffFilter = newCheckbox('noBuffDebuffFilterOnTarget')
 
+
+local reverseCleanupBags = newCheckbox('reverseCleanupBags',
+	-- Get Value
+	function(self)
+		return GetSortBagsRightToLeft()
+	end,
+	-- Set Value
+	function(self, checked)
+		SetSortBagsRightToLeft(checked)
+	end
+)
+
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
@@ -68,6 +88,7 @@ secureToggle:SetPoint("TOPLEFT", chatDelay, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
+reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 
 -- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
