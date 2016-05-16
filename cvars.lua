@@ -136,11 +136,6 @@ addon.hiddenOptions = {
 	["SpellTooltip_DisplayAvgValues"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_POINTS_AS_AVG", type = "boolean" },
 
 	["xpBarText"] = { prettyName = "XP_BAR_TEXT", description = "OPTION_TOOLTIP_XP_BAR", type = "boolean" },
-	["playerStatusText"] = { prettyName = "STATUS_TEXT_PLAYER", description = "OPTION_TOOLTIP_STATUS_PLAYER", type = "boolean" },
-	["petStatusText"] = { prettyName = "STATUS_TEXT_PET", description = "OPTION_TOOLTIP_STATUS_PET", type = "boolean" },
-	["partyStatusText"] = { prettyName = "STATUS_TEXT_PARTY", description = "OPTION_TOOLTIP_STATUS_PARTY", type = "boolean" },
-	["targetStatusText"] = { prettyName = "STATUS_TEXT_TARGET", description = "OPTION_TOOLTIP_STATUS_TARGET", type = "boolean" },
-	["alternateResourceText"] = { prettyName = "ALTERNATE_RESOURCE_TEXT", description = "OPTION_TOOLTIP_ALTERNATE_RESOURCE", type = "boolean" },
 
 	["bottomLeftActionBar"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_MULTIBAR1", type = "boolean" },
 	["showVKeyCastbarSpellName"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_TARGET_CASTBAR_IN_V_KEY_SPELL_NAME", type = "boolean" },

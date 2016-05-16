@@ -75,6 +75,16 @@ local reverseCleanupBags = newCheckbox('reverseCleanupBags',
 	end
 )
 
+local fctfloatmode = newCheckbox('floatingCombatTextFloatMode')
+local fctEnergyGains = newCheckbox('floatingCombatTextEnergyGains')
+local fctAuras = newCheckbox('floatingCombatTextAuras')
+local fctReactives = newCheckbox('floatingCombatTextReactives')
+local fctHonorGains = newCheckbox('floatingCombatTextHonorGains')
+local fctRepChanges = newCheckbox('floatingCombatTextRepChanges')
+local fctComboPoints = newCheckbox('floatingCombatTextComboPoints')
+local fctCombatState = newCheckbox('floatingCombatTextCombatState')
+local fctSpellMechanics = newCheckbox('floatingCombatTextSpellMechanics')
+
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
 questSortingLabel:SetText('Select quest sorting mode:')
@@ -111,6 +121,19 @@ luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
+
+local fctOptionsLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+fctOptionsLabel:SetPoint('TOPLEFT', subText, 'BOTTOMLEFT', 235, -8)
+fctOptionsLabel:SetText('Floating Combat Text Options:')
+
+fctfloatmode:SetPoint("TOPLEFT", fctOptionsLabel, "BOTTOMLEFT", 0, -8)
+fctEnergyGains:SetPoint("TOPLEFT", fctfloatmode, "BOTTOMLEFT", 0, -8)
+fctAuras:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -8)
+fctHonorGains:SetPoint("TOPLEFT", fctAuras, "BOTTOMLEFT", 0, -8)
+fctRepChanges:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -8)
+fctComboPoints:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -8)
+fctCombatState:SetPoint("TOPLEFT", fctComboPoints, "BOTTOMLEFT", 0, -8)
+fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -8)
 
 -- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
