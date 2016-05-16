@@ -1,7 +1,8 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
+-- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory GetSortBagsRightToLeft SetSortBagsRightToLeft
+-- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
@@ -23,7 +24,7 @@ local function newCheckbox(cvar, getValue, setValue)
 	local label = _G[cvarTable['prettyName']] or cvar
 	local description = _G[cvarTable['description']] or 'No description'
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, AIO, "InterfaceOptionsCheckButtonTemplate")
-	
+
 	check.cvar = cvar
 	check.GetValue = getValue or checkboxGetCVar
 	check.SetValue = setValue or checkboxSetCVar
@@ -63,7 +64,6 @@ local luaErrors = newCheckbox('scriptErrors')
 local lootUnderMouse = newCheckbox('lootUnderMouse')
 local targetDebuffFilter = newCheckbox('noBuffDebuffFilterOnTarget')
 
-
 local reverseCleanupBags = newCheckbox('reverseCleanupBags',
 	-- Get Value
 	function(self)
@@ -74,6 +74,28 @@ local reverseCleanupBags = newCheckbox('reverseCleanupBags',
 		SetSortBagsRightToLeft(checked)
 	end
 )
+
+local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
+questSortingLabel:SetText('Select quest sorting mode:')
+
+local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", AIO, "UIDropDownMenuTemplate")
+questSortingDropdown:SetPoint("TOPLEFT", questSortingLabel, "BOTTOMLEFT", -15, -10)
+questSortingDropdown.initialize = function(dropdown)
+	local sortMode = { "top", "proximity" }
+	for i, mode in next, sortMode do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = sortMode[i]
+		info.value = sortMode[i]
+		info.func = function(self)
+			SetCVar("trackQuestSorting", self.value)
+			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+		end
+		UIDropDownMenu_AddButton(info)
+	end
+	UIDropDownMenu_SetSelectedValue(dropdown, (GetCVarInfo("trackQuestSorting")))
+end
+questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize)
 
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
