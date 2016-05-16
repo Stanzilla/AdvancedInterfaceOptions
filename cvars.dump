@@ -1239,5 +1239,10 @@ T.CVars = {
 ["fctPeriodicEnergyGains"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_PERIODIC_ENERGIZE", type = "boolean" },
 ["fctSpellMechanicsOther"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS", type = "boolean" },
 ["fctDamageReduction"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_RESISTANCES", type = "boolean" },
+["CombatDamage"] = { prettyName = "SHOW_DAMAGE_TEXT", description = "OPTION_TOOLTIP_SHOW_DAMAGE_TEXT", type = "boolean" },
+["combatHealing"] = { prettyName = "SHOW_COMBAT_HEALING", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING", type = "boolean" },
+["CombatHealingAbsorbSelf"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_SELF", type = "boolean" },
+["CombatHealingAbsorbTarget"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_TARGET", type = "boolean" },
+["CombatHealing"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING", type = "boolean" },
 
 }

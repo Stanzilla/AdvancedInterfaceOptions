@@ -52,8 +52,6 @@ addon.hiddenOptions = {
 	["advancedWatchFrame"] = { prettyName = "ADVANCED_OBJECTIVES_TEXT", description = "OPTION_TOOLTIP_ADVANCED_OBJECTIVES_TEXT", type = "" },
 	["watchFrameIgnoreCursor"] = { prettyName = "OBJECTIVES_IGNORE_CURSOR_TEXT", description = "OPTION_TOOLTIP_OBJECTIVES_IGNORE_CURSOR", type = "boolean" },
 	["guildMemberNotify"] = { prettyName = "GUILDMEMBER_ALERT", description = "OPTION_TOOLTIP_GUILDMEMBER_ALERT", type = "boolean" },
-	["CombatDamage"] = { prettyName = "SHOW_DAMAGE_TEXT", description = "OPTION_TOOLTIP_SHOW_DAMAGE_TEXT", type = "boolean" },
-	["combatHealing"] = { prettyName = "SHOW_COMBAT_HEALING", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING", type = "boolean" },
 	["showArenaEnemyFrames"] = { prettyName = "SHOW_ARENA_ENEMY_FRAMES_TEXT", description = "OPTION_TOOLTIP_SHOW_ARENA_ENEMY_FRAMES", type = "boolean" },
 
 	["autoClearAFK"] = { prettyName = "", description = "OPTION_TOOLTIP_CLEAR_AFK", type = "boolean" },
@@ -65,7 +63,6 @@ addon.hiddenOptions = {
 	["emphasizeMySpellEffects"] = { prettyName = "", description = "OPTION_TOOLTIP_EMPHASIZE_MY_SPELLS", type = "boolean" },
 	["chatBubblesParty"] = { prettyName = "", description = "OPTION_TOOLTIP_PARTY_CHAT_BUBBLES", type = "boolean" },
 	["enableTwitter"] = { prettyName = "", description = "OPTION_TOOLTIP_SOCIAL_ENABLE_TWITTER_FUNCTIONALITY", type = "boolean" },
-	["CombatHealing"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING", type = "boolean" },
 	["threatPlaySounds"] = { prettyName = "", description = "OPTION_TOOLTIP_PLAY_AGGRO_SOUNDS", type = "boolean" },
 
 	["showToastOnline"] = { prettyName = "SHOW_TOAST_ONLINE_TEXT", description = "OPTION_TOOLTIP_SHOW_TOAST_ONLINE", type = "boolean" },
@@ -86,7 +83,6 @@ addon.hiddenOptions = {
 	["wholeChatWindowClickable"] = { prettyName = "", description = "OPTION_TOOLTIP_CHAT_WHOLE_WINDOW_CLICKABLE", type = "boolean" },
 	["useEnglishAudio"] = { prettyName = "", description = "OPTION_TOOLTIP_USE_ENGLISH_AUDIO", type = "boolean" },
 	["ChatSoundVolume"] = { prettyName = "", description = "OPTION_TOOLTIP_", type = "number" },
-	["CombatHealingAbsorbSelf"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_SELF", type = "boolean" },
 	["reducedLagTolerance"] = { prettyName = "", description = "OPTION_TOOLTIP_REDUCED_LAG_TOLERANCE", type = "boolean" },
 	["EnableMicrophone"] = { prettyName = "", description = "OPTION_TOOLTIP_ENABLE_MICROPHONE", type = "boolean" },
 	["CombatDamage"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_DAMAGE", type = "boolean" },
@@ -136,7 +132,6 @@ addon.hiddenOptions = {
 	["VoiceActivationSensitivity"] = { prettyName = "", description = "OPTION_TOOLTIP_VOICE_ACTIVATION_SENSITIVITY", type = "number" },
 	["alwaysShowActionBars"] = { prettyName = "", description = "OPTION_TOOLTIP_ALWAYS_SHOW_MULTIBARS", type = "boolean" },
 	["OutboundChatVolume"] = { prettyName = "", description = "OPTION_TOOLTIP_VOICE_INPUT_VOLUME", type = "number" },
-	["CombatHealingAbsorbTarget"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_TARGET", type = "boolean" },
 	["autoQuestWatch"] = { prettyName = "", description = "OPTION_TOOLTIP_AUTO_QUEST_WATCH", type = "boolean" },
 	["SpellTooltip_DisplayAvgValues"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_POINTS_AS_AVG", type = "boolean" },
 
