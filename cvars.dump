@@ -1221,4 +1221,23 @@ T.CVars = {
 ["colorblindSimulator"] = "OPTION_TOOLTIP_COLORBLIND_FILTER",
 ["ChatMusicVolume"] = "",
 
+-- removed in legion:
+
+["consolidateBuffs"] = { prettyName = "CONSOLIDATE_BUFFS_TEXT", description = "OPTION_TOOLTIP_CONSOLIDATE_BUFFS", type = "boolean" },
+["enableCombatText"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_COMBAT", type = "boolean" },
+["fctEnergyGains"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_ENERGIZE", type = "boolean" },
+["fctFriendlyHealers"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_FRIENDLY_NAMES", type = "boolean" },
+["fctHonorGains"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_HONOR_GAINED", type = "boolean" },
+["fctLowManaHealth"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_LOW_HEALTH_MANA", type = "boolean" },
+["fctAuras"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_AURAS", type = "boolean" },
+["fctRepChanges"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_REPUTATION", type = "boolean" },
+["fctSpellMechanics"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_TARGET_EFFECTS", type = "boolean" },
+["fctCombatState"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_COMBAT_STATE", type = "boolean" },
+["fctDodgeParryMiss"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_DODGE_PARRY_MISS", type = "boolean" },
+["fctComboPoints"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_COMBO_POINTS", type = "boolean" },
+["fctReactives"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_REACTIVES", type = "boolean" },
+["fctPeriodicEnergyGains"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_PERIODIC_ENERGIZE", type = "boolean" },
+["fctSpellMechanicsOther"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS", type = "boolean" },
+["fctDamageReduction"] = { prettyName = "", description = "OPTION_TOOLTIP_COMBAT_SHOW_RESISTANCES", type = "boolean" },
+
 }
