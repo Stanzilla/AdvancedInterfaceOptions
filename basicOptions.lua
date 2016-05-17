@@ -107,6 +107,28 @@ questSortingDropdown.initialize = function(dropdown)
 end
 questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize)
 
+local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+actionCamModeLabel:SetPoint('TOPLEFT', fctSpellMechanics, 'BOTTOMLEFT', 0, 0)
+actionCamModeLabel:SetText('Select Action Cam mode:')
+
+local actionCamModeDropdown = CreateFrame("Frame", "AIOActionCamMode", AIO, "UIDropDownMenuTemplate")
+actionCamModeDropdown:SetPoint("TOPLEFT", actionCamModeLabel, "BOTTOMLEFT", -15, -10)
+actionCamModeDropdown.initialize = function(dropdown)
+	local sortMode = { "basic", "full", "off", "default" }
+	for i, mode in next, sortMode do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = sortMode[i]
+		info.value = sortMode[i]
+		info.func = function(self)
+			ConsoleExec("actioncam "..self.value)
+			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+		end
+		UIDropDownMenu_AddButton(info)
+	end
+	UIDropDownMenu_SetSelectedValue(dropdown, "off") -- TODO: This is wrong, obviously
+end
+actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
+
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
