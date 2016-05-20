@@ -18,13 +18,16 @@ local function updatescroll(scroll)
 		local lineoffset = line + scroll.value
 		if lineoffset <= scroll.itemcount then
 			scroll.slot[line].value = scroll.items[lineoffset][1]
+			scroll.slot[line].offset = lineoffset
 			--local text = scroll.items[lineoffset][2]
 			--if(scroll.slot[line].value == scroll.selected) then
 				--text = "|cffff0000"..text.."|r"
 			--end
 			--scroll.slot[line].text:SetText(text)
 			for i, col in ipairs(scroll.slot[line].cols) do
+				col.item = scroll.items[lineoffset][i+1]
 				col:SetText(scroll.items[lineoffset][i+1])
+				col.id = i
 			end
 			--scroll.slot[line].cols[2]:SetText(text)
 			scroll.slot[line]:Show()
@@ -416,7 +419,6 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 	--groupTypeDropdown:SetPoint('LEFT', ilevelInput, 'RIGHT', -5, -3)
 	--groupTypeDropdown:SetPoint('TOPRIGHT', titleInput, 'BOTTOMRIGHT', 16, -8)
 	--dropdown:SetPoint('BOTTOMRIGHT', parent, 10, 0)
-	
 	UIDropDownMenu_Initialize(dropdown, function()
 		for i, tbl in ipairs(items) do
 			local info = UIDropDownMenu_CreateInfo()
@@ -425,6 +427,9 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 
 			for k, v in pairs(tbl) do
 				info[k] = v
+				if not defaultValue and k == 'value' then
+					defaultValue = v
+				end
 			end
 			
 			

@@ -48,6 +48,35 @@ function E:PLAYER_LOGIN()
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
 
+	local CVarInputBox = CreateFrame('editbox', nil, ListFrame, 'InputBoxTemplate')
+	CVarInputBox:Hide()
+	CVarInputBox:SetSize(100, 20)
+	CVarInputBox:SetJustifyH('RIGHT')
+	CVarInputBox:SetTextInsets(5, 10, 0, 0)
+	CVarInputBox:SetScript('OnEscapePressed', function(self)
+		self:ClearFocus()
+		self:Hide()
+	end)
+	CVarInputBox:SetScript('OnEnterPressed', function(self)
+		-- todo: I don't like this, change it
+		local val = self:GetText()
+		SetCVar(self.cvar, val)
+		self.str:SetText(val)
+		ListFrame.items[ self.row.offset ][4] = val
+		
+		self:Hide()
+	end)
+	
+	CVarInputBox:SetScript('OnHide', function(self)
+		if self.str then
+			self.str:Show()
+		end
+	end)
+	CVarInputBox:SetScript('OnEditFocusLost', function(self)
+		self:Hide()
+	end)
+	
+	local LastClickTime = 0 -- Track double clicks on rows
 	ListFrame:SetScripts({
 		OnEnter = function(self)
 			if self.value ~= '' then
@@ -74,6 +103,26 @@ function E:PLAYER_LOGIN()
 		OnLeave = function(self)
 			GameTooltip:Hide()
 			self.bg:Hide()
+		end,
+		OnMouseDown = function(self)
+			local now = GetTime()
+			if now - LastClickTime <= 0.2 then
+				-- todo: display edit box on row with current cvar value
+				-- save on enter, discard on escape or losing focus
+				if CVarInputBox.str then
+					CVarInputBox.str:Show()
+				end
+				self.cols[#self.cols]:Hide()
+				CVarInputBox.str = self.cols[#self.cols]
+				CVarInputBox.cvar = self.value
+				CVarInputBox.row = self
+				CVarInputBox:SetPoint('RIGHT', self)
+				CVarInputBox:SetText(CVarInputBox.str:GetText())
+				CVarInputBox:HighlightText()
+				CVarInputBox:Show()
+			else
+				LastClickTime = now
+			end
 		end,
 	})
 end
