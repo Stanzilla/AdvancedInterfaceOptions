@@ -59,7 +59,7 @@ function E:PLAYER_LOGIN()
 	end)
 	CVarInputBox:SetScript('OnEnterPressed', function(self)
 		-- todo: I don't like this, change it
-		local val = self:GetText()
+		local val = self:GetText() or ''
 		SetCVar(self.cvar, val)
 		self.str:SetText(val)
 		ListFrame.items[ self.row.offset ][4] = val
@@ -117,7 +117,7 @@ function E:PLAYER_LOGIN()
 				CVarInputBox.cvar = self.value
 				CVarInputBox.row = self
 				CVarInputBox:SetPoint('RIGHT', self)
-				CVarInputBox:SetText(CVarInputBox.str:GetText())
+				CVarInputBox:SetText(CVarInputBox.str:GetText() or '')
 				CVarInputBox:HighlightText()
 				CVarInputBox:Show()
 			else
