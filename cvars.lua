@@ -57,6 +57,7 @@ addon.hiddenOptions = {
 	["autoClearAFK"] = { prettyName = "", description = "OPTION_TOOLTIP_CLEAR_AFK", type = "boolean" },
 	["colorblindWeaknessFactor"] = { prettyName = "", description = "OPTION_TOOLTIP_ADJUST_COLORBLIND_STRENGTH", type = "boolean" },
 	["autoLootDefault"] = { prettyName = "", description = "OPTION_TOOLTIP_AUTO_LOOT_DEFAULT", type = "boolean" },
+	["autoLootRate"] = { prettyName = "Auto Loot Rate", description = "Rate in milliseconds to tick auto loot", type ="number" },
 	["ChatAmbienceVolume"] = { prettyName = "", description = "OPTION_TOOLTIP_", type = "boolean" },
 	["threatShowNumeric"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_NUMERIC_THREAT", type = "boolean" },
 	["rightActionBar"] = { prettyName = "", description = "OPTION_TOOLTIP_SHOW_MULTIBAR3", type = "boolean" },
