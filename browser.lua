@@ -1,3 +1,8 @@
+local model = CreateFrame('playermodel', 'MyModel', UIParent)
+model:SetPoint('CENTER')
+model:SetSize(300, 300)
+
+
 local addonName, addon = ...
 local _G = _G
 
@@ -27,28 +32,122 @@ SubText:SetText('These options allow you to modify various CVars within the game
 
 InterfaceOptions_AddCategory(OptionsPanel, addonName)
 
+-- FilterBox should adjust the contents of the list frame based on the input text
+-- todo: Display grey "Search" text in the box if it's empty
+local FilterBox = CreateFrame('editbox', nil, OptionsPanel, 'InputBoxTemplate')
+FilterBox:SetPoint('TOPLEFT', SubText, 'BOTTOMLEFT', 0, -5)
+FilterBox:SetPoint('RIGHT', OptionsPanel, 'RIGHT', -10, 0)
+FilterBox:SetHeight(20)
+FilterBox:SetScript('OnEscapePressed', function(self)
+	self:SetAutoFocus(false) -- Allow focus to clear when escape is pressed
+	self:ClearFocus()
+end)
+FilterBox:SetScript('OnEditFocusGained', function(self)
+	self:SetAutoFocus(true)
+	self:HighlightText()
+end)
+--FilterBox:SetAutoFocus(true) -- should be the default state anyway
+
 local CVarTable = {}
-local ListFrame = addon:CreateListFrame(OptionsPanel, 615, 450, {{NAME, 200}, {'Description', 260, 'RIGHT'}, {'Value', 100, 'RIGHT'}})
---ListFrame:SetPoint('TOP', SubText, 'BOTTOM', 0, -40)
+local ListFrame = addon:CreateListFrame(OptionsPanel, 615, 465, {{NAME, 200}, {'Description', 260, 'LEFT'}, {'Value', 100, 'RIGHT'}})
+ListFrame:SetPoint('TOP', FilterBox, 'BOTTOM', 0, -20)
 ListFrame:SetPoint('BOTTOMLEFT', 4, 6)
 --ListFrame:SetPoint('BOTTOMRIGHT', -4, 6)
 ListFrame:SetItems(CVarTable)
 
 ListFrame.Bg:SetAlpha(0.8)
 
+FilterBox:SetMaxLetters(100)
+
+-- Escape special characters for matching a literal string
+local function Literalize(str)
+	return str:gsub('[%(%)%.%%%+%-%*%?%[%]%^%$]', '%%%1')
+end
+-- Rewrite text pattern to be case-insensitive
+local function UnCase(c)
+	return '[' .. strlower(c) .. strupper(c) .. ']'
+end
+
+local FilteredTable = {} -- Filtered version of CVarTable based on search box input
+FilterBox:SetScript('OnTextChanged', function(self, userInput)
+	local text = self:GetText()
+	if text == '' then
+		-- set to default list
+		ListFrame:SetItems(CVarTable)
+	else
+		local pattern = Literalize(text):gsub('%a', UnCase)
+		-- filter based on text
+		wipe(FilteredTable)
+		for i = 1, #CVarTable do
+			local row = CVarTable[i]
+			for j = 2, #row - 1 do -- start at 2 to skip the hidden value column, not sure if we should include every column in the filter or not
+				local col = row[j]
+				-- Color the search query, this is pretty inefficient
+				local newtext, replacements = col:gsub(pattern, '|cffff0000%1|r')
+				if replacements > 0 then
+					local newrow = {row[1], [#row] = row[#row]}
+					for k = 2, #row - 1 do
+						newrow[k] = row[k]:gsub(pattern, '|cffff0000%1|r')
+					end
+					tinsert(FilteredTable, newrow)
+					break
+				--if col:lower():find(text, 1, true) then
+					--tinsert(FilteredTable, row)
+					--break
+				end
+			end
+		end
+		ListFrame:SetItems(FilteredTable)
+	end
+end)
+
+-- Returns a rounded integer or float, the default value, and whether it's set to its default value
+local function GetPrettyCVar(cvar)
+	local value, default = GetCVarInfo(cvar)
+	--if not value then value = '|cff00ff00EROR' end
+	--if not default then default = '|cff00ff00EROR' end
+	if not default or not value then return '', false end -- this cvar doesn't exist
+	local isFloat = strmatch(value or '', '^-?%d+%.%d+$')
+	if isFloat then
+		value = format('%.2f', value):gsub("%.?0+$", "")
+	end
+	
+	local isDefault = tonumber(value) and tonumber(default) and (value - default == 0) or (value == default)
+	return value, default, isDefault
+end
+
 -- Events
 local E = addon:Eve()
 function E:PLAYER_LOGIN()
 	wipe(CVarTable)
-	for cvar, val in pairs(addon.hiddenOptions) do
-		-- ["UnitNameOwn"] = { prettyName = "UNIT_NAME_OWN", description = "OPTION_TOOLTIP_UNIT_NAME_OWN", type = "boolean" },
-		tinsert(CVarTable, {cvar, cvar, _G[val.description] or '', GetCVar(cvar) or ''})
-		--print(cvar, GetCVarInfo(cvar))
+	-- todo: this needs to be updated every time a cvar changes while the table is visible
+	for cvar, tbl in pairs(addon.hiddenOptions) do
+		local value, default, isDefault = GetPrettyCVar(cvar)
+		tinsert(CVarTable, {cvar, cvar, _G[tbl.description] or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
 	end
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
 
-	local CVarInputBox = CreateFrame('editbox', nil, ListFrame, 'InputBoxTemplate')
+	-- We don't really want the user to be able to do anything else while the input box is open
+	-- I'd rather make this a child of the input box, but I can't get it to show up above its child
+	-- todo: show default value around the input box somewhere while it's active
+	local CVarInputBoxMouseBlocker = CreateFrame('frame', nil, ListFrame)
+	CVarInputBoxMouseBlocker:SetFrameStrata('FULLSCREEN_DIALOG')
+	CVarInputBoxMouseBlocker:Hide()
+	
+	local CVarInputBox = CreateFrame('editbox', nil, CVarInputBoxMouseBlocker, 'InputBoxTemplate')
+	-- block clicking and cancel on any clicks outside the edit box
+	CVarInputBoxMouseBlocker:EnableMouse(true)
+	CVarInputBoxMouseBlocker:SetScript('OnMouseDown', function(self) CVarInputBox:ClearFocus() end)
+	-- block scrolling
+	CVarInputBoxMouseBlocker:EnableMouseWheel(true)
+	CVarInputBoxMouseBlocker:SetScript('OnMouseWheel', function() end)
+	CVarInputBoxMouseBlocker:SetAllPoints(nil)
+	
+	local blackout = CVarInputBoxMouseBlocker:CreateTexture(nil, 'BACKGROUND')
+	blackout:SetAllPoints()
+	blackout:SetColorTexture(0,0,0,0.2)
+	
 	CVarInputBox:Hide()
 	CVarInputBox:SetSize(100, 20)
 	CVarInputBox:SetJustifyH('RIGHT')
@@ -63,17 +162,26 @@ function E:PLAYER_LOGIN()
 		SetCVar(self.cvar, val)
 		self.str:SetText(val)
 		ListFrame.items[ self.row.offset ][4] = val
-		
+		for k,v in pairs(CVarTable) do -- update value in cvartable in a horrible way
+			if v[1] == self.cvar then
+				v[4] = val
+				break
+			end
+		end
 		self:Hide()
 	end)
-	
+	--CVarInputBox:SetScript('OnShow', function(self)
+		--self:SetFocus()
+	--end)
 	CVarInputBox:SetScript('OnHide', function(self)
+		CVarInputBoxMouseBlocker:Hide()
 		if self.str then
 			self.str:Show()
 		end
 	end)
 	CVarInputBox:SetScript('OnEditFocusLost', function(self)
 		self:Hide()
+		FilterBox:SetFocus()
 	end)
 	
 	local LastClickTime = 0 -- Track double clicks on rows
@@ -107,7 +215,7 @@ function E:PLAYER_LOGIN()
 		OnMouseDown = function(self)
 			local now = GetTime()
 			if now - LastClickTime <= 0.2 then
-				-- todo: display edit box on row with current cvar value
+				-- display edit box on row with current cvar value
 				-- save on enter, discard on escape or losing focus
 				if CVarInputBox.str then
 					CVarInputBox.str:Show()
@@ -117,9 +225,12 @@ function E:PLAYER_LOGIN()
 				CVarInputBox.cvar = self.value
 				CVarInputBox.row = self
 				CVarInputBox:SetPoint('RIGHT', self)
-				CVarInputBox:SetText(CVarInputBox.str:GetText() or '')
+				local value = GetPrettyCVar(self.value)
+				CVarInputBox:SetText(value or '')
 				CVarInputBox:HighlightText()
+				CVarInputBoxMouseBlocker:Show()
 				CVarInputBox:Show()
+				CVarInputBox:SetFocus()
 			else
 				LastClickTime = now
 			end
