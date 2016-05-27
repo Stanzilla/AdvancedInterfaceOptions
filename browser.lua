@@ -118,7 +118,7 @@ function E:PLAYER_LOGIN()
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
 	for cvar, tbl in pairs(addon.hiddenOptions) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
-		tinsert(CVarTable, {cvar, cvar, _G[tbl.description] or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
+		tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
 	end
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
@@ -186,15 +186,15 @@ function E:PLAYER_LOGIN()
 				GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 				local cvarTable = addon.hiddenOptions[self.value]
 				local _, defaultValue = GetCVarInfo(self.value)
-				if cvarTable['prettyName'] and _G[ cvarTable['prettyName'] ] then
-					GameTooltip:AddLine(_G[ cvarTable['prettyName'] ], nil, nil, nil, false)
+				if cvarTable['prettyName'] then --and _G[ cvarTable['prettyName'] ] then
+					GameTooltip:AddLine(cvarTable['prettyName'], nil, nil, nil, false)
 					GameTooltip:AddLine(" ")
 				else
 					GameTooltip:AddLine(self.value, nil, nil, nil, false)
 					GameTooltip:AddLine(" ")
 				end
-				if cvarTable['description'] and _G[ cvarTable['description'] ] then
-					GameTooltip:AddLine("|cFFFFFFFF" .. _G[ cvarTable['description'] ] .. "|r", nil, nil, nil, true)
+				if cvarTable['description'] then --and _G[ cvarTable['description'] ] then
+					GameTooltip:AddLine("|cFFFFFFFF" .. cvarTable['description'] .. "|r", nil, nil, nil, true)
 					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
 				else
 					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
