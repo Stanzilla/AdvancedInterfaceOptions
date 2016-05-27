@@ -17,6 +17,16 @@ local function updatescroll(scroll)
 	for line = 1, scroll.slots do
 		local lineoffset = line + scroll.value
 		if lineoffset <= scroll.itemcount then
+			-- If we're mousing over a row when its contents change
+			-- call its OnLeave/OnEnter scripts if they exist
+			local mousedOver = scroll.slot[line]:IsMouseOver()
+			if mousedOver then
+				local OnLeave = scroll.slot[line]:GetScript('OnLeave')
+				if OnLeave then
+					OnLeave(scroll.slot[line])
+				end
+			end
+		
 			scroll.slot[line].value = scroll.items[lineoffset][1]
 			scroll.slot[line].offset = lineoffset
 			--local text = scroll.items[lineoffset][2]
@@ -28,6 +38,13 @@ local function updatescroll(scroll)
 				col.item = scroll.items[lineoffset][i+1]
 				col:SetText(scroll.items[lineoffset][i+1])
 				col.id = i
+			end
+			
+			if mousedOver then
+				local OnEnter = scroll.slot[line]:GetScript('OnEnter')
+				if OnEnter then
+					OnEnter(scroll.slot[line])
+				end
 			end
 			--scroll.slot[line].cols[2]:SetText(text)
 			scroll.slot[line]:Show()
@@ -100,6 +117,8 @@ local function sortItems(scroll, col)
 end
 
 local function scroll(self, arg1)
+	-- Called when mousewheel is scrolled or scroll buttons are pressed
+	local oldValue = self.value
 	if ( self.maxValue > self.minValue ) then
 		if ( self.value > self.minValue and self.value < self.maxValue )
 		or ( self.value == self.minValue and arg1 == -1 )
@@ -117,9 +136,14 @@ local function scroll(self, arg1)
 		elseif ( self.value > self.maxValue ) then
 			self.value = self.maxValue
 		end
-		self:Update()
+		
+		if self.value ~= oldValue then
+			self:Update() -- probably does not need to be called unless value has changed
+		end
 	end
-	self.scrollbar:SetValue(self.value)
+	if oldValue ~= self.value then
+		self.scrollbar:SetValue(self.value)
+	end
 end
 
 function addon:CreateListFrame(parent, w, h, cols)
