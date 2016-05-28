@@ -1,7 +1,7 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory
+-- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1
 
 -- Create an options panel and insert it into the interface menu
 local OptionsPanel = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -106,7 +106,7 @@ local function GetPrettyCVar(cvar)
 	if isFloat then
 		value = format('%.2f', value):gsub("%.?0+$", "")
 	end
-	
+
 	local isDefault = tonumber(value) and tonumber(default) and (value - default == 0) or (value == default)
 	return value, default, isDefault
 end
@@ -129,7 +129,7 @@ function E:PLAYER_LOGIN()
 	local CVarInputBoxMouseBlocker = CreateFrame('frame', nil, ListFrame)
 	CVarInputBoxMouseBlocker:SetFrameStrata('FULLSCREEN_DIALOG')
 	CVarInputBoxMouseBlocker:Hide()
-	
+
 	local CVarInputBox = CreateFrame('editbox', nil, CVarInputBoxMouseBlocker, 'InputBoxTemplate')
 	-- block clicking and cancel on any clicks outside the edit box
 	CVarInputBoxMouseBlocker:EnableMouse(true)
@@ -138,11 +138,11 @@ function E:PLAYER_LOGIN()
 	CVarInputBoxMouseBlocker:EnableMouseWheel(true)
 	CVarInputBoxMouseBlocker:SetScript('OnMouseWheel', function() end)
 	CVarInputBoxMouseBlocker:SetAllPoints(nil)
-	
+
 	local blackout = CVarInputBoxMouseBlocker:CreateTexture(nil, 'BACKGROUND')
 	blackout:SetAllPoints()
 	blackout:SetColorTexture(0,0,0,0.2)
-	
+
 	CVarInputBox:Hide()
 	CVarInputBox:SetSize(100, 20)
 	CVarInputBox:SetJustifyH('RIGHT')
@@ -178,7 +178,7 @@ function E:PLAYER_LOGIN()
 		self:Hide()
 		FilterBox:SetFocus()
 	end)
-	
+
 	local LastClickTime = 0 -- Track double clicks on rows
 	ListFrame:SetScripts({
 		OnEnter = function(self)
@@ -232,3 +232,9 @@ function E:PLAYER_LOGIN()
 		end,
 	})
 end
+
+SlashCmdList.CVAR = function()
+	InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+	InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+end
+SLASH_CVAR1 = "/cvar"
