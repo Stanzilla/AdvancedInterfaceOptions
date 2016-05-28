@@ -3,6 +3,7 @@ local _G = _G
 
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory GetSortBagsRightToLeft SetSortBagsRightToLeft
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
+-- GLOBALS: SLASH_AIO1
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
@@ -161,3 +162,10 @@ fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -8)
 
 
 InterfaceOptions_AddCategory(AIO, addonName)
+
+SlashCmdList.AIO = function(msg)
+	--msg = msg:lower()
+	InterfaceOptionsFrame_OpenToCategory(addonName)
+	InterfaceOptionsFrame_OpenToCategory(addonName)
+end
+SLASH_AIO1 = "/aio"
