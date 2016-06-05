@@ -22,7 +22,7 @@ end
 
 local function newCheckbox(cvar, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
-	local label = _G[cvarTable['prettyName']] or cvar
+	local label = cvarTable['prettyName'] or cvar
 	local description = _G[cvarTable['description']] or 'No description'
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, AIO, "InterfaceOptionsCheckButtonTemplate")
 
@@ -76,7 +76,6 @@ local reverseCleanupBags = newCheckbox('reverseCleanupBags',
 	end
 )
 
-local fctfloatmode = newCheckbox('floatingCombatTextFloatMode')
 local fctEnergyGains = newCheckbox('floatingCombatTextEnergyGains')
 local fctAuras = newCheckbox('floatingCombatTextAuras')
 local fctReactives = newCheckbox('floatingCombatTextReactives')
@@ -130,6 +129,32 @@ actionCamModeDropdown.initialize = function(dropdown)
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 
+local fctOptionsLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+fctOptionsLabel:SetPoint('TOPLEFT', subText, 'BOTTOMLEFT', 235, -12)
+fctOptionsLabel:SetText('Floating Combat Text Options:')
+
+local fctfloatmodeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+fctfloatmodeLabel:SetPoint('TOPLEFT', fctOptionsLabel, 'BOTTOMLEFT', 0, -4)
+fctfloatmodeLabel:SetText('Select text float mode: 1 = UP, 2 = DOWN, 3 = ARC')
+
+local fctfloatmodeDropdown = CreateFrame("Frame", "AIOfctFloatMode", AIO, "UIDropDownMenuTemplate")
+fctfloatmodeDropdown:SetPoint("TOPLEFT", fctfloatmodeLabel, "BOTTOMLEFT", -16, -10)
+fctfloatmodeDropdown.initialize = function(dropdown)
+	local floatMode = { "1", "2", "3" }
+	for i, mode in next, floatMode do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = floatMode[i]
+		info.value = floatMode[i]
+		info.func = function(self)
+			SetCVar("floatingCombatTextFloatMode", self.value)
+			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+		end
+		UIDropDownMenu_AddButton(info)
+	end
+	UIDropDownMenu_SetSelectedValue(dropdown, GetCVarInfo("floatingCombatTextFloatMode"))
+end
+fctfloatmodeDropdown:HookScript("OnShow", fctfloatmodeDropdown.initialize)
+
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
@@ -145,12 +170,7 @@ lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 
-local fctOptionsLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-fctOptionsLabel:SetPoint('TOPLEFT', subText, 'BOTTOMLEFT', 235, -8)
-fctOptionsLabel:SetText('Floating Combat Text Options:')
-
-fctfloatmode:SetPoint("TOPLEFT", fctOptionsLabel, "BOTTOMLEFT", 0, -8)
-fctEnergyGains:SetPoint("TOPLEFT", fctfloatmode, "BOTTOMLEFT", 0, -8)
+fctEnergyGains:SetPoint("TOPLEFT", fctfloatmodeDropdown, "BOTTOMLEFT", 16, -12)
 fctAuras:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -8)
 fctHonorGains:SetPoint("TOPLEFT", fctAuras, "BOTTOMLEFT", 0, -8)
 fctRepChanges:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -8)
