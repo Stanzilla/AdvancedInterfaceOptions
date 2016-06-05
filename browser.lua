@@ -33,6 +33,8 @@ local FilterBox = CreateFrame('editbox', nil, OptionsPanel, 'InputBoxTemplate')
 FilterBox:SetPoint('TOPLEFT', SubText, 'BOTTOMLEFT', 0, -5)
 FilterBox:SetPoint('RIGHT', OptionsPanel, 'RIGHT', -10, 0)
 FilterBox:SetHeight(20)
+FilterBox:SetAutoFocus(false)
+FilterBox:ClearFocus()
 FilterBox:SetScript('OnEscapePressed', function(self)
 	self:SetAutoFocus(false) -- Allow focus to clear when escape is pressed
 	self:ClearFocus()
