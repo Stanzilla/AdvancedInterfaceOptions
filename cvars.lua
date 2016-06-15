@@ -33,12 +33,10 @@ addon.hiddenOptions = {
 	["nameplateShowEnemyTotems"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, type = "boolean" },
 	["nameplateShowEnemyMinus"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, type = "boolean" },
 	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
-	["nameplateOtherAtBase"] = { prettyName = nil, description = "Position other nameplates at the base, rather than overhead", type = "number" },
+	["nameplateOtherAtBase"] = { prettyName = nil, description = "Position other nameplates at the base, rather than overhead", type = "boolean" },
 	["nameplateOverlapH"] = { prettyName = nil, description = "Percentage amount for horizontal overlap of nameplates", type = "number" },
 	["nameplateOverlapV"] = { prettyName = nil, description = "Percentage amount for vertical overlap of nameplates", type = "number" },
 	["nameplateMaxDistance"] = { prettyName = nil, description = "The max distance to show nameplates.", type = "number" },
-
-
 
 	["reverseCleanupBags"] = { prettyName = UNIT_NAME_PLAYER_GUILD, description = OPTION_TOOLTIP_PLAYER_GUILD, type = "boolean" },
 	["stopAutoAttackOnTargetChange"] = { prettyName = STOP_AUTO_ATTACK, description = OPTION_TOOLTIP_STOP_AUTO_ATTACK, type = "boolean" },
