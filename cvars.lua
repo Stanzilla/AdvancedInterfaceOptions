@@ -38,7 +38,7 @@ addon.hiddenOptions = {
 	["nameplateOverlapV"] = { prettyName = nil, description = "Percentage amount for vertical overlap of nameplates", type = "number" },
 	["nameplateMaxDistance"] = { prettyName = nil, description = "The max distance to show nameplates.", type = "number" },
 
-	["reverseCleanupBags"] = { prettyName = UNIT_NAME_PLAYER_GUILD, description = OPTION_TOOLTIP_PLAYER_GUILD, type = "boolean" },
+	["reverseCleanupBags"] = { prettyName = "Reverse Cleanup Bags", description = OPTION_TOOLTIP_PLAYER_GUILD, type = "boolean" },
 	["stopAutoAttackOnTargetChange"] = { prettyName = STOP_AUTO_ATTACK, description = OPTION_TOOLTIP_STOP_AUTO_ATTACK, type = "boolean" },
 	["assistAttack"] = { prettyName = ASSIST_ATTACK, description = OPTION_TOOLTIP_ASSIST_ATTACK, type = "boolean" },
 	["autoSelfCast"] = { prettyName = AUTO_SELF_CAST_TEXT, description = OPTION_TOOLTIP_SELF_CAST_TEXT, type = "boolean" },
@@ -188,7 +188,7 @@ addon.hiddenOptions = {
 	["enableMovePad"] = { prettyName = MOVE_PAD, description = OPTION_TOOLTIP_MOVE_PAD, type = "boolean" },
 	["colorblindSimulator"] = { prettyName = nil, description = OPTION_TOOLTIP_COLORBLIND_FILTER, type = "boolean" },
 
-	["noBuffDebuffFilterOnTarget"] = { prettyName = nil, description = "Do not filter buffs or debuffs at all on targets", type = "boolean"},
+	["noBuffDebuffFilterOnTarget"] = { prettyName = "No Debuff Filter on Target", description = "Do not filter buffs or debuffs at all on targets", type = "boolean"},
 	["showHonorAsExperience"] = { prettyName = nil, description = "Show the honor bar as a regular experience bar in place of rep", type = "boolean"},
 	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean"},
 	["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = "", type = "boolean"},
