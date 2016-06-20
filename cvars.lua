@@ -128,7 +128,7 @@ addon.hiddenOptions = {
 	["lockActionBars"] = { prettyName = nil, description = OPTION_TOOLTIP_LOCK_ACTIONBAR, type = "boolean" },
 	["screenEdgeFlash"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_FULLSCREEN_STATUS, type = "boolean" },
 	["showVKeyCastbar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_CASTBAR_IN_V_KEY, type = "boolean" },
-	["chatMouseScroll"] = { prettyName = nil, description = OPTION_TOOLTIP_CHAT_MOUSE_WHEEL_SCROLL, type = "boolean" },
+	["chatMouseScroll"] = { prettyName = "Enable Mouse Wheel Scrolling", description = OPTION_TOOLTIP_CHAT_MOUSE_WHEEL_SCROLL, type = "boolean" },
 	["showGameTips"] = { prettyName = SHOW_TIPOFTHEDAY_TEXT, description = OPTION_TOOLTIP_SHOW_TIPOFTHEDAY, type = "boolean" },
 	["InboundChatVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_VOICE_OUTPUT_VOLUME, type = "number" },
 	["spellActivationOverlayOpacity"] = { prettyName = nil, description = OPTION_TOOLTIP_SPELL_ALERT_OPACITY, type = "number" },
