@@ -84,6 +84,7 @@ local fctRepChanges = newCheckbox('floatingCombatTextRepChanges')
 local fctComboPoints = newCheckbox('floatingCombatTextComboPoints')
 local fctCombatState = newCheckbox('floatingCombatTextCombatState')
 local fctSpellMechanics = newCheckbox('floatingCombatTextSpellMechanics')
+local chatMouseScroll = newCheckbox('chatMouseScroll')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
@@ -163,8 +164,7 @@ attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
 autoSelfCast:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
 castOnKeyDown:SetPoint("TOPLEFT", autoSelfCast, "BOTTOMLEFT", 0, -4)
 fadeMap:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
-chatDelay:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
-secureToggle:SetPoint("TOPLEFT", chatDelay, "BOTTOMLEFT", 0, -4)
+secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
@@ -178,10 +178,37 @@ fctComboPoints:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -8)
 fctCombatState:SetPoint("TOPLEFT", fctComboPoints, "BOTTOMLEFT", 0, -8)
 fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -8)
 
--- TODO reducedLagTolerance maxSpellStartRecoveryOffset
-
+-- TODO reducedLagTolerance maxSpellStartRecoveryOffset chatStyle
 
 InterfaceOptions_AddCategory(AIO, addonName)
+
+
+local OptionsPanel_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+OptionsPanel_Chat:Hide()
+OptionsPanel_Chat:SetAllPoints()
+OptionsPanel_Chat.name = "Chat"
+OptionsPanel_Chat.parent = addonName
+
+local Title_Chat = OptionsPanel_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
+Title_Chat:SetJustifyV('TOP')
+Title_Chat:SetJustifyH('LEFT')
+Title_Chat:SetPoint('TOPLEFT', 16, -16)
+Title_Chat:SetText(OptionsPanel_Chat.name)
+
+local SubText_Chat = OptionsPanel_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+SubText_Chat:SetMaxLines(3)
+SubText_Chat:SetNonSpaceWrap(true)
+SubText_Chat:SetJustifyV('TOP')
+SubText_Chat:SetJustifyH('LEFT')
+SubText_Chat:SetPoint('TOPLEFT', Title_Chat, 'BOTTOMLEFT', 0, -8)
+SubText_Chat:SetPoint('RIGHT', -32, 0)
+SubText_Chat:SetText('These options allow you to modify chat settings.') -- TODO
+
+chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -4)
+chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
+
+
+InterfaceOptions_AddCategory(OptionsPanel_Chat, addonName)
 
 SlashCmdList.AIO = function(msg)
 	--msg = msg:lower()
