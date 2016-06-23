@@ -20,11 +20,11 @@ local function checkboxOnClick(self)
 	self:SetValue(checked)
 end
 
-local function newCheckbox(cvar, getValue, setValue)
+local function newCheckbox(parent, cvar, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = cvarTable['prettyName'] or cvar
 	local description = _G[cvarTable['description']] or 'No description'
-	local check = CreateFrame("CheckButton", "AIOCheck" .. label, AIO, "InterfaceOptionsCheckButtonTemplate")
+	local check = CreateFrame("CheckButton", "AIOCheck" .. label, parent, "InterfaceOptionsCheckButtonTemplate")
 
 	check.cvar = cvar
 	check.GetValue = getValue or checkboxGetCVar
@@ -51,21 +51,21 @@ subText:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', 0, -8)
 subText:SetPoint('RIGHT', -32, 0)
 subText:SetText('These options allow you to toggle various options that have been removed from the game in Legion.')
 
-local playerTitles = newCheckbox('UnitNamePlayerPVPTitle')
-local playerGuilds = newCheckbox('UnitNamePlayerGuild')
-local playerGuildTitles = newCheckbox('UnitNameGuildTitle')
-local stopAutoAttack = newCheckbox('stopAutoAttackOnTargetChange')
-local attackOnAssist = newCheckbox('assistAttack')
-local autoSelfCast = newCheckbox('autoSelfCast')
-local castOnKeyDown = newCheckbox('ActionButtonUseKeyDown')
-local fadeMap = newCheckbox('mapFade')
-local chatDelay = newCheckbox('removeChatDelay')
-local secureToggle = newCheckbox('secureAbilityToggle')
-local luaErrors = newCheckbox('scriptErrors')
-local lootUnderMouse = newCheckbox('lootUnderMouse')
-local targetDebuffFilter = newCheckbox('noBuffDebuffFilterOnTarget')
+local playerTitles = newCheckbox(AIO, 'UnitNamePlayerPVPTitle')
+local playerGuilds = newCheckbox(AIO, 'UnitNamePlayerGuild')
+local playerGuildTitles = newCheckbox(AIO, 'UnitNameGuildTitle')
+local stopAutoAttack = newCheckbox(AIO, 'stopAutoAttackOnTargetChange')
+local attackOnAssist = newCheckbox(AIO, 'assistAttack')
+local autoSelfCast = newCheckbox(AIO, 'autoSelfCast')
+local castOnKeyDown = newCheckbox(AIO, 'ActionButtonUseKeyDown')
+local fadeMap = newCheckbox(AIO, 'mapFade')
+local chatDelay = newCheckbox(AIO, 'removeChatDelay')
+local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
+local luaErrors = newCheckbox(AIO, 'scriptErrors')
+local lootUnderMouse = newCheckbox(AIO, 'lootUnderMouse')
+local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
 
-local reverseCleanupBags = newCheckbox('reverseCleanupBags',
+local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
 	-- Get Value
 	function(self)
 		return GetSortBagsRightToLeft()
@@ -76,15 +76,15 @@ local reverseCleanupBags = newCheckbox('reverseCleanupBags',
 	end
 )
 
-local fctEnergyGains = newCheckbox('floatingCombatTextEnergyGains')
-local fctAuras = newCheckbox('floatingCombatTextAuras')
-local fctReactives = newCheckbox('floatingCombatTextReactives')
-local fctHonorGains = newCheckbox('floatingCombatTextHonorGains')
-local fctRepChanges = newCheckbox('floatingCombatTextRepChanges')
-local fctComboPoints = newCheckbox('floatingCombatTextComboPoints')
-local fctCombatState = newCheckbox('floatingCombatTextCombatState')
-local fctSpellMechanics = newCheckbox('floatingCombatTextSpellMechanics')
-local chatMouseScroll = newCheckbox('chatMouseScroll')
+local fctEnergyGains = newCheckbox(AIO, 'floatingCombatTextEnergyGains')
+local fctAuras = newCheckbox(AIO, 'floatingCombatTextAuras')
+local fctReactives = newCheckbox(AIO, 'floatingCombatTextReactives')
+local fctHonorGains = newCheckbox(AIO, 'floatingCombatTextHonorGains')
+local fctRepChanges = newCheckbox(AIO, 'floatingCombatTextRepChanges')
+local fctComboPoints = newCheckbox(AIO, 'floatingCombatTextComboPoints')
+local fctCombatState = newCheckbox(AIO, 'floatingCombatTextCombatState')
+local fctSpellMechanics = newCheckbox(AIO, 'floatingCombatTextSpellMechanics')
+local chatMouseScroll = newCheckbox(AIO, 'chatMouseScroll')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
