@@ -223,7 +223,7 @@ addon.hiddenOptions = {
 	["floatingCombatTextCombatDamage"] = { prettyName = nil, description = "Display damage numbers over hostile creatures when damaged", type = "boolean"},
 	["floatingCombatTextCombatDamageAllAutos"] = { prettyName = nil, description = "Show all auto-attack numbers, rather than hiding non-event numbers", type = "boolean"},
 	["floatingCombatTextCombatDamageDirectionalOffset"] = { prettyName = nil, description = "Amount to offset directional damage numbers when they start", type = "boolean"},
-	["floatingCombatTextCombatDamageDirectionalScale"] = { prettyName = nil, description = "Directional damage numbers movement scale (0 = no directional numbers)", type = "boolean"},
+	["floatingCombatTextCombatDamageDirectionalScale"] = { prettyName = "FCT: Directional Scale", description = "Directional damage numbers movement scale (0 = no directional numbers)", type = "boolean"},
 	["floatingCombatTextCombatHealing"] = { prettyName = "FCT: Healing", description = "Display amount of healing you did to the target", type = "boolean"},
 	["floatingCombatTextCombatHealingAbsorbSelf"] = { prettyName = "FCT: Absorb (Self)", description = "Shows a message when you gain a shield.", type = "boolean"},
 	["floatingCombatTextCombatHealingAbsorbTarget"] = { prettyName = "FCT: Absorb (Target)", description = "Display amount of shield added to the target.", type = "boolean"},
