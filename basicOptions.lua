@@ -23,7 +23,7 @@ end
 local function newCheckbox(parent, cvar, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = cvarTable['prettyName'] or cvar
-	local description = _G[cvarTable['description']] or 'No description'
+	local description = _G[cvarTable['description']] or cvarTable['description'] or 'No description'
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, parent, "InterfaceOptionsCheckButtonTemplate")
 
 	check.cvar = cvar
