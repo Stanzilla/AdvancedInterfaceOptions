@@ -63,7 +63,6 @@ local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local lootUnderMouse = newCheckbox(AIO, 'lootUnderMouse')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
-
 local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
 	-- Get Value
 	function(self)
@@ -81,7 +80,7 @@ questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
 questSortingLabel:SetText('Select quest sorting mode:')
 
 local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", AIO, "UIDropDownMenuTemplate")
-questSortingDropdown:SetPoint("TOPLEFT", questSortingLabel, "BOTTOMLEFT", -15, -10)
+questSortingDropdown:SetPoint("TOPLEFT", questSortingLabel, "BOTTOMLEFT", -16, -10)
 questSortingDropdown.initialize = function(dropdown)
 	local sortMode = { "top", "proximity" }
 	for i, mode in next, sortMode do
@@ -99,11 +98,11 @@ end
 questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize)
 
 local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-actionCamModeLabel:SetPoint('TOPLEFT', fctSpellMechanics, 'BOTTOMLEFT', 0, 0)
+actionCamModeLabel:SetPoint('TOPLEFT', questSortingDropdown, 'BOTTOMLEFT', 16, 0)
 actionCamModeLabel:SetText('Select Action Cam mode:')
 
 local actionCamModeDropdown = CreateFrame("Frame", "AIOActionCamMode", AIO, "UIDropDownMenuTemplate")
-actionCamModeDropdown:SetPoint("TOPLEFT", actionCamModeLabel, "BOTTOMLEFT", -15, -10)
+actionCamModeDropdown:SetPoint("TOPLEFT", actionCamModeLabel, "BOTTOMLEFT", -16, -10)
 actionCamModeDropdown.initialize = function(dropdown)
 	local sortMode = { "basic", "full", "off", "default" }
 	for i, mode in next, sortMode do
@@ -120,7 +119,6 @@ actionCamModeDropdown.initialize = function(dropdown)
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 
-
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
@@ -135,11 +133,10 @@ lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 
--- TODO reducedLagTolerance maxSpellStartRecoveryOffset chatStyle
+-- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
 
 -- Chat settings
-
 local AIO_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_Chat:Hide()
 AIO_Chat:SetAllPoints()
@@ -161,10 +158,32 @@ SubText_Chat:SetPoint('TOPLEFT', Title_Chat, 'BOTTOMLEFT', 0, -8)
 SubText_Chat:SetPoint('RIGHT', -32, 0)
 SubText_Chat:SetText('These options allow you to modify chat settings.') -- TODO
 
+local chatStyleLabel = AIO_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+chatStyleLabel:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -12)
+chatStyleLabel:SetText('Select chat style:')
+
 local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
+local chatStyleDropdown = CreateFrame("Frame", "AIO_chatStyle", AIO_Chat, "UIDropDownMenuTemplate")
 
-chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -4)
+chatStyleDropdown:SetPoint("TOPLEFT", chatStyleLabel, "BOTTOMLEFT", -16, -10)
+chatStyleDropdown.initialize = function(dropdown)
+	local chatStyle = { "im", "classic" }
+	for i, mode in next, chatStyle do
+		local info = UIDropDownMenu_CreateInfo()
+		info.text = chatStyle[i]
+		info.value = chatStyle[i]
+		info.func = function(self)
+			SetCVar("chatStyle", self.value)
+			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+		end
+		UIDropDownMenu_AddButton(info)
+	end
+	UIDropDownMenu_SetSelectedValue(dropdown, GetCVarInfo("chatStyle"))
+end
+chatStyleDropdown:HookScript("OnShow", chatStyleDropdown.initialize)
+
+chatDelay:SetPoint('TOPLEFT', chatStyleDropdown, 'BOTTOMLEFT', 16, -12)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
 
 
@@ -225,15 +244,15 @@ local fctAbsorbSelf = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsor
 local fctAbsorbTarget = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbTarget')
 
 fctEnergyGains:SetPoint("TOPLEFT", fctfloatmodeDropdown, "BOTTOMLEFT", 16, -12)
-fctAuras:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -8)
-fctHonorGains:SetPoint("TOPLEFT", fctAuras, "BOTTOMLEFT", 0, -8)
-fctRepChanges:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -8)
-fctComboPoints:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -8)
-fctCombatState:SetPoint("TOPLEFT", fctComboPoints, "BOTTOMLEFT", 0, -8)
-fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -8)
-fctHealing:SetPoint("TOPLEFT", fctSpellMechanics, "BOTTOMLEFT", 0, -8)
-fctAbsorbSelf:SetPoint("TOPLEFT", fctHealing, "BOTTOMLEFT", 0, -8)
-fctAbsorbTarget:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -8)
+fctAuras:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -4)
+fctHonorGains:SetPoint("TOPLEFT", fctAuras, "BOTTOMLEFT", 0, -4)
+fctRepChanges:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -4)
+fctComboPoints:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -4)
+fctCombatState:SetPoint("TOPLEFT", fctComboPoints, "BOTTOMLEFT", 0, -4)
+fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -4)
+fctHealing:SetPoint("TOPLEFT", fctSpellMechanics, "BOTTOMLEFT", 0, -4)
+fctAbsorbSelf:SetPoint("TOPLEFT", fctHealing, "BOTTOMLEFT", 0, -4)
+fctAbsorbTarget:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -4)
 
 
 -- Hook up options to addon panel
