@@ -192,7 +192,7 @@ SubText_FCT:SetText('These options allow you to modify Floating Combat Text Opti
 
 local fctfloatmodeLabel = AIO_FCT:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 fctfloatmodeLabel:SetPoint('TOPLEFT', SubText_FCT, 'BOTTOMLEFT', 0, -4)
-fctfloatmodeLabel:SetText('Select text float mode: 1 = UP, 2 = DOWN, 3 = ARC')
+fctfloatmodeLabel:SetText('Select text float mode: 1 = UP, 2 = DOWN, 3 = ARC (requires UI reload to apply)')
 
 local fctfloatmodeDropdown = CreateFrame("Frame", "AIOfctFloatMode", AIO_FCT, "UIDropDownMenuTemplate")
 fctfloatmodeDropdown:SetPoint("TOPLEFT", fctfloatmodeLabel, "BOTTOMLEFT", -16, -10)
@@ -220,6 +220,9 @@ local fctRepChanges = newCheckbox(AIO_FCT, 'floatingCombatTextRepChanges')
 local fctComboPoints = newCheckbox(AIO_FCT, 'floatingCombatTextComboPoints')
 local fctCombatState = newCheckbox(AIO_FCT, 'floatingCombatTextCombatState')
 local fctSpellMechanics = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanics')
+local fctHealing = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealing')
+local fctAbsorbSelf = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbSelf')
+local fctAbsorbTarget = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbTarget')
 
 fctEnergyGains:SetPoint("TOPLEFT", fctfloatmodeDropdown, "BOTTOMLEFT", 16, -12)
 fctAuras:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -8)
@@ -228,6 +231,9 @@ fctRepChanges:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -8)
 fctComboPoints:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -8)
 fctCombatState:SetPoint("TOPLEFT", fctComboPoints, "BOTTOMLEFT", 0, -8)
 fctSpellMechanics:SetPoint("TOPLEFT", fctCombatState, "BOTTOMLEFT", 0, -8)
+fctHealing:SetPoint("TOPLEFT", fctSpellMechanics, "BOTTOMLEFT", 0, -8)
+fctAbsorbSelf:SetPoint("TOPLEFT", fctHealing, "BOTTOMLEFT", 0, -8)
+fctAbsorbTarget:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -8)
 
 
 -- Hook up options to addon panel
