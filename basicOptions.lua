@@ -11,6 +11,9 @@ AIO:SetAllPoints()
 AIO.name = addonName
 
 -- Some wrapper functions
+-------------
+-- Checkbox
+-------------
 local function checkboxGetCVar(self) return GetCVarBool(self.cvar) end
 local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
 local function checkboxSetCVar(self, checked) SetCVar(self.cvar, checked) end
@@ -36,6 +39,50 @@ local function newCheckbox(parent, cvar, getValue, setValue)
 	check.tooltipText = label
 	check.tooltipRequirement = description
 	return check
+end
+
+
+-----------
+-- Slider
+-----------
+local function sliderGetCVar(self) return GetCVar(self.cvar) end
+local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
+local function sliderSetCVar(self, checked) SetCVar(self.cvar, checked) end
+	
+local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
+	--local cvarTable = addon.hiddenOptions[cvar]
+	--local label = cvarTable['prettyName'] or cvar
+	--local description = cvarTable['description'] or 'No description'
+	local slider = CreateFrame('Slider', 'AIOSlider' .. cvar, parent, 'OptionsSliderTemplate')
+	
+	slider.cvar = cvar
+	slider.GetCVarValue = getValue or sliderGetCVar
+	slider.SetCVarValue = setValue or sliderSetCVar
+	slider:SetScript('OnShow', sliderRefresh)
+	slider:SetValueStep(stepSize or 1)
+	slider:SetObeyStepOnDrag(true)
+	
+	slider:SetMinMaxValues(minRange, maxRange)
+	slider.minText = _G[slider:GetName() .. 'Low']
+	slider.maxText = _G[slider:GetName() .. 'High']
+	slider.minText:SetText(minRange)
+	slider.maxText:SetText(maxRange)
+	_G[slider:GetName() .. 'Text']:SetText(cvar)
+	
+	local valueText = slider:CreateFontString(nil, nil, 'GameFontHighlight')
+	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
+	slider.valueText = valueText
+	slider:HookScript('OnValueChanged', function(self, value)
+		valueText:SetText(value)
+	end)
+	
+	--slider:SetValue(slider:GetCVarValue())
+	slider:HookScript('OnValueChanged', slider.SetCVarValue)
+	
+	--slider.label:SetText(label)
+	--slider.tooltipText = label
+	--slider.tooltipRequirement = description
+	return slider
 end
 
 local title = AIO:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
@@ -256,6 +303,9 @@ fctAbsorbSelf:SetPoint("TOPLEFT", fctHealing, "BOTTOMLEFT", 0, -4)
 fctAbsorbTarget:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -4)
 fctDirectionalScale:SetPoint("TOPLEFT", fctAbsorbTarget, "BOTTOMLEFT", 0, -4)
 
+-- REMOVE
+local testSlider = newSlider(AIO_FCT, 'CameraOverShoulder', -10, 10)
+testSlider:SetPoint('TOPLEFT', fctDirectionalScale, 'BOTTOMLEFT', 0, -14)
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
