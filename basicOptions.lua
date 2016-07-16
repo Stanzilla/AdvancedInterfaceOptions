@@ -304,8 +304,8 @@ fctAbsorbTarget:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -4)
 fctDirectionalScale:SetPoint("TOPLEFT", fctAbsorbTarget, "BOTTOMLEFT", 0, -4)
 
 -- REMOVE
-local testSlider = newSlider(AIO_FCT, 'CameraOverShoulder', -10, 10)
-testSlider:SetPoint('TOPLEFT', fctDirectionalScale, 'BOTTOMLEFT', 0, -14)
+-- local testSlider = newSlider(AIO_FCT, 'CameraOverShoulder', -10, 10)
+-- testSlider:SetPoint('TOPLEFT', fctDirectionalScale, 'BOTTOMLEFT', 0, -14)
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
