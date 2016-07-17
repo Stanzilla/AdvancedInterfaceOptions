@@ -48,37 +48,37 @@ end
 local function sliderGetCVar(self) return GetCVar(self.cvar) end
 local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
 local function sliderSetCVar(self, checked) SetCVar(self.cvar, checked) end
-	
+
 local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
 	--local cvarTable = addon.hiddenOptions[cvar]
 	--local label = cvarTable['prettyName'] or cvar
 	--local description = cvarTable['description'] or 'No description'
 	local slider = CreateFrame('Slider', 'AIOSlider' .. cvar, parent, 'OptionsSliderTemplate')
-	
+
 	slider.cvar = cvar
 	slider.GetCVarValue = getValue or sliderGetCVar
 	slider.SetCVarValue = setValue or sliderSetCVar
 	slider:SetScript('OnShow', sliderRefresh)
 	slider:SetValueStep(stepSize or 1)
 	slider:SetObeyStepOnDrag(true)
-	
+
 	slider:SetMinMaxValues(minRange, maxRange)
 	slider.minText = _G[slider:GetName() .. 'Low']
 	slider.maxText = _G[slider:GetName() .. 'High']
 	slider.minText:SetText(minRange)
 	slider.maxText:SetText(maxRange)
 	_G[slider:GetName() .. 'Text']:SetText(cvar)
-	
+
 	local valueText = slider:CreateFontString(nil, nil, 'GameFontHighlight')
 	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
 	slider.valueText = valueText
 	slider:HookScript('OnValueChanged', function(self, value)
 		valueText:SetText(value)
 	end)
-	
+
 	--slider:SetValue(slider:GetCVarValue())
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
-	
+
 	--slider.label:SetText(label)
 	--slider.tooltipText = label
 	--slider.tooltipRequirement = description
@@ -103,12 +103,10 @@ local playerGuilds = newCheckbox(AIO, 'UnitNamePlayerGuild')
 local playerGuildTitles = newCheckbox(AIO, 'UnitNameGuildTitle')
 local stopAutoAttack = newCheckbox(AIO, 'stopAutoAttackOnTargetChange')
 local attackOnAssist = newCheckbox(AIO, 'assistAttack')
-local autoSelfCast = newCheckbox(AIO, 'autoSelfCast')
 local castOnKeyDown = newCheckbox(AIO, 'ActionButtonUseKeyDown')
 local fadeMap = newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
-local lootUnderMouse = newCheckbox(AIO, 'lootUnderMouse')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
 local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
 	-- Get Value
@@ -171,13 +169,11 @@ playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
 stopAutoAttack:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
 attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
-autoSelfCast:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
-castOnKeyDown:SetPoint("TOPLEFT", autoSelfCast, "BOTTOMLEFT", 0, -4)
+castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
 fadeMap:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
 secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
-lootUnderMouse:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
-targetDebuffFilter:SetPoint("TOPLEFT", lootUnderMouse, "BOTTOMLEFT", 0, -4)
+targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 
 -- TODO reducedLagTolerance maxSpellStartRecoveryOffset
@@ -205,32 +201,10 @@ SubText_Chat:SetPoint('TOPLEFT', Title_Chat, 'BOTTOMLEFT', 0, -8)
 SubText_Chat:SetPoint('RIGHT', -32, 0)
 SubText_Chat:SetText('These options allow you to modify chat settings.') -- TODO
 
-local chatStyleLabel = AIO_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-chatStyleLabel:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -12)
-chatStyleLabel:SetText('Select chat style:')
-
 local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
-local chatStyleDropdown = CreateFrame("Frame", "AIO_chatStyle", AIO_Chat, "UIDropDownMenuTemplate")
 
-chatStyleDropdown:SetPoint("TOPLEFT", chatStyleLabel, "BOTTOMLEFT", -16, -10)
-chatStyleDropdown.initialize = function(dropdown)
-	local chatStyle = { "im", "classic" }
-	for i, mode in next, chatStyle do
-		local info = UIDropDownMenu_CreateInfo()
-		info.text = chatStyle[i]
-		info.value = chatStyle[i]
-		info.func = function(self)
-			SetCVar("chatStyle", self.value)
-			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
-		end
-		UIDropDownMenu_AddButton(info)
-	end
-	UIDropDownMenu_SetSelectedValue(dropdown, GetCVarInfo("chatStyle"))
-end
-chatStyleDropdown:HookScript("OnShow", chatStyleDropdown.initialize)
-
-chatDelay:SetPoint('TOPLEFT', chatStyleDropdown, 'BOTTOMLEFT', 16, -12)
+chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
 
 
