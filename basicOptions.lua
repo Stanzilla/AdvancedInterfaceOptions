@@ -118,7 +118,7 @@ local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
 		SetSortBagsRightToLeft(checked)
 	end
 )
-
+local enableWoWMouse = newCheckbox(AIO, 'enableWoWMouse')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
@@ -175,6 +175,7 @@ secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
+enableWoWMouse:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
 
 -- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
