@@ -1,7 +1,8 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory GetSortBagsRightToLeft SetSortBagsRightToLeft
+-- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
+-- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 -- GLOBALS: SLASH_AIO1
 
@@ -118,10 +119,20 @@ local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
 		SetSortBagsRightToLeft(checked)
 	end
 )
+local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
+	-- Get Value
+	function(self)
+		return GetInsertItemsLeftToRight()
+	end,
+	-- Set Value
+	function(self, checked)
+		SetInsertItemsLeftToRight(checked)
+	end
+)
 local enableWoWMouse = newCheckbox(AIO, 'enableWoWMouse')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-questSortingLabel:SetPoint('TOPLEFT', reverseCleanupBags, 'BOTTOMLEFT', 0, 0)
+questSortingLabel:SetPoint('TOPLEFT', enableWoWMouse, 'BOTTOMLEFT', 0, 0)
 questSortingLabel:SetText('Select quest sorting mode:')
 
 local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", AIO, "UIDropDownMenuTemplate")
@@ -141,6 +152,13 @@ questSortingDropdown.initialize = function(dropdown)
 	UIDropDownMenu_SetSelectedValue(dropdown, (GetCVarInfo("trackQuestSorting")))
 end
 questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize)
+questSortingDropdown:HookScript("OnEnter", function(self)
+	if not self.isDisabled then
+		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+		GameTooltip:SetText(_G["OPTION_TOOLTIP_TRACK_QUEST_"..strupper(self.selectedValue)], nil, nil, nil, nil, true)
+	end
+end)
+questSortingDropdown:HookScript("OnLeave", GameTooltip_Hide)
 
 local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 actionCamModeLabel:SetPoint('TOPLEFT', questSortingDropdown, 'BOTTOMLEFT', 16, 0)
@@ -175,7 +193,8 @@ secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
-enableWoWMouse:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
+lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
+enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
 
 -- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
