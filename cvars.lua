@@ -249,4 +249,5 @@ addon.hiddenOptions = {
 	["violenceLevel"] = { prettyName = "Violence Level", description = "Sets the violence level of the game", type = "number"},
 	["ffxGlow"] = { prettyName = "FFX Glow", description = "full screen glow effect", type = "boolean"},
 	["releaseUITextures"] = { prettyName = "Release UI Textures", description = "Release Hidden UI Textures by default", type = "boolean"},
+	["alwaysCompareItems"] = { prettyName = "Always Compare Items", description = "Always show item comparison tooltips", type = "boolean"},
 }
