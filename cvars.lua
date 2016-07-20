@@ -9,8 +9,8 @@ addon.hiddenOptions = {
 	["UnitNameNPC"] = { prettyName = UNIT_NAME_NPC, description = OPTION_TOOLTIP_UNIT_NAME_NPC, type = "boolean" },
 	["UnitNameNonCombatCreatureName"] = { prettyName = UNIT_NAME_NONCOMBAT_CREATURE, description = OPTION_TOOLTIP_UNIT_NAME_NONCOMBAT_CREATURE, type = "boolean" },
 	["UnitNamePlayerGuild"] = { prettyName = UNIT_NAME_GUILD, description = OPTION_TOOLTIP_UNIT_NAME_GUILD, type = "boolean" },
-    ["UnitNameGuildTitle"] = { prettyName = UNIT_NAME_GUILD_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_GUILD_TITLE , type = "boolean" },
-    ["UnitNamePlayerPVPTitle"] = { prettyName = UNIT_NAME_PLAYER_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_PLAYER_TITLE, type = "boolean" },
+	["UnitNameGuildTitle"] = { prettyName = UNIT_NAME_GUILD_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_GUILD_TITLE , type = "boolean" },
+	["UnitNamePlayerPVPTitle"] = { prettyName = UNIT_NAME_PLAYER_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_PLAYER_TITLE, type = "boolean" },
 
 	["UnitNameFriendlyPlayerName"] = { prettyName = UNIT_NAME_FRIENDLY, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY, type = "boolean" },
 	["UnitNameFriendlyPetName"] = { prettyName = UNIT_NAME_FRIENDLY_PETS, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_PETS, type = "boolean" },
