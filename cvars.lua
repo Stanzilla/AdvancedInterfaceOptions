@@ -148,7 +148,6 @@ addon.hiddenOptions = {
 	["buffDurations"] = { prettyName = SHOW_BUFF_DURATION_TEXT, description = OPTION_TOOLTIP_SHOW_BUFF_DURATION, type = "boolean" },
 	["showDispelDebuffs"] = { prettyName = SHOW_DISPELLABLE_DEBUFFS_TEXT, description = OPTION_TOOLTIP_SHOW_DISPELLABLE_DEBUFFS, type = "boolean" },
 	["showCastableBuffs"] = { prettyName = SHOW_CASTABLE_BUFFS_TEXT, description = OPTION_TOOLTIP_SHOW_CASTABLE_BUFFS, type = "boolean" },
-	["showAllEnemyDebuffs"] = { prettyName = SHOW_ALL_ENEMY_DEBUFFS_TEXT, description = OPTION_TOOLTIP_SHOW_ALL_ENEMY_DEBUFFS, type = "boolean" },
 	["deselectOnClick"] = { prettyName = nil, description = OPTION_TOOLTIP_GAMEFIELD_DESELECT, type = "boolean" },
 	["autoQuestProgress"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_QUEST_PROGRESS, type = "boolean" },
 	["UberTooltips"] = { prettyName = USE_UBERTOOLTIPS, description = OPTION_TOOLTIP_USE_UBERTOOLTIPS, type = "boolean" },
