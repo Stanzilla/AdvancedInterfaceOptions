@@ -302,14 +302,40 @@ fctDirectionalScale:SetPoint("TOPLEFT", fctAbsorbTarget, "BOTTOMLEFT", 0, -4)
 fctLowHPMana:SetPoint("TOPLEFT", fctDirectionalScale, "BOTTOMLEFT", 0, -4)
 fctDots:SetPoint("TOPLEFT", fctLowHPMana, "BOTTOMLEFT", 0, -4)
 
--- REMOVE
--- local testSlider = newSlider(AIO_FCT, 'CameraOverShoulder', -10, 10)
--- testSlider:SetPoint('TOPLEFT', fctDirectionalScale, 'BOTTOMLEFT', 0, -14)
+-- Nameplate settings
+local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+AIO_NP:Hide()
+AIO_NP:SetAllPoints()
+AIO_NP.name = "Nameplates"
+AIO_NP.parent = addonName
+
+local Title_NP = AIO_NP:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
+Title_NP:SetJustifyV('TOP')
+Title_NP:SetJustifyH('LEFT')
+Title_NP:SetPoint('TOPLEFT', 16, -16)
+Title_NP:SetText(AIO_NP.name)
+
+local SubText_NP = AIO_NP:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+SubText_NP:SetMaxLines(3)
+SubText_NP:SetNonSpaceWrap(true)
+SubText_NP:SetJustifyV('TOP')
+SubText_NP:SetJustifyH('LEFT')
+SubText_NP:SetPoint('TOPLEFT', Title_NP, 'BOTTOMLEFT', 0, -8)
+SubText_NP:SetPoint('RIGHT', -32, 0)
+SubText_NP:SetText('These options allow you to modify Nameplate Options.')
+
+local nameplateDistance = newSlider(AIO_NP, 'nameplateMaxDistance', -10, 10)
+nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -14)
+
+local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
+nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -4)
+
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
+InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 
 -- Slash handler
