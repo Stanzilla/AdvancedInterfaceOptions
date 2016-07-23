@@ -42,7 +42,6 @@ local function newCheckbox(parent, cvar, getValue, setValue)
 	return check
 end
 
-
 -----------
 -- Slider
 -----------
@@ -51,9 +50,9 @@ local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
 local function sliderSetCVar(self, checked) SetCVar(self.cvar, checked) end
 
 local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
-	--local cvarTable = addon.hiddenOptions[cvar]
-	--local label = cvarTable['prettyName'] or cvar
-	--local description = cvarTable['description'] or 'No description'
+	local cvarTable = addon.hiddenOptions[cvar]
+	local label = cvarTable['prettyName'] or cvar
+	local description = cvarTable['description'] or 'No description'
 	local slider = CreateFrame('Slider', 'AIOSlider' .. cvar, parent, 'OptionsSliderTemplate')
 
 	slider.cvar = cvar
@@ -81,8 +80,8 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
 
 	--slider.label:SetText(label)
-	--slider.tooltipText = label
-	--slider.tooltipRequirement = description
+	slider.tooltipText = label
+	slider.tooltipRequirement = description
 	return slider
 end
 
@@ -324,11 +323,11 @@ SubText_NP:SetPoint('TOPLEFT', Title_NP, 'BOTTOMLEFT', 0, -8)
 SubText_NP:SetPoint('RIGHT', -32, 0)
 SubText_NP:SetText('These options allow you to modify Nameplate Options.')
 
-local nameplateDistance = newSlider(AIO_NP, 'nameplateMaxDistance', -10, 10)
+local nameplateDistance = newSlider(AIO_NP, 'nameplateMaxDistance', 10, 60)
 nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -14)
 
 local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
-nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -4)
+nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -12)
 
 
 -- Hook up options to addon panel
