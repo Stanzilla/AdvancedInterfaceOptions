@@ -1,4 +1,5 @@
 local addonName, addon = ...
+local E = addon:Eve()
 local _G = _G
 
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
@@ -337,10 +338,21 @@ InterfaceOptions_AddCategory(AIO_FCT, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 
+function E:PLAYER_REGEN_DISABLED()
+	if AIO:IsVisible() then
+		--InterfaceOptionsFrame_Show()
+		InterfaceOptionsFrame:Hide()
+	end
+end
+
 -- Slash handler
 SlashCmdList.AIO = function(msg)
 	--msg = msg:lower()
-	InterfaceOptionsFrame_OpenToCategory(addonName)
-	InterfaceOptionsFrame_OpenToCategory(addonName)
+	if not InCombatLockdown() then
+		InterfaceOptionsFrame_OpenToCategory(addonName)
+		InterfaceOptionsFrame_OpenToCategory(addonName)
+	else
+		DEFAULT_CHAT_FRAME:AddMessage(format("%s: Can't modify interface options in combat", addonName))
+	end
 end
 SLASH_AIO1 = "/aio"

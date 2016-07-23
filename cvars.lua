@@ -64,6 +64,7 @@ addon.hiddenOptions = {
 	["NamePlateVerticalScale"] = { prettyName = "Nameplate Vertical Scale", description = "Applied to vertical size of all nameplates.", type = "number" },
 	["nameplateResourceOnTarget"] = { prettyName = "Nameplate Resource On Target", description = "Nameplate class resource overlay mode. 0=self, 1=target", type = "number" },
 	["nameplateShowSelf"] = { prettyName = "Show Nameplate Resource Bar", description = "Display class resource bar. 0=off 1=on", type = "number" },
+	["nameplateShowAll"] = { prettyName = "Always Show Nameplates", description = "Show nameplates at all times.", type = "number" },
 	
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
