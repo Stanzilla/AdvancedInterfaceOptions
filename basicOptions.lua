@@ -324,7 +324,7 @@ SubText_NP:SetPoint('RIGHT', -32, 0)
 SubText_NP:SetText('These options allow you to modify Nameplate Options.')
 
 local nameplateDistance = newSlider(AIO_NP, 'nameplateMaxDistance', 10, 60)
-nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -14)
+nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -18)
 
 local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
 nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -12)
