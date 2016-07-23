@@ -68,7 +68,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.maxText = _G[slider:GetName() .. 'High']
 	slider.minText:SetText(minRange)
 	slider.maxText:SetText(maxRange)
-	_G[slider:GetName() .. 'Text']:SetText(cvar)
+	_G[slider:GetName() .. 'Text']:SetText(label)
 
 	local valueText = slider:CreateFontString(nil, nil, 'GameFontHighlight')
 	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
