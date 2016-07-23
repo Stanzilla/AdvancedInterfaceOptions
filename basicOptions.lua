@@ -329,6 +329,11 @@ nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -18)
 
 local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
 nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -12)
+nameplateAtBase:SetScript('OnClick', function(self)
+	local checked = self:GetChecked()
+	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	self:SetValue(checked and 2 or 0)
+end)
 
 
 -- Hook up options to addon panel

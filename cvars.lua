@@ -33,7 +33,7 @@ addon.hiddenOptions = {
 	["nameplateShowEnemyTotems"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, type = "boolean" },
 	["nameplateShowEnemyMinus"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, type = "boolean" },
 	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
-	["nameplateOtherAtBase"] = { prettyName = "Nameplate at Base", description = "Position other nameplates at the base, rather than overhead", type = "boolean" },
+	["nameplateOtherAtBase"] = { prettyName = "Nameplate at Base", description = "Position other nameplates at the base, rather than overhead. 2=under unit, 0=over unit", type = "boolean" },
 	["nameplateOverlapH"] = { prettyName = "Nameplate Overlap (Horizontal)", description = "Percentage amount for horizontal overlap of nameplates", type = "number" },
 	["nameplateOverlapV"] = { prettyName = "Nameplate Overlap (Vertical)", description = "Percentage amount for vertical overlap of nameplates", type = "number" },
 	["nameplateMaxDistance"] = { prettyName = "Nameplate Distance", description = "The max distance to show nameplates.", type = "number" },
