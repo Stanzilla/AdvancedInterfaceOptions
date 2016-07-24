@@ -37,7 +37,7 @@ addon.hiddenOptions = {
 	["nameplateOverlapH"] = { prettyName = "Nameplate Overlap (Horizontal)", description = "Percentage amount for horizontal overlap of nameplates", type = "number" },
 	["nameplateOverlapV"] = { prettyName = "Nameplate Overlap (Vertical)", description = "Percentage amount for vertical overlap of nameplates", type = "number" },
 	["nameplateMaxDistance"] = { prettyName = "Nameplate Distance", description = "The max distance to show nameplates.", type = "number" },
-	
+
 	["nameplateTargetBehindMaxDistance"] = { prettyName = "Nameplate Target Behind Distance", description = "The max distance to show the target nameplate when the target is behind the camera.", type = "number" },
 	["nameplateGlobalScale"] = { prettyName = "Nameplate Global Scale", description = "Applies global scaling to non-self nameplates, this is applied AFTER selected, min, and max scale.", type = "number" },
 	["nameplateMinScale"] = { prettyName = "Nameplate Min Scale", description = "The minimum scale of nameplates.", type = "number" },
@@ -65,7 +65,7 @@ addon.hiddenOptions = {
 	["nameplateResourceOnTarget"] = { prettyName = "Nameplate Resource On Target", description = "Nameplate class resource overlay mode. 0=self, 1=target", type = "number" },
 	["nameplateShowSelf"] = { prettyName = "Show Nameplate Resource Bar", description = "Display class resource bar. 0=off 1=on", type = "number" },
 	["nameplateShowAll"] = { prettyName = "Always Show Nameplates", description = "Show nameplates at all times.", type = "number" },
-	
+
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
 	["lootLeftmostBag"] = { prettyName = REVERSE_NEW_LOOT_TEXT, description = OPTION_TOOLTIP_REVERSE_NEW_LOOT, type = "boolean" },

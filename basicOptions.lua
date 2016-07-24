@@ -5,7 +5,7 @@ local _G = _G
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
 -- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
--- GLOBALS: SLASH_AIO1
+-- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
@@ -13,6 +13,7 @@ AIO:SetAllPoints()
 AIO.name = addonName
 
 -- Some wrapper functions
+
 -------------
 -- Checkbox
 -------------
@@ -77,10 +78,8 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 		valueText:SetText(value)
 	end)
 
-	--slider:SetValue(slider:GetCVarValue())
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
 
-	--slider.label:SetText(label)
 	slider.tooltipText = label
 	slider.tooltipRequirement = description
 	return slider
@@ -325,10 +324,10 @@ SubText_NP:SetPoint('RIGHT', -32, 0)
 SubText_NP:SetText('These options allow you to modify Nameplate Options.')
 
 local nameplateDistance = newSlider(AIO_NP, 'nameplateMaxDistance', 10, 60)
-nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -18)
+nameplateDistance:SetPoint('TOPLEFT', SubText_NP, 'BOTTOMLEFT', 0, -20)
 
 local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
-nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -12)
+nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -16)
 nameplateAtBase:SetScript('OnClick', function(self)
 	local checked = self:GetChecked()
 	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
