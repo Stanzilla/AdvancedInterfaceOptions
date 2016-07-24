@@ -12,39 +12,6 @@ AIO:Hide()
 AIO:SetAllPoints()
 AIO.name = addonName
 
--------------
--- Force blizzard options panels to refresh so they don't overwrite our changes
--- NamePlateDriverFrame:UpdateNamePlateOptions() ?
--------------
-
--- Since their table of panels appears to be private, we'll make our own
-local BlizzardInterfaceOptionsPanels = {
-	InterfaceOptionsControlsPanel,
-	InterfaceOptionsCombatPanel,
-	InterfaceOptionsDisplayPanel,
-	InterfaceOptionsSocialPanel,
-	InterfaceOptionsActionBarsPanel,
-	InterfaceOptionsNamesPanel,
-	InterfaceOptionsCameraPanel,
-	InterfaceOptionsMousePanel,
-	InterfaceOptionsAccessibilityPanel,
-	--CompactUnitFrameProfilesGeneralOptionsFrame,
-}
-
-local function RefreshBlizzardPanels()
-	for _, panel in pairs(BlizzardInterfaceOptionsPanels) do
-		if panel and panel.controls then
-			--InterfaceOptionsPanel_Refresh(panel) -- saves old value of the element
-			BlizzardOptionsPanel_Refresh(panel) -- doesn't store old value
-		end
-	end
-end
-
--- Hook category list visibility (Game tab shown) and hovering over the Okay button
-InterfaceOptionsFrameCategories:HookScript('OnShow', RefreshBlizzardPanels)
-InterfaceOptionsFrameOkay:HookScript('OnEnter', RefreshBlizzardPanels)
-
-
 -- Some wrapper functions
 
 -------------
