@@ -300,4 +300,5 @@ addon.hiddenOptions = {
 	["ffxGlow"] = { prettyName = "FFX Glow", description = "full screen glow effect", type = "boolean"},
 	["releaseUITextures"] = { prettyName = "Release UI Textures", description = "Release Hidden UI Textures by default", type = "boolean"},
 	["alwaysCompareItems"] = { prettyName = "Always Compare Items", description = "Always show item comparison tooltips", type = "boolean"},
+	["showSpenderFeedback"] = { prettyName= "Show spender feedback", description = "Shows/Hide the flash after spending rage/mana/etc in resource bars.", type = "boolean"},
 }
