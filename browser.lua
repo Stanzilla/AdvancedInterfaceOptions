@@ -178,17 +178,9 @@ function E:PLAYER_LOGIN()
 	
 	CVarInputBox:SetScript('OnEnterPressed', function(self)
 		-- todo: I don't like this, change it
-		local val = self:GetText() or ''
-		oSetCVar(self.cvar, val)
-		self.str:SetText(val)
-		ListFrame.items[ self.row.offset ][4] = val
-		for k,v in pairs(CVarTable) do -- update value in cvartable in a horrible way
-			if v[1] == self.cvar then
-				v[4] = val
-				break
-			end
-		end
+		oSetCVar(self.cvar, self:GetText() or '')
 		self:Hide()
+		FilteredRefresh()
 	end)
 	--CVarInputBox:SetScript('OnShow', function(self)
 		--self:SetFocus()
