@@ -74,21 +74,6 @@ local function selectscrollitem(scroll, value)
 	scroll:Update()
 end
 
-local function setscrolllist(scroll, items)
-	scroll.items = items
-	scroll.itemcount = #items
-	scroll.stepValue = min(ceil(scroll.slots / 2), max(floor(scroll.itemcount / scroll.slots), 1))
-	scroll.maxValue = max(scroll.itemcount - scroll.slots, 0)
-	--scroll.value = scroll.minValue
-	scroll.value = scroll.value <= scroll.maxValue and scroll.value or scroll.maxValue
-	
-	scroll.scrollbar:SetMinMaxValues(0, scroll.maxValue)
-	scroll.scrollbar:SetValue(scroll.value)
-	scroll.scrollbar:SetValueStep(scroll.stepValue)
-	
-	scroll:Update()
-end
-
 local function normalize(str)
 	str = str and gsub(str, '|c........', '') or ''
 	return str:gsub('(%d+)', function(d)
@@ -102,19 +87,77 @@ local function sortItems(scroll, col)
 	-- todo: Keep items sorted when :Update() is called
 	-- todo: Show a direction icon on the sorted column
 	-- Force it in one direction if we're sorting a different column than was previously sorted
-	if col ~= scroll.sortCol then
-		scroll.sortUp = nil
-		scroll.sortCol = col
-	end
-	if scroll.sortUp then
-		table.sort(scroll.items, function(a, b) return normalize(a[col]) > normalize(b[col]) end)
-		scroll.sortUp = false
+	if not col then
+		if scroll.sortCol then
+			col = scroll.sortCol
+			if scroll.sortUp then
+				table.sort(scroll.items, function(a, b)
+					local x, y = normalize(a[col]), normalize(b[col])
+					if x ~= y then
+						return x < y
+					else
+						return a[1] < b[1]
+					end
+				end)
+			else
+				table.sort(scroll.items, function(a, b)
+					local x, y = normalize(a[col]), normalize(b[col])
+					if x ~= y then
+						return x > y
+					else
+						return a[1] > b[1]
+					end
+				end)
+			end
+		end
 	else
-		table.sort(scroll.items, function(a, b) return normalize(a[col]) < normalize(b[col]) end)
-		scroll.sortUp = true
+		if col ~= scroll.sortCol then
+			scroll.sortUp = nil
+			scroll.sortCol = col
+		end
+		if scroll.sortUp then
+			table.sort(scroll.items, function(a, b)
+				local x, y = normalize(a[col]), normalize(b[col])
+				if x ~= y then
+					return x > y
+				else
+					return normalize(a[1]) > normalize(b[1])
+				end
+			end)
+			scroll.sortUp = false
+		else
+			table.sort(scroll.items, function(a, b)
+				local x, y = normalize(a[col]), normalize(b[col])
+				if x ~= y then
+					return x < y
+				else
+					return normalize(a[1]) < normalize(b[1])
+				end
+			end)
+			scroll.sortUp = true
+		end
 	end
 	scroll:Update()
 end
+
+local function setscrolllist(scroll, items)
+	scroll.items = items
+	scroll.itemcount = #items
+	scroll.stepValue = min(ceil(scroll.slots / 2), max(floor(scroll.itemcount / scroll.slots), 1))
+	scroll.maxValue = max(scroll.itemcount - scroll.slots, 0)
+	--scroll.value = scroll.minValue
+	scroll.value = scroll.value <= scroll.maxValue and scroll.value or scroll.maxValue
+	
+	scroll.scrollbar:SetMinMaxValues(0, scroll.maxValue)
+	scroll.scrollbar:SetValue(scroll.value)
+	scroll.scrollbar:SetValueStep(scroll.stepValue)
+	
+	sortItems(scroll)
+	
+	scroll:Update()
+end
+
+
 
 local function scroll(self, arg1)
 	-- Called when mousewheel is scrolled or scroll buttons are pressed

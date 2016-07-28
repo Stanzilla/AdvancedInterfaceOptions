@@ -66,8 +66,10 @@ local function UnCase(c)
 end
 
 local FilteredTable = {} -- Filtered version of CVarTable based on search box input
-FilterBox:SetScript('OnTextChanged', function(self, userInput)
-	local text = self:GetText()
+
+-- Filter displayed items based on value of FilterBox
+local function FilterCVarList()
+	local text = FilterBox:GetText()
 	if text == '' then
 		-- set to default list
 		ListFrame:SetItems(CVarTable)
@@ -96,7 +98,9 @@ FilterBox:SetScript('OnTextChanged', function(self, userInput)
 		end
 		ListFrame:SetItems(FilteredTable)
 	end
-end)
+end
+
+FilterBox:SetScript('OnTextChanged', FilterCVarList)
 
 -- Returns a rounded integer or float, the default value, and whether it's set to its default value
 local function GetPrettyCVar(cvar)
@@ -113,18 +117,36 @@ local function GetPrettyCVar(cvar)
 	return value, default, isDefault
 end
 
--- Events
-local E = addon:Eve()
-function E:PLAYER_LOGIN()
+-- Update CVarTable to reflect current values
+local function RefreshCVarList()
 	wipe(CVarTable)
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
 	for cvar, tbl in pairs(addon.hiddenOptions) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
 		tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
 	end
+	--ListFrame:SetItems(CVarTable)
+end
+
+local function FilteredRefresh()
+	if ListFrame:IsVisible() then
+		RefreshCVarList()
+		FilterCVarList()
+	end
+end
+
+ListFrame:HookScript('OnShow', FilteredRefresh)
+
+-- Events
+local E = addon:Eve()
+local oSetCVar = SetCVar
+function E:PLAYER_LOGIN()
+	-- todo: this needs to be updated every time a cvar changes while the table is visible
+	RefreshCVarList()
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
-
+	--FilterCVarList()
+	
 	-- We don't really want the user to be able to do anything else while the input box is open
 	-- I'd rather make this a child of the input box, but I can't get it to show up above its child
 	-- todo: show default value around the input box somewhere while it's active
@@ -153,10 +175,11 @@ function E:PLAYER_LOGIN()
 		self:ClearFocus()
 		self:Hide()
 	end)
+	
 	CVarInputBox:SetScript('OnEnterPressed', function(self)
 		-- todo: I don't like this, change it
 		local val = self:GetText() or ''
-		SetCVar(self.cvar, val)
+		oSetCVar(self.cvar, val)
 		self.str:SetText(val)
 		ListFrame.items[ self.row.offset ][4] = val
 		for k,v in pairs(CVarTable) do -- update value in cvartable in a horrible way
@@ -234,6 +257,20 @@ function E:PLAYER_LOGIN()
 		end,
 	})
 end
+
+-- Update browser when a cvar is set while it's open
+-- There are at least 4 different ways a cvar can be set:
+--    /run SetCVar("cvar", value)
+--    /console "cvar" value
+--    /console SET "cvar" value (case doesn't matter)
+--    Hitting ` and typing SET "cvar" into the console window itself
+--    Console is not part of the interface, doesn't fire an event, and I'm not sure that we can hook it
+
+-- These could be more efficient by not refreshing the entire list but that would be more work
+hooksecurefunc('SetCVar', FilteredRefresh)
+
+-- should we even bother checking what the console command did?
+hooksecurefunc('ConsoleExec', FilteredRefresh)
 
 SlashCmdList.CVAR = function()
 	InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
