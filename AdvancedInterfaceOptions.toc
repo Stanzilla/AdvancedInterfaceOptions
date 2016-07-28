@@ -13,3 +13,5 @@ semlib\semlib.xml
 cvars.lua
 basicOptions.lua
 browser.lua
+
+tempfix.lua
