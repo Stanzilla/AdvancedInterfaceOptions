@@ -302,9 +302,9 @@ addon.hiddenOptions = {
 	["alwaysCompareItems"] = { prettyName = "Always Compare Items", description = "Always show item comparison tooltips", type = "boolean"},
 	["showSpenderFeedback"] = { prettyName= "Show spender feedback", description = "Shows/Hide the flash after spending rage/mana/etc in resource bars.", type = "boolean"},
 
-	["lossOfControlFull"] = { prettyName = "Loss of Control: Full", description = "Sets the alert level of Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
-	["lossOfControlSilence"] = { prettyName = "Loss of Control: Silence", description = "Sets the alert level of Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
-	["lossOfControlInterrupt"] = { prettyName = "Loss of Control: Interrupt", description = "Sets the alert level of Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
-	["lossOfControlDisarm"] = { prettyName = "Loss of Control: Disarm", description = "Sets the alert level of Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
-	["lossOfControlRoot"] = { prettyName = "Loss of Control: Root", description = "Sets the alert level of Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["lossOfControlFull"] = { prettyName = "Loss of Control: Full", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["lossOfControlSilence"] = { prettyName = "Loss of Control: Silence", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["lossOfControlInterrupt"] = { prettyName = "Loss of Control: Interrupt", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["lossOfControlDisarm"] = { prettyName = "Loss of Control: Disarm", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["lossOfControlRoot"] = { prettyName = "Loss of Control: Root", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 }
