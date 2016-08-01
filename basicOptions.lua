@@ -51,6 +51,20 @@ local function sliderGetCVar(self) return GetCVar(self.cvar) end
 local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
 local function sliderSetCVar(self, checked) SetCVar(self.cvar, checked) end
 
+local function sliderDisable(self)
+	self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	self.minText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	self.maxText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	self.valueText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+end
+
+local function sliderEnable(self)
+	self.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	self.minText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	self.maxText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	self.valueText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+end
+
 local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = cvarTable['prettyName'] or cvar
@@ -67,9 +81,10 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider:SetMinMaxValues(minRange, maxRange)
 	slider.minText = _G[slider:GetName() .. 'Low']
 	slider.maxText = _G[slider:GetName() .. 'High']
+	slider.text = _G[slider:GetName() .. 'Text']
 	slider.minText:SetText(minRange)
 	slider.maxText:SetText(maxRange)
-	_G[slider:GetName() .. 'Text']:SetText(label)
+	slider.text:SetText(label)
 
 	local valueText = slider:CreateFontString(nil, nil, 'GameFontHighlight')
 	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
@@ -79,6 +94,9 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	end)
 
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
+	
+	slider:HookScript('OnDisable', sliderDisable)
+	slider:HookScript('OnEnable', sliderEnable)
 
 	slider.tooltipText = label
 	slider.tooltipRequirement = description
