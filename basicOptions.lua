@@ -101,9 +101,6 @@ subText:SetText('These options allow you to toggle various options that have bee
 local playerTitles = newCheckbox(AIO, 'UnitNamePlayerPVPTitle')
 local playerGuilds = newCheckbox(AIO, 'UnitNamePlayerGuild')
 local playerGuildTitles = newCheckbox(AIO, 'UnitNameGuildTitle')
-local stopAutoAttack = newCheckbox(AIO, 'stopAutoAttackOnTargetChange')
-local attackOnAssist = newCheckbox(AIO, 'assistAttack')
-local castOnKeyDown = newCheckbox(AIO, 'ActionButtonUseKeyDown')
 local fadeMap = newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
@@ -184,18 +181,13 @@ actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
-stopAutoAttack:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
-attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
-castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
-fadeMap:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
+fadeMap:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
 secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
 enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
-
--- TODO reducedLagTolerance maxSpellStartRecoveryOffset
 
 
 -- Chat settings
@@ -280,7 +272,6 @@ local fctHealing = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealing')
 local fctPetMeleeDamage = newCheckbox(AIO_FCT, 'floatingCombatTextPetMeleeDamage')
 local fctSpellMechanics = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanics')
 local fctSpellMechanicsOther = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanicsOther')
-
 local enablefct = newCheckbox(AIO_FCT, 'enableFloatingCombatText')
 local fctAbsorbSelf = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbSelf')
 local fctAuras = newCheckbox(AIO_FCT, 'floatingCombatTextAuras')
@@ -323,7 +314,6 @@ fctRepChanges:SetPoint("TOPLEFT", fctDamageReduction, "BOTTOMLEFT", 0, -4)
 fctReactives:SetPoint("TOPLEFT", fctRepChanges, "BOTTOMLEFT", 0, -4)
 fctFriendlyHealer:SetPoint("TOPLEFT", fctReactives, "BOTTOMLEFT", 0, -4)
 fctCombatState:SetPoint("TOPLEFT", fctFriendlyHealer, "BOTTOMLEFT", 0, -4)
-
 fctAbsorbSelf:SetPoint("TOPLEFT", fctDodgeParryMiss, "TOPRIGHT", 260, 0)
 fctLowHPMana:SetPoint("TOPLEFT", fctAbsorbSelf, "BOTTOMLEFT", 0, -4)
 fctEnergyGains:SetPoint("TOPLEFT", fctLowHPMana, "BOTTOMLEFT", 0, -4)
@@ -364,10 +354,68 @@ nameplateAtBase:SetScript('OnClick', function(self)
 	self:SetValue(checked and 2 or 0)
 end)
 
+-- Combat settings
+local AIO_C = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+AIO_C:Hide()
+AIO_C:SetAllPoints()
+AIO_C.name = "Combat"
+AIO_C.parent = addonName
+
+local Title_C = AIO_C:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
+Title_C:SetJustifyV('TOP')
+Title_C:SetJustifyH('LEFT')
+Title_C:SetPoint('TOPLEFT', 16, -16)
+Title_C:SetText(AIO_C.name)
+
+local SubText_C = AIO_C:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+SubText_C:SetMaxLines(3)
+SubText_C:SetNonSpaceWrap(true)
+SubText_C:SetJustifyV('TOP')
+SubText_C:SetJustifyH('LEFT')
+SubText_C:SetPoint('TOPLEFT', Title_C, 'BOTTOMLEFT', 0, -8)
+SubText_C:SetPoint('RIGHT', -32, 0)
+SubText_C:SetText('These options allow you to modify Combat Options.')
+
+local stopAutoAttack = newCheckbox(AIO_C, 'stopAutoAttackOnTargetChange')
+stopAutoAttack:SetPoint("TOPLEFT", SubText_C, "BOTTOMLEFT", 0, -8)
+
+local attackOnAssist = newCheckbox(AIO_C, 'assistAttack')
+attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
+
+local castOnKeyDown = newCheckbox(AIO_C, 'ActionButtonUseKeyDown')
+castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
+
+local spellStartRecovery = newSlider(AIO_C, 'MaxSpellStartRecoveryOffset', 0, 400)
+spellStartRecovery:SetPoint('TOPLEFT', castOnKeyDown, 'BOTTOMLEFT', 0, -20)
+spellStartRecovery:Disable()
+
+local reducedLagTolerance = newCheckbox(AIO_C, 'reducedLagTolerance')
+reducedLagTolerance:SetPoint("TOPLEFT", spellStartRecovery, "BOTTOMLEFT", 0, -16)
+reducedLagTolerance:SetScript('OnClick', function(self)
+	local checked = self:GetChecked()
+	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	if checked then
+		spellStartRecovery:Enable()
+	else
+		spellStartRecovery:Disable()
+		spellStartRecovery:SetValue(0)
+	end
+end)
+reducedLagTolerance:SetScript('OnShow', function(self)
+	local checked = self:GetChecked()
+	if checked then
+		spellStartRecovery:Enable()
+	else
+		spellStartRecovery:Disable()
+		spellStartRecovery:SetValue(0)
+	end
+end)
+
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
+InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
