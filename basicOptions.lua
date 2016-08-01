@@ -416,7 +416,6 @@ reducedLagTolerance:SetScript('OnClick', function(self)
 		spellStartRecovery:Enable()
 	else
 		spellStartRecovery:Disable()
-		spellStartRecovery:SetValue(0)
 	end
 end)
 reducedLagTolerance:SetScript('OnShow', function(self)
@@ -425,7 +424,6 @@ reducedLagTolerance:SetScript('OnShow', function(self)
 		spellStartRecovery:Enable()
 	else
 		spellStartRecovery:Disable()
-		spellStartRecovery:SetValue(0)
 	end
 end)
 
