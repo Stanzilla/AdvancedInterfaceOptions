@@ -94,7 +94,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	end)
 
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
-	
+
 	slider:HookScript('OnDisable', sliderDisable)
 	slider:HookScript('OnEnable', sliderEnable)
 
@@ -195,6 +195,9 @@ actionCamModeDropdown.initialize = function(dropdown)
 	UIDropDownMenu_SetSelectedValue(dropdown, "off") -- TODO: This is wrong, obviously
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
+
+local cameraFactor = newSlider(AIO, 'cameraDistanceMaxFactor', 0.1, 2.6, 0.1)
+cameraFactor:SetPoint('TOPLEFT', actionCamModeDropdown, 'BOTTOMLEFT', 20, -20)
 
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
