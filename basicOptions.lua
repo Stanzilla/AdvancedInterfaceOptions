@@ -2,6 +2,8 @@ local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
 
+CameraPanelOptions.cameraDistanceMaxFactor.maxValue = 2.6
+
 -- Saved settings
 AdvancedInterfaceOptionsSaved = {
 	AccountVars = {}, -- account-wide cvars to be re-applied on login, [cvar] = value
@@ -32,7 +34,6 @@ function E:ADDON_LOADED(addon)
 			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
 				SetCVar(cvar, value)
 			end
-			SetCVar('cameraDistanceMaxFactor', 1.9)
 			SetCVar('cameraDistanceMaxFactor', 2.6) -- override this for now
 		end
 	end
