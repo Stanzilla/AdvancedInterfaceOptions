@@ -48,7 +48,7 @@ end
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
 -- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
--- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME
+-- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
