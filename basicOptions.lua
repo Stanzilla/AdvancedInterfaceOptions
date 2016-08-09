@@ -2,6 +2,49 @@ local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
 
+-- Saved settings
+AdvancedInterfaceOptionsSaved = {
+	AccountVars = {}, -- account-wide cvars to be re-applied on login, [cvar] = value
+	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
+}
+
+local AlwaysCharacterSpecificCVars = {
+	-- list of cvars that should never be account-wide
+	-- [cvar] = true
+}
+
+local AddonLoaded, VariablesLoaded = false, false
+function E:VARIABLES_LOADED()
+	VariablesLoaded = true
+	if AddonLoaded then
+		self:ADDON_LOADED(addonName)
+	end
+end
+
+function E:ADDON_LOADED(addon)
+	if addon == addonName then
+		E:UnregisterEvent('ADDON_LOADED')
+		AddonLoaded = true
+		if VariablesLoaded then
+			if not AdvancedInterfaceOptionsSaved.AccountVars then
+				AdvancedInterfaceOptionsSaved['AccountVars'] = {}
+			end
+			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
+				SetCVar(cvar, value)
+			end
+			SetCVar('cameraDistanceMaxFactor', 1.9)
+			SetCVar('cameraDistanceMaxFactor', 2.6) -- override this for now
+		end
+	end
+end
+
+function addon:SetCVar(cvar, value) -- save our cvar to the db
+	if not AlwaysCharacterSpecificCVars[cvar] then
+		AdvancedInterfaceOptionsSaved.AccountVars[cvar] = value
+	end
+	SetCVar(cvar, value)
+end
+
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
 -- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
@@ -19,7 +62,7 @@ AIO.name = addonName
 -------------
 local function checkboxGetCVar(self) return GetCVarBool(self.cvar) end
 local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
-local function checkboxSetCVar(self, checked) SetCVar(self.cvar, checked) end
+local function checkboxSetCVar(self, checked) addon:SetCVar(self.cvar, checked) end
 local function checkboxOnClick(self)
 	local checked = self:GetChecked()
 	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
@@ -49,7 +92,7 @@ end
 -----------
 local function sliderGetCVar(self) return GetCVar(self.cvar) end
 local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
-local function sliderSetCVar(self, checked) SetCVar(self.cvar, checked) end
+local function sliderSetCVar(self, checked) addon:SetCVar(self.cvar, checked) end
 
 local function sliderDisable(self)
 	self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
@@ -75,7 +118,8 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.GetCVarValue = getValue or sliderGetCVar
 	slider.SetCVarValue = setValue or sliderSetCVar
 	slider:SetScript('OnShow', sliderRefresh)
-	slider:SetValueStep(stepSize or 1)
+	stepSize = stepSize or 1
+	slider:SetValueStep(stepSize)
 	slider:SetObeyStepOnDrag(true)
 
 	slider:SetMinMaxValues(minRange, maxRange)
@@ -90,6 +134,8 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
 	slider.valueText = valueText
 	slider:HookScript('OnValueChanged', function(self, value)
+		local factor = 1 / stepSize
+		value = floor(value * factor + 0.5) / factor
 		valueText:SetText(value)
 	end)
 
@@ -158,7 +204,7 @@ questSortingDropdown.initialize = function(dropdown)
 		info.text = sortMode[i]
 		info.value = sortMode[i]
 		info.func = function(self)
-			SetCVar("trackQuestSorting", self.value)
+			addon:SetCVar("trackQuestSorting", self.value)
 			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
 		end
 		UIDropDownMenu_AddButton(info)
@@ -270,7 +316,7 @@ fctfloatmodeDropdown.initialize = function(dropdown)
 		info.text = floatMode[i]
 		info.value = tostring(i)
 		info.func = function(self)
-			SetCVar("floatingCombatTextFloatMode", self.value)
+			addon:SetCVar("floatingCombatTextFloatMode", self.value)
 			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
 		end
 		UIDropDownMenu_AddButton(info)

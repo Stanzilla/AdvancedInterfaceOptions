@@ -1,6 +1,10 @@
 local addonName, addon = ...
 local _G = _G
 
+local SetCVar = function(cvar, value)
+	addon:SetCVar(cvar, value)
+end
+
 -- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1
 
 -- Create an options panel and insert it into the interface menu
