@@ -34,7 +34,6 @@ function E:ADDON_LOADED(addon)
 			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
 				SetCVar(cvar, value)
 			end
-			SetCVar('cameraDistanceMaxFactor', 2.6) -- override this for now
 		end
 	end
 end
