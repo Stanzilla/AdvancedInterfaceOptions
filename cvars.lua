@@ -129,7 +129,7 @@ addon.hiddenOptions = {
 	["cameraWaterCollision"] = { prettyName = nil, description = OPTION_TOOLTIP_WATER_COLLISION, type = "boolean" },
 	["cameraBobbing"] = { prettyName = nil, description = OPTION_TOOLTIP_HEAD_BOB, type = "boolean" },
 	["cameraPivot"] = { prettyName = nil, description = OPTION_TOOLTIP_SMART_PIVOT, type = "boolean" },
-	["cameraDistanceMaxFactor"] = { prettyName = "Camera Distance Max Factor", description = OPTION_TOOLTIP_MAX_FOLLOW_DIST, type = "number" },
+	["cameraDistanceMaxFactor"] = { prettyName = MAX_FOLLOW_DIST, description = OPTION_TOOLTIP_MAX_FOLLOW_DIST, type = "number" },
 	["cameraYawMoveSpeed"] = { prettyName = MOUSE_LOOK_SPEED, description = OPTION_TOOLTIP_MOUSE_LOOK_SPEED, type = "number" },
 	["cameraTerrainTilt"] = { prettyName = nil, description = OPTION_TOOLTIP_FOLLOW_TERRAIN, type = "boolean" },
 	["cameraHeadMovementStrength"] = { prettyName = nil, description = nil, type = "number" },
