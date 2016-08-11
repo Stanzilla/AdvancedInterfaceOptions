@@ -50,10 +50,39 @@ end
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 -- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved
 
-local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
-AIO:Hide()
-AIO:SetAllPoints()
-AIO.name = addonName
+local AceGUI = LibStub("AceGUI-3.0")
+local AIO = AceGUI:Create("Frame")
+AIO:SetTitle("Advanced Interface Options")
+AIO:SetLayout("Flow")
+
+local tree = {
+ {
+   value = "general",
+   text = "General",
+ },
+ {
+   value = "chat",
+   text = "Chat",
+ },
+ {
+   value = "fct",
+   text = "Floating Combat Text",
+ },
+ {
+   value = "nameplates",
+   text = "Nameplates",
+ },
+ {
+   value = "browser",
+   text = "CVar Browser",
+ },
+ }
+ local menu = AceGUI:Create("TreeGroup")
+ menu:SetTree(tree)
+ menu:SetFullWidth(true)
+ menu:SetFullHeight(true) -- probably?
+ menu:SetLayout("Fill") -- important!
+ AIO:AddChild(menu)
 
 -- Some wrapper functions
 
@@ -149,53 +178,53 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	return slider
 end
 
-local title = AIO:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
-title:SetPoint("TOPLEFT", 16, -16)
-title:SetText(AIO.name)
+--local subText = AIO.content:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+local subText = AceGUI:Create("Label")
 
-local subText = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-subText:SetMaxLines(3)
-subText:SetNonSpaceWrap(true)
-subText:SetJustifyV('TOP')
-subText:SetJustifyH('LEFT')
-subText:SetPoint('TOPLEFT', title, 'BOTTOMLEFT', 0, -8)
-subText:SetPoint('RIGHT', -32, 0)
+-- subText:SetMaxLines(3)
+-- subText:SetNonSpaceWrap(true)
+-- subText:SetJustifyV('TOP')
+-- subText:SetJustifyH('LEFT')
+-- subText:SetPoint('TOPLEFT', AIO.content, 'TOPLEFT', 0, -8)
+-- subText:SetPoint('RIGHT', -32, 0)
 subText:SetText('These options allow you to toggle various options that have been removed from the game in Legion.')
+subText:SetFullWidth(true)
+menu:AddChild(subText)
 
-local playerTitles = newCheckbox(AIO, 'UnitNamePlayerPVPTitle')
-local playerGuilds = newCheckbox(AIO, 'UnitNamePlayerGuild')
-local playerGuildTitles = newCheckbox(AIO, 'UnitNameGuildTitle')
-local fadeMap = newCheckbox(AIO, 'mapFade')
-local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
-local luaErrors = newCheckbox(AIO, 'scriptErrors')
-local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
-local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
-	-- Get Value
-	function(self)
-		return GetSortBagsRightToLeft()
-	end,
-	-- Set Value
-	function(self, checked)
-		SetSortBagsRightToLeft(checked)
-	end
-)
-local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
-	-- Get Value
-	function(self)
-		return GetInsertItemsLeftToRight()
-	end,
-	-- Set Value
-	function(self, checked)
-		SetInsertItemsLeftToRight(checked)
-	end
-)
-local enableWoWMouse = newCheckbox(AIO, 'enableWoWMouse')
+local playerTitles = newCheckbox(menu.content, 'UnitNamePlayerPVPTitle')
+local playerGuilds = newCheckbox(menu.content, 'UnitNamePlayerGuild')
+local playerGuildTitles = newCheckbox(menu.content, 'UnitNameGuildTitle')
+local fadeMap = newCheckbox(menu.content, 'mapFade')
+local secureToggle = newCheckbox(menu.content, 'secureAbilityToggle')
+local luaErrors = newCheckbox(menu.content, 'scriptErrors')
+local targetDebuffFilter = newCheckbox(menu.content, 'noBuffDebuffFilterOnTarget')
+-- local reverseCleanupBags = newCheckbox(menu.content, 'reverseCleanupBags',
+-- 	-- Get Value
+-- 	function(self)
+-- 		return GetSortBagsRightToLeft()
+-- 	end,
+-- 	-- Set Value
+-- 	function(self, checked)
+-- 		SetSortBagsRightToLeft(checked)
+-- 	end
+-- )
+-- local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
+-- 	-- Get Value
+-- 	function(self)
+-- 		return GetInsertItemsLeftToRight()
+-- 	end,
+-- 	-- Set Value
+-- 	function(self, checked)
+-- 		SetInsertItemsLeftToRight(checked)
+-- 	end
+-- )
+local enableWoWMouse = newCheckbox(menu.content, 'enableWoWMouse')
 
-local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+local questSortingLabel = menu.content:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 questSortingLabel:SetPoint('TOPLEFT', enableWoWMouse, 'BOTTOMLEFT', 0, 0)
 questSortingLabel:SetText('Select quest sorting mode:')
 
-local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", AIO, "UIDropDownMenuTemplate")
+local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", menu.content, "UIDropDownMenuTemplate")
 questSortingDropdown:SetPoint("TOPLEFT", questSortingLabel, "BOTTOMLEFT", -16, -10)
 questSortingDropdown.initialize = function(dropdown)
 	local sortMode = { "top", "proximity" }
@@ -220,11 +249,11 @@ questSortingDropdown:HookScript("OnEnter", function(self)
 end)
 questSortingDropdown:HookScript("OnLeave", GameTooltip_Hide)
 
-local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+local actionCamModeLabel = menu.content:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 actionCamModeLabel:SetPoint('TOPLEFT', questSortingDropdown, 'BOTTOMLEFT', 16, 0)
 actionCamModeLabel:SetText('Select Action Cam mode:')
 
-local actionCamModeDropdown = CreateFrame("Frame", "AIOActionCamMode", AIO, "UIDropDownMenuTemplate")
+local actionCamModeDropdown = CreateFrame("Frame", "AIOActionCamMode", menu.content, "UIDropDownMenuTemplate")
 actionCamModeDropdown:SetPoint("TOPLEFT", actionCamModeLabel, "BOTTOMLEFT", -16, -10)
 actionCamModeDropdown.initialize = function(dropdown)
 	local sortMode = { "basic", "full", "off", "default" }
@@ -242,10 +271,10 @@ actionCamModeDropdown.initialize = function(dropdown)
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 
-local cameraFactor = newSlider(AIO, 'cameraDistanceMaxFactor', 1, 2.6, 0.1)
+local cameraFactor = newSlider(menu.content, 'cameraDistanceMaxFactor', 1, 2.6, 0.1)
 cameraFactor:SetPoint('TOPLEFT', actionCamModeDropdown, 'BOTTOMLEFT', 20, -20)
 
-playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
+playerTitles:SetPoint("TOPLEFT", menu.content, "TOPLEFT", 0, -12)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
 playerGuildTitles:SetPoint("TOPLEFT", playerGuilds, "BOTTOMLEFT", 0, -4)
 fadeMap:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
