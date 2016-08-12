@@ -290,7 +290,7 @@ chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_FCT:Hide()
 AIO_FCT:SetAllPoints()
-AIO_FCT.name = "Floating Combat Text"
+AIO_FCT.name = FLOATING_COMBATTEXT_LABEL
 AIO_FCT.parent = addonName
 
 local Title_FCT = AIO_FCT:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
@@ -332,28 +332,40 @@ fctfloatmodeDropdown:HookScript("OnEnter", function(self)
 end)
 fctfloatmodeDropdown:HookScript("OnLeave", GameTooltip_Hide)
 
+local revUVARINFO = {}
+for k, v in pairs(UVARINFO) do
+	revUVARINFO[v.cvar] = k
+end
+
+local function FCT_SetValue(self, checked)
+	addon:SetCVar(self.cvar, checked)
+	_G[revUVARINFO[self.cvar]] = checked and "1" or "0" -- update uvars
+	BlizzardOptionsPanel_UpdateCombatText()
+end
+
 local fctAbsorbTarget = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbTarget')
 local fctDamage = newCheckbox(AIO_FCT, 'floatingCombatTextCombatDamage')
 local fctDirectionalScale = newCheckbox(AIO_FCT, 'floatingCombatTextCombatDamageDirectionalScale')
 local fctHealing = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealing')
+local fctPeriodicSpells = newCheckbox(AIO_FCT, 'floatingCombatTextCombatLogPeriodicSpells')
 local fctPetMeleeDamage = newCheckbox(AIO_FCT, 'floatingCombatTextPetMeleeDamage')
 local fctSpellMechanics = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanics')
 local fctSpellMechanicsOther = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanicsOther')
-local enablefct = newCheckbox(AIO_FCT, 'enableFloatingCombatText')
+
+local enablefct = newCheckbox(AIO_FCT, 'enableFloatingCombatText', nil, FCT_SetValue)
 local fctAbsorbSelf = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbSelf')
-local fctAuras = newCheckbox(AIO_FCT, 'floatingCombatTextAuras')
-local fctCombatState = newCheckbox(AIO_FCT, 'floatingCombatTextCombatState')
-local fctComboPoints = newCheckbox(AIO_FCT, 'floatingCombatTextComboPoints')
-local fctDamageReduction = newCheckbox(AIO_FCT, 'floatingCombatTextDamageReduction')
-local fctDodgeParryMiss = newCheckbox(AIO_FCT, 'floatingCombatTextDodgeParryMiss')
-local fctEnergyGains = newCheckbox(AIO_FCT, 'floatingCombatTextEnergyGains')
-local fctFriendlyHealer = newCheckbox(AIO_FCT, 'floatingCombatTextFriendlyHealers')
-local fctHonorGains = newCheckbox(AIO_FCT, 'floatingCombatTextHonorGains')
-local fctLowHPMana = newCheckbox(AIO_FCT, 'floatingCombatTextLowManaHealth')
-local fctPeriodicEnergyGains = newCheckbox(AIO_FCT, 'floatingCombatTextPeriodicEnergyGains')
-local fctPeriodicSpells = newCheckbox(AIO_FCT, 'floatingCombatTextCombatLogPeriodicSpells')
-local fctReactives = newCheckbox(AIO_FCT, 'floatingCombatTextReactives')
-local fctRepChanges = newCheckbox(AIO_FCT, 'floatingCombatTextRepChanges')
+local fctAuras = newCheckbox(AIO_FCT, 'floatingCombatTextAuras', nil, FCT_SetValue)
+local fctCombatState = newCheckbox(AIO_FCT, 'floatingCombatTextCombatState', nil, FCT_SetValue)
+local fctComboPoints = newCheckbox(AIO_FCT, 'floatingCombatTextComboPoints', nil, FCT_SetValue)
+local fctDamageReduction = newCheckbox(AIO_FCT, 'floatingCombatTextDamageReduction', nil, FCT_SetValue)
+local fctDodgeParryMiss = newCheckbox(AIO_FCT, 'floatingCombatTextDodgeParryMiss', nil, FCT_SetValue)
+local fctEnergyGains = newCheckbox(AIO_FCT, 'floatingCombatTextEnergyGains', nil, FCT_SetValue)
+local fctFriendlyHealer = newCheckbox(AIO_FCT, 'floatingCombatTextFriendlyHealers', nil, FCT_SetValue)
+local fctHonorGains = newCheckbox(AIO_FCT, 'floatingCombatTextHonorGains', nil, FCT_SetValue)
+local fctLowHPMana = newCheckbox(AIO_FCT, 'floatingCombatTextLowManaHealth', nil, FCT_SetValue)
+local fctPeriodicEnergyGains = newCheckbox(AIO_FCT, 'floatingCombatTextPeriodicEnergyGains', nil, FCT_SetValue)
+local fctReactives = newCheckbox(AIO_FCT, 'floatingCombatTextReactives', nil, FCT_SetValue)
+local fctRepChanges = newCheckbox(AIO_FCT, 'floatingCombatTextRepChanges', nil, FCT_SetValue)
 
 local fctTargetLabel = AIO_FCT:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 fctTargetLabel:SetText(FLOATING_COMBAT_TARGET_LABEL)
