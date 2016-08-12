@@ -170,7 +170,7 @@ addon.hiddenOptions = {
 	["showArenaEnemyPets"] = { prettyName = SHOW_ARENA_ENEMY_PETS_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_PETS, type = "boolean" },
 	["fullSizeFocusFrame"] = { prettyName = FULL_SIZE_FOCUS_FRAME_TEXT, description = OPTION_TOOLTIP_FULL_SIZE_FOCUS_FRAME, type = "boolean" },
 
-	["showChatIcons"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_CHAT_ICONS, type = "boolean" },
+	--["showChatIcons"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_CHAT_ICONS, type = "boolean" },
 	["spamFilter"] = { prettyName = nil, description = OPTION_TOOLTIP_SPAM_FILTER, type = "boolean" },
 	["profanityFilter"] = { prettyName = nil, description = OPTION_TOOLTIP_PROFANITY_FILTER, type = "boolean" },
 	["EnableVoiceChat"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_VOICECHAT, type = "boolean" },

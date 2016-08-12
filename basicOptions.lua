@@ -24,6 +24,7 @@ function E:VARIABLES_LOADED()
 end
 
 function E:ADDON_LOADED(addon)
+	--[[
 	if addon == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
 		AddonLoaded = true
@@ -36,6 +37,7 @@ function E:ADDON_LOADED(addon)
 			end
 		end
 	end
+	--]]
 end
 
 function addon:SetCVar(cvar, value) -- save our cvar to the db
