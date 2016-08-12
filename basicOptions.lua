@@ -318,6 +318,8 @@ fctfloatmodeDropdown.initialize = function(dropdown)
 		info.func = function(self)
 			addon:SetCVar("floatingCombatTextFloatMode", self.value)
 			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+			COMBAT_TEXT_FLOAT_MODE = self.value
+			BlizzardOptionsPanel_UpdateCombatText()
 		end
 		UIDropDownMenu_AddButton(info)
 	end
