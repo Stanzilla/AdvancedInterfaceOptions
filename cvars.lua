@@ -22,7 +22,7 @@ addon.hiddenOptions = {
 	["UnitNameEnemyGuardianName"] = { prettyName = UNIT_NAME_ENEMY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_GUARDIANS, type = "boolean" },
 	["UnitNameEnemyTotemName"] = { prettyName = UNIT_NAME_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_TOTEMS, type = "boolean" },
 	["UnitNameForceHideMinus"] = { prettyName = UNIT_NAME_HIDE_MINUS, description = OPTION_TOOLTIP_UNIT_NAME_HIDE_MINUS, type = "boolean" },
-	
+
 	["UnitNameFriendlySpecialNPCName"] = { prettyName = NPC_NAMES_DROPDOWN_TRACKED, description = NPC_NAMES_DROPDOWN_TRACKED_TOOLTIP, type = "boolean"},
 	["UnitNameHostleNPC"] = { prettyName = "Hostile NPCs", description = "Display names for hostile NPCs", type = "boolean"},
 	["UnitNameInteractiveNPC"] = { prettyName = "Interactive NPCs", description = "Display names for interactive NPCs", type = "boolean"},
@@ -231,7 +231,6 @@ addon.hiddenOptions = {
 	["showTargetOfTarget"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_OF_TARGET, type = "boolean" },
 	["guildMemberNotify"] = { prettyName = nil, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
 	["Sound_EnableSoftwareHRTF"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean" },
-	["advancedWorldMap"] = { prettyName = nil, description = OPTION_TOOLTIP_ADVANCED_WORLD_MAP, type = "boolean" },
 	["showTutorials"] = { prettyName = SHOW_TUTORIALS, description = OPTION_TOOLTIP_SHOW_TUTORIALS, type = "boolean" },
 	["lossOfControl"] = { prettyName = nil, description = OPTION_TOOLTIP_LOSS_OF_CONTROL, type = "boolean" },
 	["blockChannelInvites"] = { prettyName = nil, description = OPTION_TOOLTIP_BLOCK_CHAT_CHANNEL_INVITE, type = "boolean" },
