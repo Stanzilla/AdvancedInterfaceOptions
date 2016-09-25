@@ -22,6 +22,11 @@ addon.hiddenOptions = {
 	["UnitNameEnemyGuardianName"] = { prettyName = UNIT_NAME_ENEMY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_GUARDIANS, type = "boolean" },
 	["UnitNameEnemyTotemName"] = { prettyName = UNIT_NAME_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_TOTEMS, type = "boolean" },
 	["UnitNameForceHideMinus"] = { prettyName = UNIT_NAME_HIDE_MINUS, description = OPTION_TOOLTIP_UNIT_NAME_HIDE_MINUS, type = "boolean" },
+	
+	["UnitNameFriendlySpecialNPCName"] = { prettyName = NPC_NAMES_DROPDOWN_TRACKED, description = NPC_NAMES_DROPDOWN_TRACKED_TOOLTIP, type = "boolean"},
+	["UnitNameHostleNPC"] = { prettyName = "Hostile NPCs", description = "Display names for hostile NPCs", type = "boolean"},
+	["UnitNameInteractiveNPC"] = { prettyName = "Interactive NPCs", description = "Display names for interactive NPCs", type = "boolean"},
+	["ShowQuestUnitCircles"] = { prettyName = "Quest Unit Circles", description = "Determines if units related to a quest display an indicator on the ground", type = "boolean"},
 
 	["nameplateShowFriends"] = { prettyName = UNIT_NAMEPLATES_SHOW_FRIENDS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_FRIENDS, type = "boolean" },
 	["nameplateShowFriendlyPets"] = { prettyName = UNIT_NAMEPLATES_SHOW_FRIENDLY_PETS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_FRIENDLY_PETS, type = "boolean" },
