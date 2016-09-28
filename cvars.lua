@@ -69,6 +69,7 @@ addon.hiddenOptions = {
 	["nameplateResourceOnTarget"] = { prettyName = "Nameplate Resource On Target", description = "Nameplate class resource overlay mode. 0=self, 1=target", type = "number" },
 	["nameplateShowSelf"] = { prettyName = "Show Nameplate Resource Bar", description = "Display class resource bar. 0=off 1=on", type = "number" },
 	["nameplateShowAll"] = { prettyName = "Always Show Nameplates", description = "Show nameplates at all times.", type = "number" },
+	["nameplateMotion"] = { prettyName = "Nameplate Motion Type", description = "Changes the way nameplates behave", type = "number" },
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
 	["lootLeftmostBag"] = { prettyName = REVERSE_NEW_LOOT_TEXT, description = OPTION_TOOLTIP_REVERSE_NEW_LOOT, type = "boolean" },
