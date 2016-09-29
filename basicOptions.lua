@@ -469,15 +469,19 @@ attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
 local castOnKeyDown = newCheckbox(AIO_C, 'ActionButtonUseKeyDown')
 castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
 
-local spellStartRecovery = newSlider(AIO_C, 'MaxSpellStartRecoveryOffset', 0, 400)
-spellStartRecovery:SetPoint('TOPLEFT', castOnKeyDown, 'BOTTOMLEFT', 0, -20)
-spellStartRecovery:Disable()
-
 local reducedLagTolerance = newCheckbox(AIO_C, 'reducedLagTolerance')
-reducedLagTolerance:SetPoint("TOPLEFT", spellStartRecovery, "BOTTOMLEFT", 0, -16)
+reducedLagTolerance:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
+
+local spellStartRecovery = newSlider(AIO_C, 'MaxSpellStartRecoveryOffset', 0, 400)
+spellStartRecovery:SetPoint('TOPLEFT', reducedLagTolerance, 'BOTTOMLEFT', 24, -8)
+spellStartRecovery.minMaxValues = {spellStartRecovery:GetMinMaxValues()}
+spellStartRecovery.minText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[1], MILLISECONDS_ABBR)
+spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[2], MILLISECONDS_ABBR)
+
 reducedLagTolerance:SetScript('OnClick', function(self)
 	local checked = self:GetChecked()
 	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	self:SetValue(checked)
 	if checked then
 		spellStartRecovery:Enable()
 	else
@@ -485,6 +489,7 @@ reducedLagTolerance:SetScript('OnClick', function(self)
 	end
 end)
 reducedLagTolerance:SetScript('OnShow', function(self)
+	self:SetChecked(self:GetValue())
 	local checked = self:GetChecked()
 	if checked then
 		spellStartRecovery:Enable()
