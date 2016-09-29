@@ -478,20 +478,15 @@ spellStartRecovery.minMaxValues = {spellStartRecovery:GetMinMaxValues()}
 spellStartRecovery.minText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[1], MILLISECONDS_ABBR)
 spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[2], MILLISECONDS_ABBR)
 
-reducedLagTolerance:SetScript('OnClick', function(self)
-	local checked = self:GetChecked()
-	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
-	self:SetValue(checked)
-	if checked then
+reducedLagTolerance:HookScript('OnClick', function(self)
+	if self:GetChecked() then
 		spellStartRecovery:Enable()
 	else
 		spellStartRecovery:Disable()
 	end
 end)
-reducedLagTolerance:SetScript('OnShow', function(self)
-	self:SetChecked(self:GetValue())
-	local checked = self:GetChecked()
-	if checked then
+reducedLagTolerance:HookScript('OnShow', function(self)
+	if self:GetChecked() then
 		spellStartRecovery:Enable()
 	else
 		spellStartRecovery:Disable()
