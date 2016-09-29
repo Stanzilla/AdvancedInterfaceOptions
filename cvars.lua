@@ -231,7 +231,6 @@ addon.hiddenOptions = {
 
 	["showTargetOfTarget"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_OF_TARGET, type = "boolean" },
 	["guildMemberNotify"] = { prettyName = nil, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
-	["Sound_EnableSoftwareHRTF"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean" },
 	["showTutorials"] = { prettyName = SHOW_TUTORIALS, description = OPTION_TOOLTIP_SHOW_TUTORIALS, type = "boolean" },
 	["lossOfControl"] = { prettyName = nil, description = OPTION_TOOLTIP_LOSS_OF_CONTROL, type = "boolean" },
 	["blockChannelInvites"] = { prettyName = nil, description = OPTION_TOOLTIP_BLOCK_CHAT_CHANNEL_INVITE, type = "boolean" },
@@ -246,7 +245,7 @@ addon.hiddenOptions = {
 	["noBuffDebuffFilterOnTarget"] = { prettyName = "No Debuff Filter on Target", description = "Do not filter buffs or debuffs at all on targets", type = "boolean"},
 	["showHonorAsExperience"] = { prettyName = nil, description = "Show the honor bar as a regular experience bar in place of rep", type = "boolean"},
 	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean"},
-	["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = "", type = "boolean"},
+	["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean"},
 	["TargetPriorityAllowAnyOnScreen"] = { prettyName = nil, description = "If set, and no 100% correct target is available, allow selecting any valid in-range target (2 = also out-of-range)", type = "boolean"},
 	["TargetNearestUseOld"] = { prettyName = nil, description = "Use pre-7.0 'nearest target' functionality", type = "boolean"},
 	["TargetPriorityCombatLock"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player.", type = "boolean"},
