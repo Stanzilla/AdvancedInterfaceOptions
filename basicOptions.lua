@@ -2,8 +2,6 @@ local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
 
-CameraPanelOptions.cameraDistanceMaxFactor.maxValue = 2.6
-
 -- Saved settings
 AdvancedInterfaceOptionsSaved = {
 	AccountVars = {}, -- account-wide cvars to be re-applied on login, [cvar] = value
@@ -245,7 +243,7 @@ actionCamModeDropdown.initialize = function(dropdown)
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 
-local cameraFactor = newSlider(AIO, 'cameraDistanceMaxFactor', 1, 2.6, 0.1)
+local cameraFactor = newSlider(AIO, 'cameraDistanceMaxZoomFactor', 1, 2.6, 0.1)
 cameraFactor:SetPoint('TOPLEFT', actionCamModeDropdown, 'BOTTOMLEFT', 20, -20)
 
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
@@ -504,7 +502,6 @@ InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 function E:PLAYER_REGEN_DISABLED()
 	if AIO:IsVisible() then
-		--InterfaceOptionsFrame_Show()
 		InterfaceOptionsFrame:Hide()
 	end
 end

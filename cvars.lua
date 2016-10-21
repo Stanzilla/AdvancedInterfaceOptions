@@ -5,29 +5,28 @@ local _G = _G
 -- GLOBALS: UIDropDownMenu_AddButton
 
 addon.hiddenOptions = {
+	-- Names
 	["UnitNameOwn"] = { prettyName = UNIT_NAME_OWN, description = OPTION_TOOLTIP_UNIT_NAME_OWN, type = "boolean" },
 	["UnitNameNPC"] = { prettyName = UNIT_NAME_NPC, description = OPTION_TOOLTIP_UNIT_NAME_NPC, type = "boolean" },
 	["UnitNameNonCombatCreatureName"] = { prettyName = UNIT_NAME_NONCOMBAT_CREATURE, description = OPTION_TOOLTIP_UNIT_NAME_NONCOMBAT_CREATURE, type = "boolean" },
 	["UnitNamePlayerGuild"] = { prettyName = UNIT_NAME_GUILD, description = OPTION_TOOLTIP_UNIT_NAME_GUILD, type = "boolean" },
 	["UnitNameGuildTitle"] = { prettyName = UNIT_NAME_GUILD_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_GUILD_TITLE , type = "boolean" },
 	["UnitNamePlayerPVPTitle"] = { prettyName = UNIT_NAME_PLAYER_TITLE, description = OPTION_TOOLTIP_UNIT_NAME_PLAYER_TITLE, type = "boolean" },
-
 	["UnitNameFriendlyPlayerName"] = { prettyName = UNIT_NAME_FRIENDLY, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY, type = "boolean" },
 	["UnitNameFriendlyPetName"] = { prettyName = UNIT_NAME_FRIENDLY_PETS, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_PETS, type = "boolean" },
 	["UnitNameFriendlyGuardianName"] = { prettyName = UNIT_NAME_FRIENDLY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_GUARDIANS, type = "boolean" },
 	["UnitNameFriendlyTotemName"] = { prettyName = UNIT_NAME_FRIENDLY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAME_FRIENDLY_TOTEMS, type = "boolean" },
-
+	["UnitNameFriendlyMinionName"] = { prettyName = UNIT_NAME_FRIENDLY_MINIONS, description = "", type = "boolean"},
 	["UnitNameEnemyPlayerName"] = { prettyName = UNIT_NAME_ENEMY, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY, type = "boolean" },
 	["UnitNameEnemyPetName"] = { prettyName = UNIT_NAME_ENEMY_PETS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_PETS, type = "boolean" },
 	["UnitNameEnemyGuardianName"] = { prettyName = UNIT_NAME_ENEMY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_GUARDIANS, type = "boolean" },
 	["UnitNameEnemyTotemName"] = { prettyName = UNIT_NAME_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAME_ENEMY_TOTEMS, type = "boolean" },
+	["UnitNameEnemyMinionName"] = { prettyName = UNIT_NAME_ENEMY_MINIONS, description = "", type = "boolean"},
 	["UnitNameForceHideMinus"] = { prettyName = UNIT_NAME_HIDE_MINUS, description = OPTION_TOOLTIP_UNIT_NAME_HIDE_MINUS, type = "boolean" },
-
 	["UnitNameFriendlySpecialNPCName"] = { prettyName = NPC_NAMES_DROPDOWN_TRACKED, description = NPC_NAMES_DROPDOWN_TRACKED_TOOLTIP, type = "boolean"},
 	["UnitNameHostleNPC"] = { prettyName = "Hostile NPCs", description = "Display names for hostile NPCs", type = "boolean"},
 	["UnitNameInteractiveNPC"] = { prettyName = "Interactive NPCs", description = "Display names for interactive NPCs", type = "boolean"},
-	["ShowQuestUnitCircles"] = { prettyName = "Quest Unit Circles", description = "Determines if units related to a quest display an indicator on the ground", type = "boolean"},
-
+	-- Nameplates
 	["nameplateShowFriends"] = { prettyName = UNIT_NAMEPLATES_SHOW_FRIENDS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_FRIENDS, type = "boolean" },
 	["nameplateShowFriendlyPets"] = { prettyName = UNIT_NAMEPLATES_SHOW_FRIENDLY_PETS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_FRIENDLY_PETS, type = "boolean" },
 	["nameplateShowFriendlyGuardians"] = { prettyName = UNIT_NAMEPLATES_SHOW_FRIENDLY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_FRIENDLY_GUARDIANS, type = "boolean" },
@@ -37,7 +36,6 @@ addon.hiddenOptions = {
 	["nameplateShowEnemyGuardians"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_GUARDIANS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_GUARDIANS, type = "boolean" },
 	["nameplateShowEnemyTotems"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_TOTEMS, type = "boolean" },
 	["nameplateShowEnemyMinus"] = { prettyName = UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, description = OPTION_TOOLTIP_UNIT_NAMEPLATES_SHOW_ENEMY_MINUS, type = "boolean" },
-	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
 	["nameplateOtherAtBase"] = { prettyName = "Nameplate at Base", description = "Position other nameplates at the base, rather than overhead. 2=under unit, 0=over unit", type = "boolean" },
 	["nameplateOverlapH"] = { prettyName = "Nameplate Overlap (Horizontal)", description = "Percentage amount for horizontal overlap of nameplates", type = "number" },
 	["nameplateOverlapV"] = { prettyName = "Nameplate Overlap (Vertical)", description = "Percentage amount for vertical overlap of nameplates", type = "number" },
@@ -70,6 +68,13 @@ addon.hiddenOptions = {
 	["nameplateShowSelf"] = { prettyName = "Show Nameplate Resource Bar", description = "Display class resource bar. 0=off 1=on", type = "number" },
 	["nameplateShowAll"] = { prettyName = "Always Show Nameplates", description = "Show nameplates at all times.", type = "number" },
 	["nameplateMotion"] = { prettyName = "Nameplate Motion Type", description = "0 = Overlapping - 1 = Stacking - 2 = Spreading", type = "number" },
+	["namePlateFriendlySize"] = { prettyName = "", description = "", type = "number"},
+	["namePlateEnemySize"] = { prettyName = "", description = "", type = "number"},
+	["namePlateSelfClickThrough"] = { prettyName = "", description = "", type = "number"},
+	["namePlateFriendlyClickThrough"] = { prettyName = "", description = "", type = "number"},
+	["namePlateEnemyClickThrough"] = { prettyName = "", description = "", type = "number"},
+	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean"},
+	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
 	["lootLeftmostBag"] = { prettyName = REVERSE_NEW_LOOT_TEXT, description = OPTION_TOOLTIP_REVERSE_NEW_LOOT, type = "boolean" },
@@ -83,7 +88,7 @@ addon.hiddenOptions = {
 	["secureAbilityToggle"] = { prettyName = SECURE_ABILITY_TOGGLE, description = OPTION_TOOLTIP_SECURE_ABILITY_TOGGLE, type = "boolean" },
 	["scriptErrors"] = { prettyName = SHOW_LUA_ERRORS, description = OPTION_TOOLTIP_SHOW_LUA_ERRORS, type = "boolean" },
 	["lootUnderMouse"] = { prettyName = LOOT_UNDER_MOUSE_TEXT, description = OPTION_TOOLTIP_LOOT_UNDER_MOUSE_TEXT, type = "boolean" },
-
+	["ShowQuestUnitCircles"] = { prettyName = "Quest Unit Circles", description = "Determines if units related to a quest display an indicator on the ground", type = "boolean"},
 	["autoLootDefault"] = { prettyName = AUTO_LOOT_DEFAULT_TEXT, description = OPTION_TOOLTIP_AUTO_LOOT_DEFAULT, type = "boolean" },
 	["threatShowNumeric"] = { prettyName = SHOW_NUMERIC_THREAT, description = OPTION_TOOLTIP_SHOW_NUMERIC_THREAT, type = "boolean" },
 	["showLootSpam"] = { prettyName = SHOW_LOOT_SPAM, description = OPTION_TOOLTIP_SHOW_LOOT_SPAM, type = "boolean" },
@@ -91,7 +96,6 @@ addon.hiddenOptions = {
 	["watchFrameIgnoreCursor"] = { prettyName = OBJECTIVES_IGNORE_CURSOR_TEXT, description = OPTION_TOOLTIP_OBJECTIVES_IGNORE_CURSOR, type = "boolean" },
 	["guildMemberNotify"] = { prettyName = GUILDMEMBER_ALERT, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
 	["showArenaEnemyFrames"] = { prettyName = SHOW_ARENA_ENEMY_FRAMES_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_FRAMES, type = "boolean" },
-
 	["autoClearAFK"] = { prettyName = nil, description = OPTION_TOOLTIP_CLEAR_AFK, type = "boolean" },
 	["colorblindWeaknessFactor"] = { prettyName = nil, description = OPTION_TOOLTIP_ADJUST_COLORBLIND_STRENGTH, type = "boolean" },
 	["autoLootDefault"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_LOOT_DEFAULT, type = "boolean" },
@@ -103,7 +107,7 @@ addon.hiddenOptions = {
 	["chatBubblesParty"] = { prettyName = nil, description = OPTION_TOOLTIP_PARTY_CHAT_BUBBLES, type = "boolean" },
 	["enableTwitter"] = { prettyName = nil, description = OPTION_TOOLTIP_SOCIAL_ENABLE_TWITTER_FUNCTIONALITY, type = "boolean" },
 	["threatPlaySounds"] = { prettyName = nil, description = OPTION_TOOLTIP_PLAY_AGGRO_SOUNDS, type = "boolean" },
-
+	-- Toasts mmhhh...Toast.
 	["showToastOnline"] = { prettyName = SHOW_TOAST_ONLINE_TEXT, description = OPTION_TOOLTIP_SHOW_TOAST_ONLINE, type = "boolean" },
 	["showToastOffline"] = { prettyName = SHOW_TOAST_OFFLINE_TEXT, description = OPTION_TOOLTIP_SHOW_TOAST_OFFLINE, type = "boolean" },
 	["showToastBroadcast"] = { prettyName = SHOW_TOAST_BROADCAST_TEXT, description = OPTION_TOOLTIP_SHOW_TOAST_BROADCAST, type = "boolean" },
@@ -131,11 +135,12 @@ addon.hiddenOptions = {
 	["MaxSpellStartRecoveryOffset"] = { prettyName = LAG_TOLERANCE, description = "Determines how far ahead of the \'end of a spell\' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system. Ideally, you\'ll want to set this to your in-game latency. Note: For this cvar to work, reducedLagTolerance must be enabled.", type = "number" },
 	["advancedCombatLogging"] = { prettyName = nil, description = OPTION_TOOLTIP_ADVANCED_COMBAT_LOGGING, type = "boolean" },
 	["disableServerNagle"] = { prettyName = nil, description = OPTION_TOOLTIP_OPTIMIZE_NETWORK_SPEED, type = "boolean" },
+	-- Camera
 	["cameraYawSmoothSpeed"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_FOLLOW_SPEED, type = "number" },
 	["cameraWaterCollision"] = { prettyName = nil, description = OPTION_TOOLTIP_WATER_COLLISION, type = "boolean" },
 	["cameraBobbing"] = { prettyName = nil, description = OPTION_TOOLTIP_HEAD_BOB, type = "boolean" },
 	["cameraPivot"] = { prettyName = nil, description = OPTION_TOOLTIP_SMART_PIVOT, type = "boolean" },
-	["cameraDistanceMaxFactor"] = { prettyName = MAX_FOLLOW_DIST, description = OPTION_TOOLTIP_MAX_FOLLOW_DIST, type = "number" },
+	["cameraDistanceMaxZoomFactor"] = { prettyName = MAX_FOLLOW_DIST, description = OPTION_TOOLTIP_MAX_FOLLOW_DIST, type = "number" },
 	["cameraYawMoveSpeed"] = { prettyName = MOUSE_LOOK_SPEED, description = OPTION_TOOLTIP_MOUSE_LOOK_SPEED, type = "number" },
 	["cameraTerrainTilt"] = { prettyName = nil, description = OPTION_TOOLTIP_FOLLOW_TERRAIN, type = "boolean" },
 	["cameraHeadMovementStrength"] = { prettyName = nil, description = nil, type = "number" },
@@ -168,15 +173,12 @@ addon.hiddenOptions = {
 	["chatBubbles"] = { prettyName = nil, description = OPTION_TOOLTIP_CHAT_BUBBLES, type = "boolean" },
 	["autoDismountFlying"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_DISMOUNT_FLYING, type = "boolean" },
 	["bottomRightActionBar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_MULTIBAR2, type = "boolean" },
-
 	["showPartyBackground"] = { prettyName = SHOW_PARTY_BACKGROUND_TEXT, description = OPTION_TOOLTIP_SHOW_PARTY_BACKGROUND, type = "boolean" },
 	["showPartyPets"] = { prettyName = SHOW_PARTY_PETS_TEXT, description = OPTION_TOOLTIP_SHOW_PARTY_PETS, type = "boolean" },
 	["showArenaEnemyFrames"] = { prettyName = SHOW_ARENA_ENEMY_FRAMES_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_FRAMES, type = "boolean" },
 	["showArenaEnemyCastbar"] = { prettyName = SHOW_ARENA_ENEMY_CASTBAR_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_CASTBAR, type = "boolean" },
 	["showArenaEnemyPets"] = { prettyName = SHOW_ARENA_ENEMY_PETS_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_PETS, type = "boolean" },
 	["fullSizeFocusFrame"] = { prettyName = FULL_SIZE_FOCUS_FRAME_TEXT, description = OPTION_TOOLTIP_FULL_SIZE_FOCUS_FRAME, type = "boolean" },
-
-	--["showChatIcons"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_CHAT_ICONS, type = "boolean" },
 	["spamFilter"] = { prettyName = nil, description = OPTION_TOOLTIP_SPAM_FILTER, type = "boolean" },
 	["profanityFilter"] = { prettyName = nil, description = OPTION_TOOLTIP_PROFANITY_FILTER, type = "boolean" },
 	["EnableVoiceChat"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_VOICECHAT, type = "boolean" },
@@ -198,9 +200,7 @@ addon.hiddenOptions = {
 	["OutboundChatVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_VOICE_INPUT_VOLUME, type = "number" },
 	["autoQuestWatch"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_QUEST_WATCH, type = "boolean" },
 	["SpellTooltip_DisplayAvgValues"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_POINTS_AS_AVG, type = "boolean" },
-
 	["xpBarText"] = { prettyName = XP_BAR_TEXT, description = OPTION_TOOLTIP_XP_BAR, type = "boolean" },
-
 	["bottomLeftActionBar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_MULTIBAR1, type = "boolean" },
 	["showVKeyCastbarSpellName"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_CASTBAR_IN_V_KEY_SPELL_NAME, type = "boolean" },
 	["buffDurations"] = { prettyName = SHOW_BUFF_DURATION_TEXT, description = OPTION_TOOLTIP_SHOW_BUFF_DURATION, type = "boolean" },
@@ -209,6 +209,7 @@ addon.hiddenOptions = {
 	["deselectOnClick"] = { prettyName = nil, description = OPTION_TOOLTIP_GAMEFIELD_DESELECT, type = "boolean" },
 	["autoQuestProgress"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_QUEST_PROGRESS, type = "boolean" },
 	["UberTooltips"] = { prettyName = USE_UBERTOOLTIPS, description = OPTION_TOOLTIP_USE_UBERTOOLTIPS, type = "boolean" },
+	-- Sound
 	["Sound_EnableAllSound"] = { prettyName = ENABLE_SOUND, description = OPTION_TOOLTIP_ENABLE_SOUND, type = "boolean" },
 	["Sound_EnableDSPEffects"] = { prettyName = ENABLE_DSP_EFFECTS, description = OPTION_TOOLTIP_ENABLE_DSP_EFFECTS, type = "boolean" },
 	["Sound_SFXVolume"] = { prettyName = SOUND_VOLUME, description = OPTION_TOOLTIP_SOUND_VOLUME, type = "number" },
@@ -228,6 +229,7 @@ addon.hiddenOptions = {
 	["Sound_EnableSFX"] = { prettyName = ENABLE_SOUNDFX, description = OPTION_TOOLTIP_ENABLE_SOUNDFX, type = "boolean" },
 	["Sound_ListenerAtCharacter"] = { prettyName = ENABLE_SOUND_AT_CHARACTER, description = OPTION_TOOLTIP_ENABLE_SOUND_AT_CHARACTER, type = "boolean" },
 	["Sound_EnablePetSounds"] = { prettyName = ENABLE_PET_SOUNDS, description = OPTION_TOOLTIP_ENABLE_PET_SOUNDS, type = "boolean" },
+	["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean"},
 
 	["showTargetOfTarget"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_OF_TARGET, type = "boolean" },
 	["guildMemberNotify"] = { prettyName = nil, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
@@ -244,8 +246,7 @@ addon.hiddenOptions = {
 
 	["noBuffDebuffFilterOnTarget"] = { prettyName = "No Debuff Filter on Target", description = "Do not filter buffs or debuffs at all on targets", type = "boolean"},
 	["showHonorAsExperience"] = { prettyName = nil, description = "Show the honor bar as a regular experience bar in place of rep", type = "boolean"},
-	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean"},
-	["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean"},
+	-- Tab-Targetting
 	["TargetPriorityAllowAnyOnScreen"] = { prettyName = nil, description = "If set, and no 100% correct target is available, allow selecting any valid in-range target (2 = also out-of-range)", type = "boolean"},
 	["TargetNearestUseOld"] = { prettyName = nil, description = "Use pre-7.0 'nearest target' functionality", type = "boolean"},
 	["TargetPriorityCombatLock"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player.", type = "boolean"},
@@ -256,14 +257,13 @@ addon.hiddenOptions = {
 	["TargetPriorityPvpLock"] = { prettyName = nil, description = "Lock to important pvp targets when starting from a pvp target.", type = "boolean"},
 	["TargetPriorityPvpLockHighlight"] = { prettyName = nil, description = "Lock to players when starting from a player target in pvp. (while doing hold-to-target)", type = "boolean"},
 	["TargetPriorityValueBank"] = { prettyName = nil, description = "Selects the scoring values bank for calculating target priority order", type = "boolean"},
+
 	["unitClutter"] = { prettyName = nil, description = "Enables/Disables unit clutter", type = "boolean"},
 	["unitClutterInstancesOnly"] = { prettyName = nil, description = "Whether or not to use unit clutter in instances only (0 or 1)", type = "boolean"},
 	["unitClutterPlayerThreshold"] = { prettyName = nil, description = "The number of players that have to be nearby to trigger unit clutter", type = "boolean"},
-	["UnitNameEnemyMinionName"] = { prettyName = UNIT_NAME_ENEMY_MINIONS, description = "", type = "boolean"},
-	["UnitNameFriendlyMinionName"] = { prettyName = UNIT_NAME_FRIENDLY_MINIONS, description = "", type = "boolean"},
+
 	["comboPointLocation"] = { prettyName = nil, description = "Location of combo points in UI. 1=target, 2=self", type = "number"},
 	["doNotFlashLowHealthWarning"] = { prettyName = nil, description = "Do not flash your screen red when you are low on health.", type = "boolean"},
-	["enableFloatingCombatText"] = { prettyName = SHOW_COMBAT_TEXT_TEXT, description = OPTION_TOOLTIP_SHOW_COMBAT_TEXT , type = "boolean"},
 	["findYourselfAnywhere"] = { prettyName = nil, description = "Always Highlight your character", type = "boolean"},
 	["findYourselfAnywhereOnlyInCombat"] = { prettyName = nil, description = "Highlight your character only when in combat", type = "boolean"},
 	["findYourselfInBG"] = { prettyName = nil, description = "Always Highlight your character in Battlegrounds", type = "boolean"},
@@ -272,6 +272,8 @@ addon.hiddenOptions = {
 	["findYourselfInRaidOnlyInCombat"] = { prettyName = nil, description = "Highlight your character in Raids only when in combat", type = "boolean"},
 	["findYourselfMode"] = { prettyName = nil, description = "Highlight you character. 0 = circle, 1 = circle & outline", type = "boolean"},
 	["flashErrorMessageRepeats"] = { prettyName = nil, description = "Flashes the center screen red error text if the same message is fired.", type = "boolean"},
+	-- Floating Combat Text
+	["enableFloatingCombatText"] = { prettyName = SHOW_COMBAT_TEXT_TEXT, description = OPTION_TOOLTIP_SHOW_COMBAT_TEXT , type = "boolean"},
 	["floatingCombatTextAllSpellMechanics"] = { prettyName = nil, description = "", type = "boolean"},
 	["floatingCombatTextAuras"] = { prettyName = COMBAT_TEXT_SHOW_AURAS_TEXT, description = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_AURAS , type = "boolean"},
 	["floatingCombatTextCombatDamage"] = { prettyName = SHOW_DAMAGE_TEXT, description = OPTION_TOOLTIP_SHOW_DAMAGE, type = "boolean"},
@@ -298,13 +300,14 @@ addon.hiddenOptions = {
 	["floatingCombatTextRepChanges"] = { prettyName = COMBAT_TEXT_SHOW_REPUTATION_TEXT, description = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_REPUTATION, type = "boolean"},
 	["floatingCombatTextSpellMechanics"] = { prettyName = SHOW_TARGET_EFFECTS, description = OPTION_TOOLTIP_SHOW_TARGET_EFFECTS, type = "boolean"},
 	["floatingCombatTextSpellMechanicsOther"] = { prettyName = SHOW_OTHER_TARGET_EFFECTS, description = OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS, type = "boolean"},
+
 	["statusText"] = { prettyName = "Status Text", description = "Whether the status bars show numeric health/mana values", type = "boolean"},
 	["violenceLevel"] = { prettyName = "Violence Level", description = "Sets the violence level of the game", type = "number"},
 	["ffxGlow"] = { prettyName = "FFX Glow", description = "full screen glow effect", type = "boolean"},
 	["releaseUITextures"] = { prettyName = "Release UI Textures", description = "Release Hidden UI Textures by default", type = "boolean"},
 	["alwaysCompareItems"] = { prettyName = "Always Compare Items", description = "Always show item comparison tooltips", type = "boolean"},
 	["showSpenderFeedback"] = { prettyName= "Show spender feedback", description = "Shows/Hide the flash after spending rage/mana/etc in resource bars.", type = "boolean"},
-
+	-- Loss of Control UI
 	["lossOfControlFull"] = { prettyName = "Loss of Control: Full", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 	["lossOfControlSilence"] = { prettyName = "Loss of Control: Silence", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 	["lossOfControlInterrupt"] = { prettyName = "Loss of Control: Interrupt", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},

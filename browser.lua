@@ -150,7 +150,7 @@ function E:PLAYER_LOGIN()
 	ListFrame:SetItems(CVarTable)
 	ListFrame:SortBy(2)
 	--FilterCVarList()
-	
+
 	-- We don't really want the user to be able to do anything else while the input box is open
 	-- I'd rather make this a child of the input box, but I can't get it to show up above its child
 	-- todo: show default value around the input box somewhere while it's active
@@ -179,7 +179,7 @@ function E:PLAYER_LOGIN()
 		self:ClearFocus()
 		self:Hide()
 	end)
-	
+
 	CVarInputBox:SetScript('OnEnterPressed', function(self)
 		-- todo: I don't like this, change it
 		oSetCVar(self.cvar, self:GetText() or '')
