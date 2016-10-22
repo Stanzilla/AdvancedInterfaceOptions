@@ -313,4 +313,6 @@ addon.hiddenOptions = {
 	["lossOfControlInterrupt"] = { prettyName = "Loss of Control: Interrupt", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 	["lossOfControlDisarm"] = { prettyName = "Loss of Control: Disarm", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 	["lossOfControlRoot"] = { prettyName = "Loss of Control: Root", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
+	["synchronizeMacros"] = { prettyName = "Synchronize Macros", description = "Toggles synchronizing Macros with the server on/off", type = "boolean"},
+	["synchronizeConfig"] = { prettyName = "Synchronize Config", description = "Toggles synchronizing settings with the server on/off", type = "boolean"},
 }
