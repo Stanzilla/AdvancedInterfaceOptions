@@ -315,4 +315,5 @@ addon.hiddenOptions = {
 	["lossOfControlRoot"] = { prettyName = "Loss of Control: Root", description = "Sets the type of the Loss of Control alert. (0 = Off, 1 = Only Alert, 2 = Show Full Duration)", type = "number"},
 	["synchronizeMacros"] = { prettyName = "Synchronize Macros", description = "Toggles synchronizing Macros with the server on/off", type = "boolean"},
 	["synchronizeConfig"] = { prettyName = "Synchronize Config", description = "Toggles synchronizing settings with the server on/off", type = "boolean"},
+	["cursorsizepreferred"] = { prettyName = "Cursor Size", description = "0 = 32x32, 1 = 48x48, 2 = 64x64, -1 = autodetect", type = "number"},
 }
