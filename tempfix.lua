@@ -34,7 +34,9 @@ end)
 OkayGo:SetScript('OnMouseUp', function(self)
 	InterfaceOptionsFrameOkay:SetButtonState('NORMAL', false)
 	if MouseIsOver(self) and not InCombatLockdown() then
-		InterfaceOptionsFrameCancel:Click() -- taints if executed in combat, but it shouldn't even be possible to click this in combat
+		--InterfaceOptionsFrame:Hide()
+		HideUIPanel(InterfaceOptionsFrame)
+		--InterfaceOptionsFrameCancel:Click() -- taints regardless of whether you're in combat
 	end
 end)
 
