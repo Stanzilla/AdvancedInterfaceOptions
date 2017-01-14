@@ -142,9 +142,10 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.maxText:SetText(maxRange)
 	slider.text:SetText(label)
 
-	local valueBox = CreateFrame('editbox', nil, slider, 'InputBoxTemplate')
+	local valueBox = CreateFrame('editbox', nil, slider)
 	valueBox:SetPoint('TOP', slider, 'BOTTOM', 0, 0)
-	valueBox:SetSize(40, 20)
+	valueBox:SetSize(60, 14)
+	valueBox:SetFontObject(GameFontHighlightSmall)
 	valueBox:SetAutoFocus(false)
 	--valueBox:SetNumeric(true) -- doesn't let us use decimals
 	valueBox:SetJustifyH('CENTER')
@@ -173,6 +174,14 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 		self:SetText(self:GetText():gsub('[^%.0-9]+', ''):gsub('(%..*)%.', '%1'))
 	end)
 	valueBox:SetMaxLetters(5)
+	
+	valueBox:SetBackdrop({
+		bgFile = 'Interface/ChatFrame/ChatFrameBackground',
+		edgeFile = 'Interface/ChatFrame/ChatFrameBackground',
+		tile = true, edgeSize = 1, tileSize = 5,
+	})
+	valueBox:SetBackdropColor(0, 0, 0, 0.5)
+	valueBox:SetBackdropBorderColor(0.3, 0.3, 0.3, 0.8)
 	
 	slider.valueBox = valueBox
 
