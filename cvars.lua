@@ -68,7 +68,7 @@ addon.hiddenOptions = {
 	["nameplateResourceOnTarget"] = { prettyName = "Nameplate Resource On Target", description = "Nameplate class resource overlay mode. 0=self, 1=target", type = "number" },
 	["nameplateShowSelf"] = { prettyName = "Show Nameplate Resource Bar", description = "Display class resource bar. 0=off 1=on", type = "number" },
 	["nameplateShowAll"] = { prettyName = "Always Show Nameplates", description = "Show nameplates at all times.", type = "number" },
-	["nameplateMotion"] = { prettyName = "Nameplate Motion Type", description = "0 = Overlapping - 1 = Stacking - 2 = Spreading", type = "number" },
+	["nameplateMotion"] = { prettyName = "Nameplate Motion Type", description = "0 = Overlapping - 1 = Stacking", type = "number" },
 	["namePlateFriendlySize"] = { prettyName = "", description = "", type = "number"},
 	["namePlateEnemySize"] = { prettyName = "", description = "", type = "number"},
 	["namePlateSelfClickThrough"] = { prettyName = "", description = "", type = "number"},
