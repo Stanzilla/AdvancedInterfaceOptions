@@ -53,7 +53,7 @@ end
 -- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 -- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- GLOBALS: BlizzardOptionsPanel_UpdateCombatText
+-- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
@@ -63,7 +63,7 @@ AIO.name = addonName
 -- Some wrapper functions
 
 -------------
--- Checkbox
+-- Checkbox widget
 -------------
 local function checkboxGetCVar(self) return GetCVarBool(self.cvar) end
 local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
@@ -93,7 +93,7 @@ local function newCheckbox(parent, cvar, getValue, setValue)
 end
 
 -----------
--- Slider
+-- Slider widget
 -----------
 local function sliderGetCVar(self) return GetCVar(self.cvar) end
 local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
@@ -103,7 +103,6 @@ local function sliderDisable(self)
 	self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.minText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.maxText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
-	--self.valueText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.valueBox:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.valueBox:SetEnabled(false)
 end
@@ -112,7 +111,6 @@ local function sliderEnable(self)
 	self.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.minText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.maxText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-	--self.valueText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.valueBox:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.valueBox:SetEnabled(true)
 end
@@ -121,7 +119,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = cvarTable['prettyName'] or cvar
 	local description = cvarTable['description'] or ''
-	
+
 	local _, defaultValue = GetCVarInfo(cvar)
 	description = description .. '\n\nDefault Value: ' .. (defaultValue or '')
 	local slider = CreateFrame('Slider', 'AIOSlider' .. cvar, parent, 'OptionsSliderTemplate')
@@ -147,7 +145,6 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	valueBox:SetSize(60, 14)
 	valueBox:SetFontObject(GameFontHighlightSmall)
 	valueBox:SetAutoFocus(false)
-	--valueBox:SetNumeric(true) -- doesn't let us use decimals
 	valueBox:SetJustifyH('CENTER')
 	valueBox:SetScript('OnEscapePressed', function(self)
 		-- ignore input, reset value to current cvar
@@ -174,7 +171,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 		self:SetText(self:GetText():gsub('[^%.0-9]+', ''):gsub('(%..*)%.', '%1'))
 	end)
 	valueBox:SetMaxLetters(5)
-	
+
 	valueBox:SetBackdrop({
 		bgFile = 'Interface/ChatFrame/ChatFrameBackground',
 		edgeFile = 'Interface/ChatFrame/ChatFrameBackground',
@@ -182,7 +179,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	})
 	valueBox:SetBackdropColor(0, 0, 0, 0.5)
 	valueBox:SetBackdropBorderColor(0.3, 0.3, 0.3, 0.8)
-	
+
 	slider.valueBox = valueBox
 
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
@@ -195,6 +192,10 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	return slider
 end
 
+
+-----------
+-- Main options
+-----------
 local title = AIO:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 title:SetPoint("TOPLEFT", 16, -16)
 title:SetText(AIO.name)
@@ -303,7 +304,7 @@ lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
 enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
 
 
--- Chat settings
+-- Chat section
 local AIO_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_Chat:Hide()
 AIO_Chat:SetAllPoints()
@@ -323,7 +324,7 @@ SubText_Chat:SetJustifyV('TOP')
 SubText_Chat:SetJustifyH('LEFT')
 SubText_Chat:SetPoint('TOPLEFT', Title_Chat, 'BOTTOMLEFT', 0, -8)
 SubText_Chat:SetPoint('RIGHT', -32, 0)
-SubText_Chat:SetText('These options allow you to modify chat settings.') -- TODO
+SubText_Chat:SetText('These options allow you to modify various chat settings that are no longer part of the default UI.')
 
 local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
@@ -332,7 +333,7 @@ chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
 
 
--- Floating Combat Text settings
+-- Floating Combat Text section
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_FCT:Hide()
 AIO_FCT:SetAllPoints()
@@ -448,7 +449,7 @@ fctPeriodicEnergyGains:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -4)
 fctHonorGains:SetPoint("TOPLEFT", fctPeriodicEnergyGains, "BOTTOMLEFT", 0, -4)
 fctAuras:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -4)
 
--- Nameplate settings
+-- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_NP:Hide()
 AIO_NP:SetAllPoints()
@@ -481,7 +482,7 @@ nameplateAtBase:SetScript('OnClick', function(self)
 	self:SetValue(checked and 2 or 0)
 end)
 
--- Combat settings
+-- Combat section
 local AIO_C = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_C:Hide()
 AIO_C:SetAllPoints()
@@ -528,6 +529,7 @@ reducedLagTolerance:HookScript('OnClick', function(self)
 		spellStartRecovery:Disable()
 	end
 end)
+
 reducedLagTolerance:HookScript('OnShow', function(self)
 	if self:GetChecked() then
 		spellStartRecovery:Enable()
@@ -535,7 +537,6 @@ reducedLagTolerance:HookScript('OnShow', function(self)
 		spellStartRecovery:Disable()
 	end
 end)
-
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
