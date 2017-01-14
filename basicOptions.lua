@@ -103,20 +103,27 @@ local function sliderDisable(self)
 	self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.minText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
 	self.maxText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
-	self.valueText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	--self.valueText:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	self.valueBox:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+	self.valueBox:SetEnabled(false)
 end
 
 local function sliderEnable(self)
 	self.text:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.minText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
 	self.maxText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-	self.valueText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	--self.valueText:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	self.valueBox:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+	self.valueBox:SetEnabled(true)
 end
 
 local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
 	local cvarTable = addon.hiddenOptions[cvar]
 	local label = cvarTable['prettyName'] or cvar
-	local description = cvarTable['description'] or 'No description'
+	local description = cvarTable['description'] or ''
+	
+	local _, defaultValue = GetCVarInfo(cvar)
+	description = description .. '\n\nDefault Value: ' .. (defaultValue or '')
 	local slider = CreateFrame('Slider', 'AIOSlider' .. cvar, parent, 'OptionsSliderTemplate')
 
 	slider.cvar = cvar
@@ -135,14 +142,39 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.maxText:SetText(maxRange)
 	slider.text:SetText(label)
 
-	local valueText = slider:CreateFontString(nil, nil, 'GameFontHighlight')
-	valueText:SetPoint('TOP', slider, 'BOTTOM', 0, -5)
-	slider.valueText = valueText
+	local valueBox = CreateFrame('editbox', nil, slider, 'InputBoxTemplate')
+	valueBox:SetPoint('TOP', slider, 'BOTTOM', 0, 0)
+	valueBox:SetSize(40, 20)
+	valueBox:SetAutoFocus(false)
+	--valueBox:SetNumeric(true) -- doesn't let us use decimals
+	valueBox:SetJustifyH('CENTER')
+	valueBox:SetScript('OnEscapePressed', function(self)
+		-- ignore input, reset value to current cvar
+		local current, default = GetCVarInfo(slider.cvar)
+		self:SetText(current or default)
+		self:ClearFocus()
+	end)
+	valueBox:SetScript('OnEnterPressed', function(self)
+		local current, default = GetCVarInfo(slider.cvar)
+		local value = tonumber(self:GetText()) or current or default
+		local factor = 1 / stepSize
+		value = floor(value * factor + 0.5) / factor
+		value = max(minRange, min(maxRange, value))
+		slider:SetValue(value)
+		self:SetText(value)
+		self:ClearFocus()
+	end)
 	slider:HookScript('OnValueChanged', function(self, value)
 		local factor = 1 / stepSize
 		value = floor(value * factor + 0.5) / factor
-		valueText:SetText(value)
+		valueBox:SetText(value)
 	end)
+	valueBox:SetScript('OnChar', function(self) -- filter input to decimal values
+		self:SetText(self:GetText():gsub('[^%.0-9]+', ''):gsub('(%..*)%.', '%1'))
+	end)
+	valueBox:SetMaxLetters(5)
+	
+	slider.valueBox = valueBox
 
 	slider:HookScript('OnValueChanged', slider.SetCVarValue)
 
