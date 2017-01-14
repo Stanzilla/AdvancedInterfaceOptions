@@ -199,7 +199,14 @@ function E:PLAYER_LOGIN()
 		self:Hide()
 		FilterBox:SetFocus()
 	end)
-
+	
+	function E:PLAYER_REGEN_DISABLED()
+		if CVarInputBox:IsVisible() then
+			CVarInputBox:Hide()
+		end
+		FilterBox:GetScript('OnEscapePressed')(FilterBox)
+	end
+	
 	local LastClickTime = 0 -- Track double clicks on rows
 	ListFrame:SetScripts({
 		OnEnter = function(self)
@@ -269,7 +276,9 @@ hooksecurefunc('SetCVar', FilteredRefresh)
 hooksecurefunc('ConsoleExec', FilteredRefresh)
 
 SlashCmdList.CVAR = function()
-	InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
-	InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+	if not InCombatLockdown() then
+		InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+		InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
+	end
 end
 SLASH_CVAR1 = "/cvar"

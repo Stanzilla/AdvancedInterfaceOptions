@@ -39,10 +39,14 @@ function E:ADDON_LOADED(addon)
 end
 
 function addon:SetCVar(cvar, value) -- save our cvar to the db
-	if not AlwaysCharacterSpecificCVars[cvar] then
-		AdvancedInterfaceOptionsSaved.AccountVars[cvar] = value
+	if not InCombatLockdown() then
+		if not AlwaysCharacterSpecificCVars[cvar] then
+			AdvancedInterfaceOptionsSaved.AccountVars[cvar] = value
+		end
+		SetCVar(cvar, value)
+	else
+		--print("Can't modify interface options in combat")
 	end
-	SetCVar(cvar, value)
 end
 
 -- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
@@ -499,12 +503,13 @@ InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
-
+--[[
 function E:PLAYER_REGEN_DISABLED()
 	if AIO:IsVisible() then
 		InterfaceOptionsFrame:Hide()
 	end
 end
+--]]
 
 -- Slash handler
 SlashCmdList.AIO = function(msg)
