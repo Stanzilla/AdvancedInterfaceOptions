@@ -35,6 +35,7 @@ function E:ADDON_LOADED(addon)
 			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
 				if GetCVar(cvar) ~= value then
 					SetCVar(cvar, value)
+					-- print('Loading cvar', cvar, value)
 				end
 			end
 		end
@@ -328,7 +329,8 @@ local enforceBox = newCheckbox(AIO, nil,
 		AdvancedInterfaceOptionsSaved.EnforceSettings = checked
 		if checked then
 			AdvancedInterfaceOptionsSaved.AccountVars = {}
-			for widget, cvar in pairs(Widgets) do
+			--for widget, cvar in pairs(Widgets) do
+			for cvar in pairs(addon.hiddenOptions) do
 				local current, default = GetCVarInfo(cvar)
 				if not AlwaysCharacterSpecificCVars[cvar] and current ~= default then
 					AdvancedInterfaceOptionsSaved.AccountVars[cvar] = current
@@ -355,7 +357,7 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 		self:GetParent().button1:SetEnabled(self:GetText():lower() == 'irreversible')
 	end,
 	OnAccept = function()
-		for widget, cvar in pairs(Widgets) do
+		for cvar in pairs(addon.hiddenOptions) do
 			local current, default = GetCVarInfo(cvar)
 			if current ~= default then
 				print(format('|cffaaaaff%s|r reset from |cffffaaaa%s|r to |cffaaffaa%s|r', tostring(cvar), tostring(current), tostring(default)))
