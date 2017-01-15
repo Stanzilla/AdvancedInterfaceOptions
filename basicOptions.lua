@@ -6,11 +6,14 @@ local _G = _G
 AdvancedInterfaceOptionsSaved = {
 	AccountVars = {}, -- account-wide cvars to be re-applied on login, [cvar] = value
 	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
+	EnforceSettings = false, -- true to load cvars from our saved variables every time we log in
+	-- this will override anything that sets a cvar outside of this addon
 }
 
 local AlwaysCharacterSpecificCVars = {
 	-- list of cvars that should never be account-wide
 	-- [cvar] = true
+	-- stopAutoAttackOnTargetChange
 }
 
 local AddonLoaded, VariablesLoaded = false, false
@@ -22,28 +25,28 @@ function E:VARIABLES_LOADED()
 end
 
 function E:ADDON_LOADED(addon)
-	--[[
 	if addon == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
 		AddonLoaded = true
-		if VariablesLoaded then
+		if VariablesLoaded and AdvancedInterfaceOptionsSaved.EnforceSettings then
 			if not AdvancedInterfaceOptionsSaved.AccountVars then
 				AdvancedInterfaceOptionsSaved['AccountVars'] = {}
 			end
 			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
-				SetCVar(cvar, value)
+				if GetCVar(cvar) ~= value then
+					SetCVar(cvar, value)
+				end
 			end
 		end
 	end
-	--]]
 end
 
 function addon:SetCVar(cvar, value) -- save our cvar to the db
 	if not InCombatLockdown() then
-		if not AlwaysCharacterSpecificCVars[cvar] then
-			AdvancedInterfaceOptionsSaved.AccountVars[cvar] = value
-		end
 		SetCVar(cvar, value)
+		if not AlwaysCharacterSpecificCVars[cvar] then
+			AdvancedInterfaceOptionsSaved.AccountVars[cvar] = GetCVar(cvar) -- not necessarily the same as "value"
+		end
 	else
 		--print("Can't modify interface options in combat")
 	end
@@ -62,6 +65,9 @@ AIO.name = addonName
 
 -- Some wrapper functions
 
+-- Register all of our widgets here so we can iterate over them
+local Widgets = {} -- [frame] = cvar
+
 -------------
 -- Checkbox widget
 -------------
@@ -74,10 +80,15 @@ local function checkboxOnClick(self)
 	self:SetValue(checked)
 end
 
-local function newCheckbox(parent, cvar, getValue, setValue)
+local function newCheckbox(parent, cvar, getValue, setValue, label, description)
 	local cvarTable = addon.hiddenOptions[cvar]
-	local label = cvarTable['prettyName'] or cvar
-	local description = _G[cvarTable['description']] or cvarTable['description'] or 'No description'
+	if cvarTable then
+		label = cvarTable['prettyName'] or cvar
+		description = _G[cvarTable['description']] or cvarTable['description'] or 'No description'
+	else
+		label = label or '[PH] Label'
+		description = description or '[PH] Description'
+	end
 	local check = CreateFrame("CheckButton", "AIOCheck" .. label, parent, "InterfaceOptionsCheckButtonTemplate")
 
 	check.cvar = cvar
@@ -89,6 +100,7 @@ local function newCheckbox(parent, cvar, getValue, setValue)
 	check.label:SetText(label)
 	check.tooltipText = label
 	check.tooltipRequirement = description
+	Widgets[ check ] = cvar
 	return check
 end
 
@@ -189,6 +201,8 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 
 	slider.tooltipText = label
 	slider.tooltipRequirement = description
+	
+	Widgets[ slider ] = cvar
 	return slider
 end
 
@@ -266,6 +280,7 @@ questSortingDropdown:HookScript("OnEnter", function(self)
 	end
 end)
 questSortingDropdown:HookScript("OnLeave", GameTooltip_Hide)
+Widgets[ questSortingDropdown ] = 'trackQuestSorting'
 
 local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
 actionCamModeLabel:SetPoint('TOPLEFT', questSortingDropdown, 'BOTTOMLEFT', 16, 0)
@@ -302,6 +317,67 @@ targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
 enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
+
+
+-- Checkbox to enforce all settings through reloads
+local enforceBox = newCheckbox(AIO, nil,
+	function(self) -- getter
+		 return not not AdvancedInterfaceOptionsSaved.EnforceSettings
+	end,
+	function(self, checked) -- setter
+		AdvancedInterfaceOptionsSaved.EnforceSettings = checked
+		if checked then
+			AdvancedInterfaceOptionsSaved.AccountVars = {}
+			for widget, cvar in pairs(Widgets) do
+				local current, default = GetCVarInfo(cvar)
+				if not AlwaysCharacterSpecificCVars[cvar] and current ~= default then
+					AdvancedInterfaceOptionsSaved.AccountVars[cvar] = current
+					-- print('Saving', cvar, 'as', current)
+				end
+			end
+		end
+	end,
+	'Enforce Settings on Startup',
+	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.\n\nThis will override other addons if they try to modify the same cvars.")
+enforceBox:SetPoint("LEFT", title, "RIGHT", 5, 0)
+
+-- Button to reset all of our settings back to their defaults
+StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
+	text = 'Type "IRREVERSIBLE" into the text box to reset all cvars to their default settings:',
+	button1 = 'RESET',
+	button2 = 'NO',
+	button3 = 'NO',
+	hasEditBox = true,
+	OnShow = function(self)
+		self.button1:SetEnabled(false)
+	end,
+	EditBoxOnTextChanged = function(self, data)
+		self:GetParent().button1:SetEnabled(self:GetText():lower() == 'irreversible')
+	end,
+	OnAccept = function()
+		for widget, cvar in pairs(Widgets) do
+			local current, default = GetCVarInfo(cvar)
+			if current ~= default then
+				print(format('|cffaaaaff%s|r reset from |cffffaaaa%s|r to |cffaaffaa%s|r', tostring(cvar), tostring(current), tostring(default)))
+				addon:SetCVar(cvar, default)
+			end
+		end
+		AIO:Hide()
+		AIO:Show()
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+	showAlert = true,
+}
+local resetButton = CreateFrame('button', nil, AIO, 'UIPanelButtonTemplate')
+resetButton:SetSize(120, 50)
+resetButton:SetText('RESET\nEVERYTHING')
+resetButton:SetPoint('BOTTOMRIGHT', -10, 10)
+resetButton:SetScript('OnClick', function(self)
+	StaticPopup_Show('AIO_RESET_EVERYTHING')
+end)
 
 
 -- Chat section
@@ -380,6 +456,7 @@ fctfloatmodeDropdown:HookScript("OnEnter", function(self)
 	end
 end)
 fctfloatmodeDropdown:HookScript("OnLeave", GameTooltip_Hide)
+Widgets[ fctfloatmodeDropdown ] = 'floatingCombatTextFloatMode'
 
 local revUVARINFO = {}
 for k, v in pairs(UVARINFO) do
