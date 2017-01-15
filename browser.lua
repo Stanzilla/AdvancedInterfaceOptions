@@ -1,6 +1,18 @@
 local addonName, addon = ...
 local _G = _G
 
+-- Go through list of cvars and remove any that don't currently exist
+local CVarList = {}
+for cvar in pairs(addon.hiddenOptions) do
+	local cvar_exists = pcall(function() return GetCVarDefault(cvar) end)
+	if cvar_exists then
+		CVarList[cvar] = addon.hiddenOptions[cvar]
+	-- else
+		-- addon.hiddenOptions[cvar] = nil -- can't do this because we have exceptions for some settings that aren't cvars, should probably restructure the database
+		-- print("Warning, CVar doesn't exist:", cvar)
+	end
+end
+
 local SetCVar = function(cvar, value)
 	addon:SetCVar(cvar, value)
 end
@@ -125,7 +137,7 @@ end
 local function RefreshCVarList()
 	wipe(CVarTable)
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
-	for cvar, tbl in pairs(addon.hiddenOptions) do
+	for cvar, tbl in pairs(CVarList) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
 		tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
 	end
@@ -212,7 +224,7 @@ function E:PLAYER_LOGIN()
 		OnEnter = function(self)
 			if self.value ~= '' then
 				GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
-				local cvarTable = addon.hiddenOptions[self.value]
+				local cvarTable = CVarList[self.value]
 				local _, defaultValue = GetCVarInfo(self.value)
 				if cvarTable['prettyName'] then --and _G[ cvarTable['prettyName'] ] then
 					GameTooltip:AddLine(cvarTable['prettyName'], nil, nil, nil, false)
