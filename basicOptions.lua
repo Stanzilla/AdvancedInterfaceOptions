@@ -8,6 +8,7 @@ AdvancedInterfaceOptionsSaved = {
 	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
 	EnforceSettings = false, -- true to load cvars from our saved variables every time we log in
 	-- this will override anything that sets a cvar outside of this addon
+	CustomVars = {},
 }
 
 local AlwaysCharacterSpecificCVars = {
@@ -28,14 +29,19 @@ function E:ADDON_LOADED(addon)
 	if addon == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
 		AddonLoaded = true
-		if VariablesLoaded and AdvancedInterfaceOptionsSaved.EnforceSettings then
-			if not AdvancedInterfaceOptionsSaved.AccountVars then
-				AdvancedInterfaceOptionsSaved['AccountVars'] = {}
+		if VariablesLoaded then
+			if not AdvancedInterfaceOptionsSaved.CustomVars then
+				AdvancedInterfaceOptionsSaved.CustomVars = {}
 			end
-			for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
-				if GetCVar(cvar) ~= value then
-					SetCVar(cvar, value)
-					-- print('Loading cvar', cvar, value)
+			if AdvancedInterfaceOptionsSaved.EnforceSettings then
+				if not AdvancedInterfaceOptionsSaved.AccountVars then
+					AdvancedInterfaceOptionsSaved['AccountVars'] = {}
+				end
+				for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
+					if GetCVar(cvar) ~= value then
+						SetCVar(cvar, value)
+						-- print('Loading cvar', cvar, value)
+					end
 				end
 			end
 		end
