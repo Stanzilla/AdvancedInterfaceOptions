@@ -55,9 +55,9 @@ function E:ADDON_LOADED(addon)
 	end
 end
 
-function addon:SetCVar(cvar, value) -- save our cvar to the db
+function addon:SetCVar(cvar, value, ...) -- save our cvar to the db
 	if not InCombatLockdown() then
-		SetCVar(cvar, value)
+		SetCVar(cvar, value, ...)
 		if not AlwaysCharacterSpecificCVars[cvar] then
 			AdvancedInterfaceOptionsSaved.AccountVars[cvar] = GetCVar(cvar) -- not necessarily the same as "value"
 		end
@@ -92,6 +92,14 @@ local function checkboxOnClick(self)
 	self:SetValue(checked)
 end
 
+local function checkboxDisable(self)
+	self.label:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
+end
+
+local function checkboxEnable(self)
+	self.label:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
+end
+
 local function newCheckbox(parent, cvar, getValue, setValue, label, description)
 	local cvarTable = addon.hiddenOptions[cvar]
 	if cvarTable then
@@ -112,6 +120,10 @@ local function newCheckbox(parent, cvar, getValue, setValue, label, description)
 	check.label:SetText(label)
 	check.tooltipText = label
 	check.tooltipRequirement = description
+	
+	check:HookScript('OnDisable', checkboxDisable)
+	check:HookScript('OnEnable', checkboxEnable)
+	
 	Widgets[ check ] = cvar
 	return check
 end
@@ -617,7 +629,30 @@ local stXpBar = newCheckbox(AIO_ST, 'xpBarText', nil, function(self, checked)
 	TextStatusBar_UpdateTextString(MainMenuExpBar)
 end)
 
-stPlayer:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
+local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
+	function(self) -- getter
+		local value = checkboxGetCVar(self) -- GetCVarBool('statusText')
+		stPlayer:SetEnabled(value)
+		stPet:SetEnabled(value)
+		stParty:SetEnabled(value)
+		stTarget:SetEnabled(value)
+		stAltResource:SetEnabled(value)
+		stXpBar:SetEnabled(value)
+		return value
+	end,
+	function(self, value) -- setter
+		-- checkboxSetCVar(self, value)
+		addon:SetCVar('statusText', value, 'STATUS_TEXT_DISPLAY') -- forces text on status bars to update
+		stPlayer:SetEnabled(value)
+		stPet:SetEnabled(value)
+		stParty:SetEnabled(value)
+		stTarget:SetEnabled(value)
+		stAltResource:SetEnabled(value)
+		stXpBar:SetEnabled(value)
+	end)
+
+stToggleStatusText:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
+stPlayer:SetPoint("TOPLEFT", stToggleStatusText, "BOTTOMLEFT", 10, -4)
 stPet:SetPoint("TOPLEFT", stPlayer, "BOTTOMLEFT", 0, -4)
 stParty:SetPoint("TOPLEFT", stPet, "BOTTOMLEFT", 0, -4)
 stTarget:SetPoint("TOPLEFT", stParty, "BOTTOMLEFT", 0, -4)
