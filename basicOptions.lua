@@ -651,6 +651,7 @@ local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
 		stXpBar:SetEnabled(value)
 	end)
 
+
 stToggleStatusText:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
 stPlayer:SetPoint("TOPLEFT", stToggleStatusText, "BOTTOMLEFT", 10, -4)
 stPet:SetPoint("TOPLEFT", stPlayer, "BOTTOMLEFT", 0, -4)
@@ -658,6 +659,26 @@ stParty:SetPoint("TOPLEFT", stPet, "BOTTOMLEFT", 0, -4)
 stTarget:SetPoint("TOPLEFT", stParty, "BOTTOMLEFT", 0, -4)
 stAltResource:SetPoint("TOPLEFT", stTarget, "BOTTOMLEFT", 0, -4)
 stXpBar:SetPoint("TOPLEFT", stAltResource, "BOTTOMLEFT", 0, -4)
+
+local function stTextDisplaySetValue(self)
+	addon:SetCVar('statusTextDisplay', self.value, 'STATUS_TEXT_DISPLAY')
+end
+
+-- todo: figure out why the built-in tooltipTitle and tooltipText attributes don't work
+local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
+	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
+	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
+	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
+})
+stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
+stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
+--[[ this tooltip seems pretty pointless anyway, but maybe come up with some better text for it
+stTextDisplay:HookScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
+end)
+stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
+--]]
 
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)

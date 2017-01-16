@@ -482,11 +482,20 @@ end
 
 function addon:CreateDropdown(parent, width, items, defaultValue)
 	local dropdown = CreateFrame('frame', addonName .. 'DropDownMenu' .. DropdownCount, parent, 'UIDropDownMenuTemplate')
+	-- todo: redo all of this
+	--dropdown:EnableMouse(true)
 	DropdownCount = DropdownCount + 1
 	--groupTypeDropdown:SetPoint('LEFT', ilevelInput, 'RIGHT', -5, -3)
 	--groupTypeDropdown:SetPoint('TOPRIGHT', titleInput, 'BOTTOMRIGHT', 16, -8)
 	--dropdown:SetPoint('BOTTOMRIGHT', parent, 10, 0)
-	UIDropDownMenu_Initialize(dropdown, function()
+	--UIDropDownMenu_Initialize(dropdown, function()
+	dropdown.SetValue = function(dropdown, value)
+		dropdown.value = value
+		dropdown:initialize()
+	end
+	
+	dropdown.initialize = function(dropdown)
+		--local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
 		for i, tbl in ipairs(items) do
 			local info = UIDropDownMenu_CreateInfo()
 			--info.value = v[1]
@@ -501,8 +510,12 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 			
 			
 			info.func = function(self)
-   			--UIDropDownMenu_SetSelectedID(dropdown, self:GetID(), true)
-   			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+				if tbl.func then
+					tbl.func(self)
+				end
+				--UIDropDownMenu_SetSelectedID(dropdown, self:GetID(), true)
+				UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+				dropdown.value = self.value
 			end
 			
 			--if info.isTitle then
@@ -511,10 +524,14 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 			
 			UIDropDownMenu_AddButton(info)
 		end
-	end)
+		-- dropdown:SetValue(dropdown.value or defaultValue)
+		UIDropDownMenu_SetSelectedValue(dropdown, dropdown.value or defaultValue)
+	end
+	
 	
 	--UIDropDownMenu_SetSelectedID(dropdown, defaultID or 1)
-	UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
+	--UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
+	dropdown:SetValue(defaultValue)
 	UIDropDownMenu_SetWidth(dropdown, width or 160)
 	
 	_G[dropdown:GetName() .. 'Button']:HookScript('OnClick', function(self)
@@ -525,178 +542,3 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 	
 	return dropdown
 end
-
-do return end
--- Simplify the creation of ui elements by defining common widgets here
-local addonName, addon = ...
-
-function addon:CreateString(parent, template)
-	local str = parent:CreateFontString(nil, nil, template or 'GameFontHighlightSmallLeft')
-	str:SetWordWrap(false)
-	return str
-end
-
--- ScrollFrame - A scrollable frame with sortable columns
-function addon:CreateListFrame(name, parent, width, height, names, widths, rowHeight) -- max height is 243 because of the scrollbar background
-	local f = CreateFrame('Frame', nil, parent, 'InsetFrameTemplate')
-	f:SetSize(width or 1, height or 1)
-	f:SetFrameLevel(1)
-	
-	local scrollFrame = CreateFrame('ScrollFrame', name, f, 'ListScrollFrameTemplate')
-	scrollFrame:SetPoint('TOPLEFT', 4, -4)
-	scrollFrame:SetPoint('BOTTOMRIGHT', -28, 4)
-	f.scrollFrame = scrollFrame
-	
-	local scrollChild = scrollFrame:GetScrollChild()
-	scrollChild:SetAllPoints()
-	--scrollChild:SetSize(310, 100)
-	f.child = scrollChild
-	
-	f.scrollBar = _G[name .. 'ScrollBar']
-	
-	f.cols = {}
-	local offset = 5
-	for i, name in ipairs(names) do
-		local col = CreateFrame('Button', nil, f)
-		col:SetNormalFontObject('GameFontHighlightSmallLeft')
-		col:SetHighlightFontObject('GameFontNormalSmallLeft')
-		--col:SetPoint('BOTTOMLEFT', parent, 'TOPLEFT', offset, 0)
-		col:SetPoint('BOTTOMLEFT', scrollFrame, 'TOPLEFT', offset, 4)
-		col:SetSize(widths[i], 15)
-		col:SetText(name)
-		col.offset = offset
-		col.width = widths[i]
-		offset = offset + widths[i]
-		f.cols[i] = col
-	end
-	
-	local slots = ceil(scrollChild:GetHeight() / rowHeight)
-	
-	f.rows = {}
-	for i = 1, slots do
-		local row = CreateFrame('Frame', nil, scrollChild)
-		row:SetPoint('TOPLEFT', scrollChild, 'TOPLEFT', 0, (i-1) * -rowHeight)
-		row:SetPoint('BOTTOMRIGHT', scrollChild, 'TOPRIGHT', 0, i * -rowHeight)
-		
-		local bg = row:CreateTexture(nil, 'BACKGROUND')
-		bg:SetColorTexture(1,0,0,0.1)
-		bg:SetAllPoints()
-		bg:Hide()
-		row.bg = bg
-		
-		row:EnableMouse(true)
-		row:SetScript('OnEnter', function(self) self.bg:Show() end)
-		row:SetScript('OnLeave', function(self) self.bg:Hide() end)
-		
-		f.rows[i] = row
-		row.cols = {}
-		for c, col in ipairs(f.cols) do
-			local str = addon:CreateString(row)
-			str:SetPoint('LEFT', col.offset, 0)
-			str:SetWidth(col.width)
-			row.cols[c] = str
-		end
-	end
-	
-	--scrollChild:SetSize(width, rowHeight * slots)
-	
-	--FauxScrollFrame_Update(scrollFrame, 0, slots, rowHeight)
-	
-	f.slots = slots
-	f.rowHeight = rowHeight
-	
-	return f
-end
-
-local RoleStrings = {
-	TANK = '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:32:48:0:16|t',
-	HEALER = '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:48:64:0:16|t',
-	DAMAGER = '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:16:32:0:16|t',
-}
-
-local f = addon:CreateListFrame('MyScrollyFrame', UIParent, 310, 240, {LEVEL_ABBR, NAME, ITEM_LEVEL_ABBR, '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:32:48:0:16|t', '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:48:64:0:16|t', '|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:16:32:0:16|t'}, {20, 180, 25, 16, 16, 16}, 18)
-f:SetPoint('CENTER')
-
-for i, row in ipairs(f.rows) do -- hackishly add some buttons
-	local rejectButton = CreateFrame('button', nil, row, 'UIPanelButtonTemplate')
-	rejectButton:SetNormalFontObject('GameFontHighlightSmall')
-	rejectButton:SetSize(20, 18)
-	rejectButton:SetPoint('RIGHT', row.cols[2])
-	rejectButton:SetText('x')
-	
-	local inviteButton = CreateFrame('button', nil, row, 'UIPanelButtonTemplate')
-	inviteButton:SetNormalFontObject('GameFontHighlightSmall')
-	inviteButton:SetSize(50, 18)
-	inviteButton:SetPoint('RIGHT', rejectButton, 'LEFT')
-	inviteButton:SetText(INVITE)
-	
-	row.cols[3]:SetJustifyH('RIGHT')
-end
-
-local datas = {
-	{'90', 'Name-Placeholder1', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder2', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder3', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder4', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder5', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder6', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder7', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder8', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder9', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder10', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder11', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder12', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder13', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder14', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder15', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder16', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder17', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder18', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder19', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder20', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder21', '500', RoleStrings.TANK, '', ''},
-	{'90', 'Name-Placeholder22', '400', '', '', RoleStrings.DAMAGER},
-	{'90', 'Name-Placeholder23', '550', '', RoleStrings.HEALER, ''},
-	{'90', 'Name-Placeholder24', '580', RoleStrings.TANK, '', RoleStrings.DAMAGER},
-}
-
---[[
-function addon:PopulateList(listFrame, datas)
-	for i, row in ipairs(f.rows) do
-		if datas[i] then
-			for c, col in ipairs(row.cols) do
-				col:SetText(datas[i][c])
-			end
-			row:Show()
-		else
-			row:Hide()
-		end
-	end
-end
---]]
-
-function addon:UpdateList(listFrame, datas)
-	--listFrame.child:SetHeight(#datas * listFrame.rowHeight)
-	FauxScrollFrame_Update(listFrame.scrollFrame, #datas, listFrame.slots, listFrame.rowHeight)
-	for i, row in ipairs(f.rows) do
-		offset = i + FauxScrollFrame_GetOffset(listFrame.scrollFrame)
-		if datas[offset] then
-			for c, col in ipairs(row.cols) do
-				col:SetText(datas[offset][c])
-			end
-			row:Show()
-		else
-			row:Hide()
-		end
-	end
-end
-
-addon:UpdateList(f, datas)
-f.scrollFrame:SetScript('OnVerticalScroll', function(self, offset)
-	FauxScrollFrame_OnVerticalScroll(self, offset, 18, function() addon:UpdateList(f, datas) end)
-end)
-
-
--- Input boxes with labels that can be tabbed between
-
--- Simple dropdown menus
