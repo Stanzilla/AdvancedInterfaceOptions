@@ -8,7 +8,7 @@ AdvancedInterfaceOptionsSaved = {
 	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
 	EnforceSettings = false, -- true to load cvars from our saved variables every time we log in
 	-- this will override anything that sets a cvar outside of this addon
-	CustomVars = {},
+	CustomVars = {}, -- custom options for missing/removed cvars
 }
 
 local AlwaysCharacterSpecificCVars = {
@@ -25,6 +25,7 @@ function E:VARIABLES_LOADED()
 	end
 end
 
+local statusTextOptions
 function E:ADDON_LOADED(addon)
 	if addon == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
@@ -32,6 +33,12 @@ function E:ADDON_LOADED(addon)
 		if VariablesLoaded then
 			if not AdvancedInterfaceOptionsSaved.CustomVars then
 				AdvancedInterfaceOptionsSaved.CustomVars = {}
+			else
+				for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
+					if statusTextOptions[k] then
+						statusTextOptions[k](v and "statusText")
+					end
+				end
 			end
 			if AdvancedInterfaceOptionsSaved.EnforceSettings then
 				if not AdvancedInterfaceOptionsSaved.AccountVars then
@@ -211,6 +218,17 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	return slider
 end
 
+-------------
+-- Custom vars
+-------------
+
+local function getCustomVar(self)
+	return AdvancedInterfaceOptionsSaved.CustomVars[self.cvar]
+end
+
+local function setCustomVar(self, value)
+	AdvancedInterfaceOptionsSaved.CustomVars[self.cvar] = value
+end
 
 -----------
 -- Main options
@@ -367,6 +385,7 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 				addon:SetCVar(cvar, default)
 			end
 		end
+		wipe(AdvancedInterfaceOptionsSaved.CustomVars)
 		AIO:Hide()
 		AIO:Show()
 	end,
@@ -482,6 +501,7 @@ local fctPeriodicSpells = newCheckbox(AIO_FCT, 'floatingCombatTextCombatLogPerio
 local fctPetMeleeDamage = newCheckbox(AIO_FCT, 'floatingCombatTextPetMeleeDamage')
 local fctSpellMechanics = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanics')
 local fctSpellMechanicsOther = newCheckbox(AIO_FCT, 'floatingCombatTextSpellMechanicsOther')
+local worldTextScale = newSlider(AIO_FCT, 'WorldTextScale', 0.5, 2.5, 0.1)
 
 local enablefct = newCheckbox(AIO_FCT, 'enableFloatingCombatText', nil, FCT_SetValue)
 local fctAbsorbSelf = newCheckbox(AIO_FCT, 'floatingCombatTextCombatHealingAbsorbSelf')
@@ -511,6 +531,7 @@ fctAbsorbTarget:SetPoint("TOPLEFT", fctHealing, "BOTTOMLEFT", 10, 0)
 
 fctSpellMechanics:SetPoint("TOPLEFT", fctDamage, "TOPRIGHT", 260, 0)
 fctSpellMechanicsOther:SetPoint("TOPLEFT", fctSpellMechanics, "BOTTOMLEFT", 10, -4)
+worldTextScale:SetPoint("TOPLEFT", fctSpellMechanicsOther, "BOTTOMLEFT", -6, -40)
 
 local fctSelfLabel = AIO_FCT:CreateFontString(nil, 'ARTWORK', 'GameFontNormal')
 fctSelfLabel:SetText(FLOATING_COMBAT_SELF_LABEL)
@@ -530,6 +551,78 @@ fctEnergyGains:SetPoint("TOPLEFT", fctLowHPMana, "BOTTOMLEFT", 0, -4)
 fctPeriodicEnergyGains:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -4)
 fctHonorGains:SetPoint("TOPLEFT", fctPeriodicEnergyGains, "BOTTOMLEFT", 0, -4)
 fctAuras:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -4)
+
+-- Status Text section
+local AIO_ST = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
+AIO_ST:Hide()
+AIO_ST:SetAllPoints()
+AIO_ST.name = STATUSTEXT_LABEL
+AIO_ST.parent = addonName
+
+local Title_ST = AIO_ST:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
+Title_ST:SetJustifyV('TOP')
+Title_ST:SetJustifyH('LEFT')
+Title_ST:SetPoint('TOPLEFT', 16, -16)
+Title_ST:SetText(AIO_ST.name)
+
+local SubText_ST = AIO_ST:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
+SubText_ST:SetMaxLines(3)
+SubText_ST:SetNonSpaceWrap(true)
+SubText_ST:SetJustifyV('TOP')
+SubText_ST:SetJustifyH('LEFT')
+SubText_ST:SetPoint('TOPLEFT', Title_ST, 'BOTTOMLEFT', 0, -8)
+SubText_ST:SetPoint('RIGHT', -32, 0)
+SubText_ST:SetText(STATUSTEXT_SUBTEXT)
+
+local function setStatusTextBars(frame, value)
+	frame.healthbar.cvar = value
+	frame.manabar.cvar = value
+	TextStatusBar_UpdateTextString(frame.healthbar)
+	TextStatusBar_UpdateTextString(frame.manabar)
+end
+
+statusTextOptions = {
+	playerStatusText = function(value)
+		setStatusTextBars(PlayerFrame, value)
+	end,
+	petStatusText = function(value)
+		setStatusTextBars(PetFrame, value)
+	end,
+	partyStatusText = function(value)
+		for i = 1, MAX_PARTY_MEMBERS do
+			setStatusTextBars(_G["PartyMemberFrame"..i], value)
+		end
+	end,
+	targetStatusText = function(value)
+		setStatusTextBars(TargetFrame, value)
+	end,
+	alternateResourceText = function(value)
+		PlayerFrameAlternateManaBar.cvar = value
+		TextStatusBar_UpdateTextString(PlayerFrameAlternateManaBar)
+	end,
+}
+
+local function setStatusText(self, value)
+	setCustomVar(self, value)
+	statusTextOptions[self.cvar](value and "statusText")
+end
+
+local stPlayer = newCheckbox(AIO_ST, 'playerStatusText', getCustomVar, setStatusText)
+local stPet = newCheckbox(AIO_ST, 'petStatusText', getCustomVar, setStatusText)
+local stParty = newCheckbox(AIO_ST, 'partyStatusText', getCustomVar, setStatusText)
+local stTarget = newCheckbox(AIO_ST, 'targetStatusText', getCustomVar, setStatusText)
+local stAltResource = newCheckbox(AIO_ST, 'alternateResourceText', getCustomVar, setStatusText)
+local stXpBar = newCheckbox(AIO_ST, 'xpBarText', nil, function(self, checked)
+	checkboxSetCVar(self, checked)
+	TextStatusBar_UpdateTextString(MainMenuExpBar)
+end)
+
+stPlayer:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
+stPet:SetPoint("TOPLEFT", stPlayer, "BOTTOMLEFT", 0, -4)
+stParty:SetPoint("TOPLEFT", stPet, "BOTTOMLEFT", 0, -4)
+stTarget:SetPoint("TOPLEFT", stParty, "BOTTOMLEFT", 0, -4)
+stAltResource:SetPoint("TOPLEFT", stTarget, "BOTTOMLEFT", 0, -4)
+stXpBar:SetPoint("TOPLEFT", stAltResource, "BOTTOMLEFT", 0, -4)
 
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -625,6 +718,7 @@ InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
+InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 --[[

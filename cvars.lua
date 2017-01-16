@@ -205,7 +205,6 @@ addon.hiddenOptions = {
 	["OutboundChatVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_VOICE_INPUT_VOLUME, type = "number" },
 	["autoQuestWatch"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_QUEST_WATCH, type = "boolean" },
 	["SpellTooltip_DisplayAvgValues"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_POINTS_AS_AVG, type = "boolean" },
-	["xpBarText"] = { prettyName = XP_BAR_TEXT, description = OPTION_TOOLTIP_XP_BAR, type = "boolean" },
 	["bottomLeftActionBar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_MULTIBAR1, type = "boolean" },
 	["showVKeyCastbarSpellName"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_CASTBAR_IN_V_KEY_SPELL_NAME, type = "boolean" },
 	["buffDurations"] = { prettyName = SHOW_BUFF_DURATION_TEXT, description = OPTION_TOOLTIP_SHOW_BUFF_DURATION, type = "boolean" },
@@ -305,8 +304,16 @@ addon.hiddenOptions = {
 	["floatingCombatTextRepChanges"] = { prettyName = COMBAT_TEXT_SHOW_REPUTATION_TEXT, description = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_REPUTATION, type = "boolean" },
 	["floatingCombatTextSpellMechanics"] = { prettyName = SHOW_TARGET_EFFECTS, description = OPTION_TOOLTIP_SHOW_TARGET_EFFECTS, type = "boolean" },
 	["floatingCombatTextSpellMechanicsOther"] = { prettyName = SHOW_OTHER_TARGET_EFFECTS, description = OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS, type = "boolean" },
-
-	["statusText"] = { prettyName = "Status Text", description = "Whether the status bars show numeric health/mana values", type = "boolean" },
+	-- Status Text
+	["statusText"] = { prettyName = STATUS_TEXT, description = "Whether the status bars show numeric health/mana values", type = "boolean"},
+	["statusTextDisplay"] = { prettyName = STATUS_TEXT, description = OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, type = "boolean"},
+	["playerStatusText"] = { prettyName = STATUS_TEXT_PLAYER, description = OPTION_TOOLTIP_STATUS_TEXT_PLAYER , type = "boolean"}, -- removed
+	["petStatusText"] = { prettyName = STATUS_TEXT_PET, description = OPTION_TOOLTIP_STATUS_TEXT_PET, type = "boolean"}, -- removed
+	["partyStatusText"] = { prettyName = STATUS_TEXT_PARTY, description = OPTION_TOOLTIP_STATUS_TEXT_PARTY, type = "boolean"}, -- removed
+	["targetStatusText"] = { prettyName = STATUS_TEXT_TARGET, description = OPTION_TOOLTIP_STATUS_TEXT_TARGET, type = "boolean"}, -- removed
+	["alternateResourceText"] = { prettyName = ALTERNATE_RESOURCE_TEXT, description = OPTION_TOOLTIP_ALTERNATE_RESOURCE, type = "boolean"}, -- removed
+	["xpBarText"] = { prettyName = XP_BAR_TEXT, description = OPTION_TOOLTIP_XP_BAR, type = "boolean" },
+	
 	["violenceLevel"] = { prettyName = "Violence Level", description = "Sets the violence level of the game", type = "number" },
 	["ffxGlow"] = { prettyName = "FFX Glow", description = "full screen glow effect", type = "boolean" },
 	["releaseUITextures"] = { prettyName = "Release UI Textures", description = "Release Hidden UI Textures by default", type = "boolean" },
@@ -322,4 +329,5 @@ addon.hiddenOptions = {
 	["synchronizeConfig"] = { prettyName = "Synchronize Config", description = "Toggles synchronizing settings with the server on/off", type = "boolean" },
 	["cursorsizepreferred"] = { prettyName = "Cursor Size", description = "0 = 32x32, 1 = 48x48, 2 = 64x64, -1 = autodetect", type = "number" },
 	["ffxDeath"] = { prettyName = "FFX Death", description = "Enables full screen death effect", type = "boolean" },
+	["WorldTextScale"] = { prettyName = "World Text Scale", description = "The scale of in-world damage numbers, xp gain, artifact gains, etc", type = "number" },
 }
