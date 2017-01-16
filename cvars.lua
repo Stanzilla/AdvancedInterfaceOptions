@@ -329,4 +329,5 @@ addon.hiddenOptions = {
 	["synchronizeConfig"] = { prettyName = "Synchronize Config", description = "Toggles synchronizing settings with the server on/off", type = "boolean" },
 	["cursorsizepreferred"] = { prettyName = "Cursor Size", description = "0 = 32x32, 1 = 48x48, 2 = 64x64, -1 = autodetect", type = "number" },
 	["ffxDeath"] = { prettyName = "FFX Death", description = "Enables full screen death effect", type = "boolean" },
+	["WorldTextScale"] = { prettyName = "World Text Scale", description = "The scale of in-world damage numbers, xp gain, artifact gains, etc", type = "number" },
 }
