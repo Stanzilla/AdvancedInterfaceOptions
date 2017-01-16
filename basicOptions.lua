@@ -63,14 +63,12 @@ end
 -- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 -- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall
+-- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
 AIO:SetAllPoints()
 AIO.name = addonName
-
--- Some wrapper functions
 
 -- Register all of our widgets here so we can iterate over them
 local Widgets = {} -- [frame] = cvar
@@ -208,7 +206,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 
 	slider.tooltipText = label
 	slider.tooltipRequirement = description
-	
+
 	Widgets[ slider ] = cvar
 	return slider
 end
@@ -346,15 +344,14 @@ local enforceBox = newCheckbox(AIO, nil,
 		end
 	end,
 	'Enforce Settings on Startup',
-	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.\n\nThis will override other addons if they try to modify the same cvars.")
+	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.\n\nThis will override other addons if they try to modify the same CVars.")
 enforceBox:SetPoint("LEFT", title, "RIGHT", 5, 0)
 
 -- Button to reset all of our settings back to their defaults
 StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
-	text = 'Type "IRREVERSIBLE" into the text box to reset all cvars to their default settings:',
-	button1 = 'RESET',
-	button2 = 'NO',
-	button3 = 'NO',
+	text = 'Type "IRREVERSIBLE" into the text box to reset all CVars to their default settings',
+	button1 = 'Confirm',
+	button2 = 'Cancel',
 	hasEditBox = true,
 	OnShow = function(self)
 		self.button1:SetEnabled(false)
@@ -380,8 +377,8 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 	showAlert = true,
 }
 local resetButton = CreateFrame('button', nil, AIO, 'UIPanelButtonTemplate')
-resetButton:SetSize(120, 50)
-resetButton:SetText('RESET\nEVERYTHING')
+resetButton:SetSize(120, 20)
+resetButton:SetText("Load Defaults")
 resetButton:SetPoint('BOTTOMRIGHT', -10, 10)
 resetButton:SetScript('OnClick', function(self)
 	StaticPopup_Show('AIO_RESET_EVERYTHING')
