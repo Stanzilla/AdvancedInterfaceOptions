@@ -1,17 +1,49 @@
 local addonName, addon = ...
 local _G = _G
 
+function addon:CVarExists(cvar)
+	return pcall(function() return GetCVarDefault(cvar) end)
+end
+
 -- Go through list of cvars and remove any that don't currently exist
 local CVarList = {}
 for cvar in pairs(addon.hiddenOptions) do
-	local cvar_exists = pcall(function() return GetCVarDefault(cvar) end)
+	local cvar_exists = addon:CVarExists(cvar) -- pcall(function() return GetCVarDefault(cvar) end)
 	if cvar_exists then
 		CVarList[cvar] = addon.hiddenOptions[cvar]
-	-- else
+	else
 		-- addon.hiddenOptions[cvar] = nil -- can't do this because we have exceptions for some settings that aren't cvars, should probably restructure the database
 		-- print("Warning, CVar doesn't exist:", cvar)
 	end
 end
+
+-------------------------------------------------------
+-- Track cvars set by the interface and other addons
+local function TraceCVar(cvar, value, ...)
+	if not addon:CVarExists(cvar) then return end
+	local trace = debugstack(2)
+	local func, source, lineNum = trace:match("in function `([^']+)'%s*([^:%[]+):(%d+)")
+	if source then
+		-- local blizzardAddon = source:match('(B?l?i?z?zard_.+)')
+		-- local addonName, file = source:match('^.?.?.?I?n?t?e?r?f?a?c?e?\\?A?d?d?O?n?s?\\([^\\]+)\\?(.*)$')
+		-- source is Interface\FrameXML\ChatFrame.lua if we've manually typed /script or /console
+		-- print('|cffffccff' .. source .. ':' .. lineNum .. '|r', cvar, value)
+		AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
+		addon:RecordCVar(cvar, value)
+	end
+end
+
+hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
+hooksecurefunc('ConsoleExec', function(msg)
+	local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
+	if cmd then
+		if cmd:lower() == 'set' then -- /console SET cvar value
+			TraceCVar(cvar, value)
+		else -- /console cvar value
+			TraceCVar(cmd, cvar)
+		end
+	end
+end)
 
 local SetCVar = function(cvar, value)
 	addon:SetCVar(cvar, value)
@@ -226,19 +258,18 @@ function E:PLAYER_LOGIN()
 				GameTooltip:SetOwner(self, "ANCHOR_TOPLEFT")
 				local cvarTable = CVarList[self.value]
 				local _, defaultValue = GetCVarInfo(self.value)
-				if cvarTable['prettyName'] then --and _G[ cvarTable['prettyName'] ] then
-					GameTooltip:AddLine(cvarTable['prettyName'], nil, nil, nil, false)
-					GameTooltip:AddLine(" ")
-				else
-					GameTooltip:AddLine(self.value, nil, nil, nil, false)
-					GameTooltip:AddLine(" ")
-				end
+				GameTooltip:AddLine(cvarTable['prettyName'] or self.value, nil, nil, nil, false)
+				GameTooltip:AddLine(" ")
 				if cvarTable['description'] then --and _G[ cvarTable['description'] ] then
-					GameTooltip:AddLine("|cFFFFFFFF" .. cvarTable['description'] .. "|r", nil, nil, nil, true)
-					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
-				else
-					GameTooltip:AddDoubleLine("|cFF33FF99Default Value:|r", defaultValue, nil, nil, nil, false)
+					GameTooltip:AddLine(cvarTable['description'], 1, 1, 1, true)
 				end
+				GameTooltip:AddDoubleLine("Default Value:", defaultValue, 0.2, 1, 0.6, 0.2, 1, 0.6)
+				
+				local modifiedBy = AdvancedInterfaceOptionsSaved.ModifiedCVars[ self.value:lower() ]
+				if modifiedBy then
+					GameTooltip:AddDoubleLine("Last Modified By:", modifiedBy, 1, 0, 0, 1, 0, 0)
+				end
+				
 				GameTooltip:Show()
 			end
 			self.bg:Show()

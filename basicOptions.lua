@@ -1,15 +1,18 @@
 local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
+local SetCVar = SetCVar -- Keep a local copy of SetCVar so we don't call the hooked version
 
 -- Saved settings
-AdvancedInterfaceOptionsSaved = {
+local DefaultSettings = {
 	AccountVars = {}, -- account-wide cvars to be re-applied on login, [cvar] = value
 	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
 	EnforceSettings = false, -- true to load cvars from our saved variables every time we log in
 	-- this will override anything that sets a cvar outside of this addon
 	CustomVars = {}, -- custom options for missing/removed cvars
+	ModifiedCVars = {}, -- [cvar:lower()] = 'last addon to modify it'
 }
+AdvancedInterfaceOptionsSaved = {}
 
 local AlwaysCharacterSpecificCVars = {
 	-- list of cvars that should never be account-wide
@@ -26,30 +29,76 @@ function E:VARIABLES_LOADED()
 end
 
 local statusTextOptions
-function E:ADDON_LOADED(addon)
-	if addon == addonName then
+function E:ADDON_LOADED(addon_name)
+	if addon_name == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
 		AddonLoaded = true
 		if VariablesLoaded then
-			if not AdvancedInterfaceOptionsSaved.CustomVars then
-				AdvancedInterfaceOptionsSaved.CustomVars = {}
-			else
-				for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
-					if statusTextOptions[k] then
-						statusTextOptions[k](v and "statusText")
-					end
+			E('Init')
+		end
+	end
+end
+
+local function MergeTable(a, b) -- Non-destructively merges table b into table a
+	for k,v in pairs(b) do
+		if a[k] == nil or type(a[k]) ~= type(b[k]) then
+			a[k] = v
+			print('replacing key', k, v)
+		elseif type(v) == 'table' then
+			a[k] = MergeTable(a[k], b[k])
+		end
+	end
+	return a
+end
+
+function E:Init() -- Runs after our saved variables are loaded and cvars have been loaded
+	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
+	
+	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
+		if statusTextOptions[k] then
+			statusTextOptions[k](v and "statusText")
+		end
+	end
+	
+	if AdvancedInterfaceOptionsSaved.EnforceSettings then
+		if not AdvancedInterfaceOptionsSaved.AccountVars then
+			AdvancedInterfaceOptionsSaved['AccountVars'] = {}
+		end
+		for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
+			if addon.hiddenOptions[cvar] then -- confirm we still use this cvar
+				if GetCVar(cvar) ~= value then
+					SetCVar(cvar, value)
+					-- print('Loading cvar', cvar, value)
+				end
+			else -- remove if cvar is no longer supported
+				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
+			end
+		end
+	end
+end
+
+function addon:RecordCVar(cvar, value) -- Save cvar to DB for loading later
+	if not AlwaysCharacterSpecificCVars[cvar] then
+		-- We either need to normalize all cvars being entered into this table or verify that 
+		-- the case matches the case in our database or we risk duplicating entries.
+		-- eg. MouseSpeed = 1, and mouseSpeed = 2 could exist in the table simultaneously,
+		-- which would lead to an indeterminate value being loaded on startup
+		local found = rawget(addon.hiddenOptions, cvar)
+		if not found then
+			local mk = cvar:lower()
+			for k,v in pairs(addon.hiddenOptions) do
+				if k:lower() == mk then
+					cvar = k
+					found = true
+					break
 				end
 			end
-			if AdvancedInterfaceOptionsSaved.EnforceSettings then
-				if not AdvancedInterfaceOptionsSaved.AccountVars then
-					AdvancedInterfaceOptionsSaved['AccountVars'] = {}
-				end
-				for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
-					if GetCVar(cvar) ~= value then
-						SetCVar(cvar, value)
-						-- print('Loading cvar', cvar, value)
-					end
-				end
+		end
+		if found then -- only record cvars that exist in our database
+			if GetCVar(cvar) == GetCVarDefault(cvar) then -- don't bother recording if default value
+				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
+			else
+				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = GetCVar(cvar) -- not necessarily the same as "value"
 			end
 		end
 	end
@@ -58,8 +107,11 @@ end
 function addon:SetCVar(cvar, value, ...) -- save our cvar to the db
 	if not InCombatLockdown() then
 		SetCVar(cvar, value, ...)
-		if not AlwaysCharacterSpecificCVars[cvar] then
-			AdvancedInterfaceOptionsSaved.AccountVars[cvar] = GetCVar(cvar) -- not necessarily the same as "value"
+		addon:RecordCVar(cvar, value)
+		-- Clear entry from ModifiedCVars if we're modifying it directly
+		-- Enforced settings don't use this function, so shouldn't wipe them out
+		if AdvancedInterfaceOptionsSaved.ModifiedCVars[cvar:lower()] then
+			AdvancedInterfaceOptionsSaved.ModifiedCVars[cvar:lower()] = nil
 		end
 	else
 		--print("Can't modify interface options in combat")
@@ -374,7 +426,7 @@ local enforceBox = newCheckbox(AIO, nil,
 		end
 	end,
 	'Enforce Settings on Startup',
-	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.\n\nThis will override other addons if they try to modify the same CVars.")
+	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.")
 enforceBox:SetPoint("LEFT", title, "RIGHT", 5, 0)
 
 -- Button to reset all of our settings back to their defaults

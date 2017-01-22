@@ -1,8 +1,80 @@
-
 local addonName, addon = ...
 local _G = _G
 
 -- GLOBALS: UIDropDownMenu_AddButton
+
+addon.combatProtected = {
+	-- List of cvars that can't be modified in combat
+	["alwaysShowActionBars"] = true,
+	["colorblindSimulator"] = true,
+	["colorblindWeaknessFactor"] = true,
+	["daltonize"] = true,
+	["fullSizeFocusFrame"] = true,
+	["garrisonCompleteTalent"] = true,
+	["garrisonCompleteTalentType"] = true,
+	["nameplateClassResourceTopInset"] = true,
+	["nameplateGlobalScale"] = true,
+	["NamePlateHorizontalScale"] = true,
+	["nameplateLargeBottomInset"] = true,
+	["nameplateLargerScale"] = true,
+	["nameplateLargeTopInset"] = true,
+	["nameplateMaxAlpha"] = true,
+	["nameplateMaxAlphaDistance"] = true,
+	["nameplateMaxDistance"] = true,
+	["nameplateMaxScale"] = true,
+	["nameplateMaxScaleDistance"] = true,
+	["nameplateMinAlpha"] = true,
+	["nameplateMinAlphaDistance"] = true,
+	["nameplateMinScale"] = true,
+	["nameplateMinScaleDistance"] = true,
+	["nameplateMotion"] = true,
+	["nameplateMotionSpeed"] = true,
+	["nameplateOtherAtBase"] = true,
+	["nameplateOtherBottomInset"] = true,
+	["nameplateOtherTopInset"] = true,
+	["nameplateOverlapH"] = true,
+	["nameplateOverlapV"] = true,
+	["NameplatePersonalHideDelayAlpha"] = true,
+	["nameplatePersonalHideDelaySeconds"] = true,
+	["nameplatePersonalShowAlways"] = true,
+	["nameplatePersonalShowInCombat"] = true,
+	["nameplatePersonalShowWithTarget"] = true,
+	["nameplateResourceOnTarget"] = true,
+	["nameplateSelectedAlpha"] = true,
+	["nameplateSelectedScale"] = true,
+	["nameplateSelfAlpha"] = true,
+	["nameplateSelfBottomInset"] = true,
+	["nameplateSelfScale"] = true,
+	["nameplateSelfTopInset"] = true,
+	["nameplateShowAll"] = true,
+	["nameplateShowEnemies"] = true,
+	["nameplateShowEnemyGuardians"] = true,
+	["nameplateShowEnemyMinions"] = true,
+	["nameplateShowEnemyMinus"] = true,
+	["nameplateShowEnemyPets"] = true,
+	["nameplateShowEnemyTotems"] = true,
+	["nameplateShowFriendlyGuardians"] = true,
+	["nameplateShowFriendlyMinions"] = true,
+	["nameplateShowFriendlyNPCs"] = true,
+	["nameplateShowFriendlyPets"] = true,
+	["nameplateShowFriendlyTotems"] = true,
+	["nameplateShowFriends"] = true,
+	["nameplateShowSelf"] = true,
+	["nameplateTargetBehindMaxDistance"] = true,
+	["NamePlateVerticalScale"] = true,
+	["showArenaEnemyFrames"] = true,
+	["showArenaEnemyPets"] = true,
+	["showPartyPets"] = true,
+	["showTargetOfTarget"] = true,
+	["splashScreenBoost"] = true,
+	["splashScreenNormal"] = true,
+	["targetOfTargetMode"] = true,
+	["uiScale"] = true,
+	["uiScaleMultiplier"] = true,
+	["UnitNameGuildTitle"] = true,
+	["useCompactPartyFrames"] = true,
+	["useUiScale"] = true,	
+}
 
 addon.hiddenOptions = {
 	-- Names
@@ -861,7 +933,7 @@ addon.hiddenOptions = {
 	["timeMgrUseLocalTime"] = { description = "Toggles the use of either the realm time or your system time" },
 	["timeMgrUseMilitaryTime"] = { description = "Toggles the display of either 12 or 24 hour time" },
 	["timingMethod"] = { description = "Desired method for game timing" },
-	["timingTestError"] = { description = "Error reported by the timing validation system" },
+	-- ["timingTestError"] = { description = "Error reported by the timing validation system" }, -- read-only
 	-- ["toyBoxCollectedFilters"] = { description = "Bitfield for which collected filters are applied in the toybox" },
 	-- ["toyBoxSourceFilters"] = { description = "Bitfield for which source filters are applied in the toybox" },
 	-- ["trackedAchievements"] = { description = "Internal cvar for saving tracked achievements in order" },
@@ -870,8 +942,8 @@ addon.hiddenOptions = {
 	-- ["trackerFilter"] = {},
 	-- ["trackerSorting"] = {},
 	["transmogCurrentSpecOnly"] = { description = "Stores whether transmogs apply to current spec instead of all specs" },
-	["transmogrifyShowCollected"] = { description = "Whether to show collected transmogs in the at the transmogrifier" },
-	["transmogrifyShowUncollected"] = { description = "Whether to show uncollected transmogs in the at the transmogrifier" },
+	-- ["transmogrifyShowCollected"] = { description = "Whether to show collected transmogs in the at the transmogrifier" }, -- read-only
+	-- ["transmogrifyShowUncollected"] = { description = "Whether to show uncollected transmogs in the at the transmogrifier" }, -- read-only
 	-- ["transmogrifySourceFilters"] = { description = "Bitfield for which source filters are applied in the wardrobe at the transmogrifier" },
 	["twitterCharactersPerMedia"] = { description = "Number of characters needed when attaching media to a Twitter post" },
 	-- ["twitterGetConfigTime"] = { description = "Last time that we got Twitter configuration data successfully" },
@@ -883,8 +955,8 @@ addon.hiddenOptions = {
 	["useCompactPartyFrames"] = { description = "Use the new raid frames for parties" },
 	["useUiScale"] = {},
 	["videoOptionsVersion"] = {},
-	["wardrobeShowCollected"] = { description = "Whether to show collected transmogs in the wardrobe" },
-	["wardrobeShowUncollected"] = { description = "Whether to show uncollected transmogs in the wardrobe" },
+	-- ["wardrobeShowCollected"] = { description = "Whether to show collected transmogs in the wardrobe" }, -- read-only
+	-- ["wardrobeShowUncollected"] = { description = "Whether to show uncollected transmogs in the wardrobe" }, -- read-only
 	-- ["wardrobeSourceFilters"] = { description = "Bitfield for which source filters are applied in the wardrobe in the collection journal" },
 	["warp"] = { description = "UI value of the graphics setting" },
 	["warpScreenSize"] = { description = "Physical monitor size" },
@@ -914,3 +986,28 @@ addon.hiddenOptions = {
 	["worldQuestFilterProfessionMaterials"] = { description = "If enabled, world quests with profession material rewards will be shown on the map" },
 }
 
+-- Allow case-insensitive lookup of cvars in our table (relatively slow, so match the case when possible)
+local NoCase = {
+	__index = function(t, mk) -- get
+		if mk and mk.lower then
+			local mk = mk:lower()
+			for k,v in pairs(t) do
+				if k:lower() == mk then
+					return v
+				end
+			end
+		end
+	end,
+	__newindex = function(t, mk, mv) -- set
+		if mk and mk.lower then
+			local mk = mk:lower()
+			for k,v in pairs(t) do
+				if k:lower() == mk then
+					t[k] = mv
+					return
+				end
+			end
+		end
+	end,
+}
+setmetatable(addon.hiddenOptions, NoCase)
