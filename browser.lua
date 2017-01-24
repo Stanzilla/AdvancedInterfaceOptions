@@ -1,5 +1,6 @@
 local addonName, addon = ...
 local _G = _G
+local E = addon:Eve()
 
 function addon:CVarExists(cvar)
 	return pcall(function() return GetCVarDefault(cvar) end)
@@ -33,17 +34,19 @@ local function TraceCVar(cvar, value, ...)
 	end
 end
 
-hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
-hooksecurefunc('ConsoleExec', function(msg)
-	local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
-	if cmd then
-		if cmd:lower() == 'set' then -- /console SET cvar value
-			TraceCVar(cvar, value)
-		else -- /console cvar value
-			TraceCVar(cmd, cvar)
+function E:Init()
+	hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
+	hooksecurefunc('ConsoleExec', function(msg)
+		local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
+		if cmd then
+			if cmd:lower() == 'set' then -- /console SET cvar value
+				TraceCVar(cvar, value)
+			else -- /console cvar value
+				TraceCVar(cmd, cvar)
+			end
 		end
-	end
-end)
+	end)
+end
 
 local SetCVar = function(cvar, value)
 	addon:SetCVar(cvar, value)

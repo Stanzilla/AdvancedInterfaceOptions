@@ -43,7 +43,7 @@ local function MergeTable(a, b) -- Non-destructively merges table b into table a
 	for k,v in pairs(b) do
 		if a[k] == nil or type(a[k]) ~= type(b[k]) then
 			a[k] = v
-			print('replacing key', k, v)
+			-- print('replacing key', k, v)
 		elseif type(v) == 'table' then
 			a[k] = MergeTable(a[k], b[k])
 		end
