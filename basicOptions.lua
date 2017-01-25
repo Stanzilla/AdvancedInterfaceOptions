@@ -2,6 +2,7 @@ local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
 local SetCVar = SetCVar -- Keep a local copy of SetCVar so we don't call the hooked version
+AdvancedInterfaceOptionsSaved = {}
 
 -- Saved settings
 local DefaultSettings = {
@@ -12,13 +13,19 @@ local DefaultSettings = {
 	CustomVars = {}, -- custom options for missing/removed cvars
 	ModifiedCVars = {}, -- [cvar:lower()] = 'last addon to modify it'
 }
-AdvancedInterfaceOptionsSaved = {}
 
 local AlwaysCharacterSpecificCVars = {
 	-- list of cvars that should never be account-wide
 	-- [cvar] = true
 	-- stopAutoAttackOnTargetChange
 }
+
+-- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
+-- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
+-- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
+-- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
+-- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
+-- GLOBALS: TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS
 
 local AddonLoaded, VariablesLoaded = false, false
 function E:VARIABLES_LOADED()
@@ -53,13 +60,13 @@ end
 
 function E:Init() -- Runs after our saved variables are loaded and cvars have been loaded
 	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
-	
+
 	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
 		if statusTextOptions[k] then
 			statusTextOptions[k](v and "statusText")
 		end
 	end
-	
+
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
 			AdvancedInterfaceOptionsSaved['AccountVars'] = {}
@@ -79,7 +86,7 @@ end
 
 function addon:RecordCVar(cvar, value) -- Save cvar to DB for loading later
 	if not AlwaysCharacterSpecificCVars[cvar] then
-		-- We either need to normalize all cvars being entered into this table or verify that 
+		-- We either need to normalize all cvars being entered into this table or verify that
 		-- the case matches the case in our database or we risk duplicating entries.
 		-- eg. MouseSpeed = 1, and mouseSpeed = 2 could exist in the table simultaneously,
 		-- which would lead to an indeterminate value being loaded on startup
@@ -118,11 +125,7 @@ function addon:SetCVar(cvar, value, ...) -- save our cvar to the db
 	end
 end
 
--- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
--- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
--- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
--- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show
+
 
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
@@ -172,10 +175,10 @@ local function newCheckbox(parent, cvar, getValue, setValue, label, description)
 	check.label:SetText(label)
 	check.tooltipText = label
 	check.tooltipRequirement = description
-	
+
 	check:HookScript('OnDisable', checkboxDisable)
 	check:HookScript('OnEnable', checkboxEnable)
-	
+
 	Widgets[ check ] = cvar
 	return check
 end
@@ -318,21 +321,17 @@ local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
 local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
-	-- Get Value
 	function(self)
 		return GetSortBagsRightToLeft()
 	end,
-	-- Set Value
 	function(self, checked)
 		SetSortBagsRightToLeft(checked)
 	end
 )
 local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
-	-- Get Value
 	function(self)
 		return GetInsertItemsLeftToRight()
 	end,
-	-- Set Value
 	function(self, checked)
 		SetInsertItemsLeftToRight(checked)
 	end
@@ -459,6 +458,7 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 	preferredIndex = 3,
 	showAlert = true,
 }
+
 local resetButton = CreateFrame('button', nil, AIO, 'UIPanelButtonTemplate')
 resetButton:SetSize(120, 20)
 resetButton:SetText("Load Defaults")
@@ -686,7 +686,7 @@ end)
 
 local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
 	function(self) -- getter
-		local value = checkboxGetCVar(self) -- GetCVarBool('statusText')
+		local value = checkboxGetCVar(self)
 		stPlayer:SetEnabled(value)
 		stPet:SetEnabled(value)
 		stParty:SetEnabled(value)
@@ -696,7 +696,6 @@ local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
 		return value
 	end,
 	function(self, value) -- setter
-		-- checkboxSetCVar(self, value)
 		addon:SetCVar('statusText', value, 'STATUS_TEXT_DISPLAY') -- forces text on status bars to update
 		stPlayer:SetEnabled(value)
 		stPet:SetEnabled(value)
@@ -831,14 +830,6 @@ InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
 InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
-
---[[
-function E:PLAYER_REGEN_DISABLED()
-	if AIO:IsVisible() then
-		InterfaceOptionsFrame:Hide()
-	end
-end
---]]
 
 -- Slash handler
 SlashCmdList.AIO = function(msg)

@@ -2,6 +2,8 @@ local addonName, addon = ...
 local _G = _G
 local E = addon:Eve()
 
+-- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1 AdvancedInterfaceOptionsSaved
+
 function addon:CVarExists(cvar)
 	return pcall(function() return GetCVarDefault(cvar) end)
 end
@@ -52,7 +54,6 @@ local SetCVar = function(cvar, value)
 	addon:SetCVar(cvar, value)
 end
 
--- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1
 
 -- Create an options panel and insert it into the interface menu
 local OptionsPanel = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -94,13 +95,11 @@ FilterBox:SetScript('OnEditFocusGained', function(self)
 	self:SetAutoFocus(true)
 	self:HighlightText()
 end)
---FilterBox:SetAutoFocus(true) -- should be the default state anyway
 
 local CVarTable = {}
 local ListFrame = addon:CreateListFrame(OptionsPanel, 615, 465, {{NAME, 200}, {'Description', 260, 'LEFT'}, {'Value', 100, 'RIGHT'}})
 ListFrame:SetPoint('TOP', FilterBox, 'BOTTOM', 0, -20)
 ListFrame:SetPoint('BOTTOMLEFT', 4, 6)
---ListFrame:SetPoint('BOTTOMRIGHT', -4, 6)
 ListFrame:SetItems(CVarTable)
 
 ListFrame.Bg:SetAlpha(0.8)
@@ -111,6 +110,7 @@ FilterBox:SetMaxLetters(100)
 local function Literalize(str)
 	return str:gsub('[%(%)%.%%%+%-%*%?%[%]%^%$]', '%%%1')
 end
+
 -- Rewrite text pattern to be case-insensitive
 local function UnCase(c)
 	return '[' .. strlower(c) .. strupper(c) .. ']'
@@ -141,9 +141,6 @@ local function FilterCVarList()
 					end
 					tinsert(FilteredTable, newrow)
 					break
-				--if col:lower():find(text, 1, true) then
-					--tinsert(FilteredTable, row)
-					--break
 				end
 			end
 		end
@@ -246,14 +243,14 @@ function E:PLAYER_LOGIN()
 		self:Hide()
 		FilterBox:SetFocus()
 	end)
-	
+
 	function E:PLAYER_REGEN_DISABLED()
 		if CVarInputBox:IsVisible() then
 			CVarInputBox:Hide()
 		end
 		FilterBox:GetScript('OnEscapePressed')(FilterBox)
 	end
-	
+
 	local LastClickTime = 0 -- Track double clicks on rows
 	ListFrame:SetScripts({
 		OnEnter = function(self)
@@ -267,12 +264,12 @@ function E:PLAYER_LOGIN()
 					GameTooltip:AddLine(cvarTable['description'], 1, 1, 1, true)
 				end
 				GameTooltip:AddDoubleLine("Default Value:", defaultValue, 0.2, 1, 0.6, 0.2, 1, 0.6)
-				
+
 				local modifiedBy = AdvancedInterfaceOptionsSaved.ModifiedCVars[ self.value:lower() ]
 				if modifiedBy then
 					GameTooltip:AddDoubleLine("Last Modified By:", modifiedBy, 1, 0, 0, 1, 0, 0)
 				end
-				
+
 				GameTooltip:Show()
 			end
 			self.bg:Show()
