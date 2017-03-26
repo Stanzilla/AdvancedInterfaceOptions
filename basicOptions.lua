@@ -2,6 +2,13 @@ local addonName, addon = ...
 local E = addon:Eve()
 local _G = _G
 local SetCVar = SetCVar -- Keep a local copy of SetCVar so we don't call the hooked version
+
+-- luacheck: globals GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
+-- luacheck: globals UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
+-- luacheck: globals AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
+-- luacheck: globals BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
+-- luacheck: globals TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS UVARINFO
+
 AdvancedInterfaceOptionsSaved = {}
 
 -- Saved settings
@@ -19,13 +26,6 @@ local AlwaysCharacterSpecificCVars = {
 	-- [cvar] = true
 	-- stopAutoAttackOnTargetChange
 }
-
--- GLOBALS: GameTooltip InterfaceOptionsFrame_OpenToCategory
--- GLOBALS: GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
--- GLOBALS: UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
--- GLOBALS: SLASH_AIO1 InterfaceOptionsFrame DEFAULT_CHAT_FRAME AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- GLOBALS: BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
--- GLOBALS: TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS
 
 local AddonLoaded, VariablesLoaded = false, false
 function E:VARIABLES_LOADED()
@@ -179,7 +179,7 @@ local function newCheckbox(parent, cvar, getValue, setValue, label, description)
 	check:HookScript('OnDisable', checkboxDisable)
 	check:HookScript('OnEnable', checkboxEnable)
 
-	Widgets[ check ] = cvar
+	Widgets[check] = cvar
 	return check
 end
 
@@ -281,7 +281,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.tooltipText = label
 	slider.tooltipRequirement = description
 
-	Widgets[ slider ] = cvar
+	Widgets[slider] = cvar
 	return slider
 end
 
@@ -703,8 +703,8 @@ local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
 		stTarget:SetEnabled(value)
 		stAltResource:SetEnabled(value)
 		stXpBar:SetEnabled(value)
-	end)
-
+	end
+)
 
 stToggleStatusText:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
 stPlayer:SetPoint("TOPLEFT", stToggleStatusText, "BOTTOMLEFT", 10, -4)
@@ -718,7 +718,7 @@ local function stTextDisplaySetValue(self)
 	addon:SetCVar('statusTextDisplay', self.value, 'STATUS_TEXT_DISPLAY')
 end
 
--- todo: figure out why the built-in tooltipTitle and tooltipText attributes don't work
+-- TODO: figure out why the built-in tooltipTitle and tooltipText attributes don't work
 local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
 	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
 	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
@@ -726,13 +726,11 @@ local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
 })
 stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
 stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
---[[ this tooltip seems pretty pointless anyway, but maybe come up with some better text for it
 stTextDisplay:HookScript("OnEnter", function(self)
 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
 	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
 end)
 stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
---]]
 
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -766,6 +764,7 @@ nameplateAtBase:SetScript('OnClick', function(self)
 	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
 	self:SetValue(checked and 2 or 0)
 end)
+
 
 -- Combat section
 local AIO_C = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -833,7 +832,7 @@ InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 -- Slash handler
 SlashCmdList.AIO = function(msg)
-	--msg = msg:lower()
+	msg = msg:lower()
 	if not InCombatLockdown() then
 		InterfaceOptionsFrame_OpenToCategory(addonName)
 		InterfaceOptionsFrame_OpenToCategory(addonName)

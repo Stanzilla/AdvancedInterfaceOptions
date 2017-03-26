@@ -26,7 +26,7 @@ local function updatescroll(scroll)
 					OnLeave(scroll.slot[line])
 				end
 			end
-		
+
 			scroll.slot[line].value = scroll.items[lineoffset][1]
 			scroll.slot[line].offset = lineoffset
 			--local text = scroll.items[lineoffset][2]
@@ -39,7 +39,7 @@ local function updatescroll(scroll)
 				col:SetText(scroll.items[lineoffset][i+1])
 				col.id = i
 			end
-			
+
 			if mousedOver then
 				local OnEnter = scroll.slot[line]:GetScript('OnEnter')
 				if OnEnter then
@@ -54,7 +54,7 @@ local function updatescroll(scroll)
 			scroll.slot[line]:Hide()
 		end
 	end
-	
+
 	--scroll.scrollbar:SetValue(scroll.value)
 end
 
@@ -147,13 +147,13 @@ local function setscrolllist(scroll, items)
 	scroll.maxValue = max(scroll.itemcount - scroll.slots, 0)
 	--scroll.value = scroll.minValue
 	scroll.value = scroll.value <= scroll.maxValue and scroll.value or scroll.maxValue
-	
+
 	scroll.scrollbar:SetMinMaxValues(0, scroll.maxValue)
 	scroll.scrollbar:SetValue(scroll.value)
 	scroll.scrollbar:SetValueStep(scroll.stepValue)
-	
+
 	sortItems(scroll)
-	
+
 	scroll:Update()
 end
 
@@ -179,7 +179,7 @@ local function scroll(self, arg1)
 		elseif ( self.value > self.maxValue ) then
 			self.value = self.maxValue
 		end
-		
+
 		if self.value ~= oldValue then
 			self:Update() -- probably does not need to be called unless value has changed
 		end
@@ -192,13 +192,13 @@ end
 function addon:CreateListFrame(parent, w, h, cols)
 	-- Contents of the list frame should be completely contained within the outer frame
 	local frame = CreateFrame('Frame', nil, parent, 'InsetFrameTemplate')
-	
+
 	local inset = CreateFrame('Frame', nil, frame, 'InsetFrameTemplate')
-	
-	
+
+
 	frame:SetSize(w, h)
 	frame:SetFrameLevel(1)
-	
+
 	frame.scripts = {
 		--["OnMouseDown"] = function(self) print(self.text:GetText()) end
 	}
@@ -220,23 +220,23 @@ function addon:CreateListFrame(parent, w, h, cols)
 	frame.SetItems = setscrolllist
 	frame.SortBy = sortItems
 	frame.SetScripts = scrollscripts
-	
+
 	-- scrollbar
 	local scrollUpBg = frame:CreateTexture(nil, nil, 1)
 	scrollUpBg:SetTexture([[Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar]])
 	scrollUpBg:SetPoint('TOPRIGHT', 0, -2)--TOPLEFT', scrollbar, 'TOPRIGHT', -3, 2)
 	scrollUpBg:SetTexCoord(0, 0.46875, 0.0234375, 0.9609375)
 	scrollUpBg:SetSize(30, 120)
-	
-	
+
+
 	local scrollDownBg = frame:CreateTexture(nil, nil, 1)
 	scrollDownBg:SetTexture([[Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar]])
 	scrollDownBg:SetPoint('BOTTOMRIGHT', 0, 1)
 	scrollDownBg:SetTexCoord(0.53125, 1, 0.03125, 1)
 	scrollDownBg:SetSize(30, 123)
 	--scrollDownBg:SetAlpha(0)
-	
-	
+
+
 	local scrollMidBg = frame:CreateTexture(nil, nil, 2) -- fill in the middle gap, a bit hacky
 	scrollMidBg:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]], false, true)
 	--scrollMidBg:SetPoint('RIGHT', -1, 0)
@@ -245,9 +245,9 @@ function addon:CreateListFrame(parent, w, h, cols)
 	--scrollMidBg:SetWidth(28)
 	scrollMidBg:SetPoint('TOPLEFT', scrollUpBg, 'BOTTOMLEFT', 1, 2)
 	scrollMidBg:SetPoint('BOTTOMRIGHT', scrollDownBg, 'TOPRIGHT', -1, -2)
-	
-	
-	
+
+
+
 
 	local scrollbar = CreateFrame('Slider', nil, frame, 'UIPanelScrollBarTemplate')
 	--scrollbar:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 4, -16)
@@ -265,7 +265,7 @@ function addon:CreateListFrame(parent, w, h, cols)
 		else self.ScrollDownButton:Enable() end
 	end)
 	frame.scrollbar = scrollbar
-	
+
 	local padding = 4
 	-- columns
 	frame.cols = {}
@@ -287,28 +287,28 @@ function addon:CreateListFrame(parent, w, h, cols)
 		col.width = width
 		offset = offset + width + padding
 		frame.cols[i] = col
-		
+
 		col:SetScript('OnClick', function(self)
 			frame:SortBy(i+1)
 		end)
 	end
-	
+
 
 	-- rows
 	for slot = 1, frame.slots do
 		local f = CreateFrame("frame", nil, frame)
 		f.cols = {}
-		
+
 		local bg = f:CreateTexture()
 		bg:SetAllPoints()
 		bg:SetColorTexture(1,1,1,0.1)
 		bg:Hide()
 		f.bg = bg
-		
+
 		f:EnableMouse(true)
 		f:SetWidth(frame:GetWidth() - 38)
 		f:SetHeight(frame.itemheight)
-		
+
 		for i, col in ipairs(frame.cols) do
 			local str = addon:CreateString(f, 'x')
 			str:SetPoint('LEFT', col.offset, 0)
@@ -318,7 +318,7 @@ function addon:CreateListFrame(parent, w, h, cols)
 			end
 			f.cols[i] = str
 		end
-		
+
 		--[[
 		local str = addon:CreateString(f, "Scroll_Slot_"..slot)
 		str:SetAllPoints(f)
@@ -326,7 +326,7 @@ function addon:CreateListFrame(parent, w, h, cols)
 		str:SetNonSpaceWrap(false)
 		--str:SetWidth(frame:GetWidth() - 50)
 		--]]
-		
+
 		frame.slot[slot] = f
 		if(slot > 1) then
 			f:SetPoint("TOPLEFT", frame.slot[slot-1], "BOTTOMLEFT")
@@ -335,8 +335,8 @@ function addon:CreateListFrame(parent, w, h, cols)
 		end
 		--f.text = str
 	end
-	
-	
+
+
 	frame:Update()
 	return frame
 end
@@ -402,38 +402,38 @@ waitList:SetItems(creatures)
 -- Input boxes
 function addon:CreateInput(parent, width, defaultText, maxChars, numeric)
 	local editbox = CreateFrame('EditBox', nil, parent)
-	
+
 	editbox:SetTextInsets(5, 0, 0, 0)
-	
+
 	local borderLeft = editbox:CreateTexture(nil, 'BACKGROUND')
 	borderLeft:SetTexture([[Interface\Common\Common-Input-Border]])
 	borderLeft:SetSize(8, 20)
 	borderLeft:SetPoint('LEFT', 0, 0)
 	borderLeft:SetTexCoord(0, 0.0625, 0, 0.625)
-	
+
 	local borderRight = editbox:CreateTexture(nil, 'BACKGROUND')
 	borderRight:SetTexture([[Interface\Common\Common-Input-Border]])
 	borderRight:SetSize(8, 20)
 	borderRight:SetPoint('RIGHT', 0, 0)
 	borderRight:SetTexCoord(0.9375, 1, 0, 0.625)
-	
+
 	local borderMiddle = editbox:CreateTexture(nil, 'BACKGROUND')
 	borderMiddle:SetTexture([[Interface\Common\Common-Input-Border]])
 	borderMiddle:SetSize(10, 20)
 	borderMiddle:SetPoint('LEFT', borderLeft, 'RIGHT')
 	borderMiddle:SetPoint('RIGHT', borderRight, 'LEFT')
 	borderMiddle:SetTexCoord(0.0625, 0.9375, 0, 0.625)
-	
+
 	editbox:SetFontObject('ChatFontNormal')
-	
+
 	editbox:SetSize(width or 8, 20)
 	editbox:SetAutoFocus(false)
-	
+
 	if defaultText then
 		local placeholderText = addon:CreateString(editbox, defaultText, width or 8)
 		placeholderText:SetFontObject('GameFontDisableLeft')
 		placeholderText:SetPoint('LEFT', 5, 0)
-		
+
 		editbox:SetScript('OnEditFocusLost', function(self)
 			if self:GetText() == '' then
 				placeholderText:Show()
@@ -441,7 +441,7 @@ function addon:CreateInput(parent, width, defaultText, maxChars, numeric)
 				EditBox_ClearHighlight(self)
 			end
 		end)
-		
+
 		editbox:SetScript('OnEditFocusGained', function(self)
 			placeholderText:Hide()
 			EditBox_HighlightText(self)
@@ -473,7 +473,7 @@ end
 local DropdownCount = 0
 
 local function initmenu(items)
-	
+
 	local info = UIDropDownMenu_CreateInfo()
 	info.text = 'Challenge Mode' --GUILD_CHALLENGE_TYPE2
 	info.func = function() return end
@@ -493,7 +493,7 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 		dropdown.value = value
 		dropdown:initialize()
 	end
-	
+
 	dropdown.initialize = function(dropdown)
 		--local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
 		for i, tbl in ipairs(items) do
@@ -507,8 +507,8 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 					defaultValue = v
 				end
 			end
-			
-			
+
+
 			info.func = function(self)
 				if tbl.func then
 					tbl.func(self)
@@ -517,28 +517,28 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 				UIDropDownMenu_SetSelectedValue(dropdown, self.value)
 				dropdown.value = self.value
 			end
-			
+
 			--if info.isTitle then
 				--info.text = '-' .. info.text .. '-'
 			--end
-			
+
 			UIDropDownMenu_AddButton(info)
 		end
 		-- dropdown:SetValue(dropdown.value or defaultValue)
 		UIDropDownMenu_SetSelectedValue(dropdown, dropdown.value or defaultValue)
 	end
-	
-	
+
+
 	--UIDropDownMenu_SetSelectedID(dropdown, defaultID or 1)
 	--UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
 	dropdown:SetValue(defaultValue)
 	UIDropDownMenu_SetWidth(dropdown, width or 160)
-	
+
 	_G[dropdown:GetName() .. 'Button']:HookScript('OnClick', function(self)
 		DropDownList1:ClearAllPoints()
 		DropDownList1:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, 0)
 		--ToggleDropDownMenu(nil, nil, dropdown, dropdown, 0, 0)
 	end)
-	
+
 	return dropdown
 end

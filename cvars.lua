@@ -1,7 +1,7 @@
 local addonName, addon = ...
 local _G = _G
 
--- GLOBALS: UIDropDownMenu_AddButton
+-- luacheck: globals UIDropDownMenu_AddButton
 
 addon.combatProtected = {
 	-- List of cvars that can't be modified in combat

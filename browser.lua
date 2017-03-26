@@ -2,7 +2,7 @@ local addonName, addon = ...
 local _G = _G
 local E = addon:Eve()
 
--- GLOBALS: ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1 AdvancedInterfaceOptionsSaved
+-- luacheck: globals ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1 AdvancedInterfaceOptionsSaved
 
 function addon:CVarExists(cvar)
 	return pcall(function() return GetCVarDefault(cvar) end)
@@ -186,7 +186,6 @@ end
 ListFrame:HookScript('OnShow', FilteredRefresh)
 
 -- Events
-local E = addon:Eve()
 local oSetCVar = SetCVar
 function E:PLAYER_LOGIN()
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
