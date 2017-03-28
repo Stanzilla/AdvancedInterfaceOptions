@@ -152,6 +152,9 @@ addon.hiddenOptions = {
 	["nameplatePersonalHideDelaySeconds"] = { prettyName = "", description = "The delay to wait before hiding the personal nameplate", type = "boolean" },
 	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean" },
 	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
+	["nameplateTargetRadialPosition"] = { prettyName = nil, description = "", type = "number"},
+	["nameplateOccludedAlphaMult"] = { prettyName = nil, description = "", type = "number"},
+
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
 	["lootLeftmostBag"] = { prettyName = REVERSE_NEW_LOOT_TEXT, description = OPTION_TOOLTIP_REVERSE_NEW_LOOT, type = "boolean" },
@@ -323,16 +326,17 @@ addon.hiddenOptions = {
 	["noBuffDebuffFilterOnTarget"] = { prettyName = "No Debuff Filter on Target", description = "Do not filter buffs or debuffs at all on targets", type = "boolean" },
 	["showHonorAsExperience"] = { prettyName = nil, description = "Show the honor bar as a regular experience bar in place of rep", type = "boolean" },
 	-- Tab-Targetting
-	["TargetNearestUseOld"] = { prettyName = nil, description = "Use pre-7.0 'nearest target' functionality", type = "boolean" },
+	["TargetNearestUseNew"] = { prettyName = nil, description = "Use 7.2 'nearest target' functionality", type = "boolean" },
 	--["TargetPriorityAllowAnyOnScreen"] = { prettyName = nil, description = "If set, and no 100% correct target is available, allow selecting any valid in-range target (2 = also out-of-range)", type = "boolean" },
-	--["TargetPriorityCombatLock"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player.", type = "boolean" },
-	--["TargetPriorityCombatLockHighlight"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player. (while doing hold-to-target)", type = "boolean" },
+	["TargetPriorityCombatLock"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player.", type = "boolean" },
+	["TargetPriorityCombatLockHighlight"] = { prettyName = nil, description = "1=Lock to in-combat targets when starting from an in-combat target. 2=Further restrict to in-combat with player. (while doing hold-to-target)", type = "boolean" },
 	--["TargetPriorityHoldHighlightDelay"] = { prettyName = nil, description = "Delay in Milliseconds before priority target highlight starts when holding the button", type = "number" },
 	--["TargetPriorityIncludeBehind"] = { prettyName = nil, description = "If set, include target's behind the player in priority target selection", type = "boolean" },
-	--["TargetPriorityPvp"] = { prettyName = nil, description = "When in pvp, give higher priority to players and important pvp targets (2 = all pvp targets, 3 = players only)", type = "boolean" },
+	["TargetPriorityPvp"] = { prettyName = nil, description = "When in pvp, give higher priority to players and important pvp targets (2 = all pvp targets, 3 = players only)", type = "boolean" },
 	--["TargetPriorityPvpLock"] = { prettyName = nil, description = "Lock to important pvp targets when starting from a pvp target.", type = "boolean" },
 	--["TargetPriorityPvpLockHighlight"] = { prettyName = nil, description = "Lock to players when starting from a player target in pvp. (while doing hold-to-target)", type = "boolean" },
 	--["TargetPriorityValueBank"] = { prettyName = nil, description = "Selects the scoring values bank for calculating target priority order", type = "boolean" },
+	["TargetPriorityCombatLockContextualRelaxation"] = { prettyName = nil, description = "", type = "number" },
 
 	["unitClutter"] = { prettyName = nil, description = "Enables/Disables unit clutter", type = "boolean" },
 	["unitClutterInstancesOnly"] = { prettyName = nil, description = "Whether or not to use unit clutter in instances only (0 or 1)", type = "boolean" },
@@ -984,6 +988,8 @@ addon.hiddenOptions = {
 	["worldQuestFilterGold"] = { description = "If enabled, world quests with gold rewards will be shown on the map" },
 	["worldQuestFilterOrderResources"] = { description = "If enabled, world quests with order resource rewards will be shown on the map" },
 	["worldQuestFilterProfessionMaterials"] = { description = "If enabled, world quests with profession material rewards will be shown on the map" },
+	["CastTimingEnhancements"] = { prettyName = nil, description = "", type = "boolean" },
+	["autoAcceptQuickJoinRequests"] = { prettyName = "Auto-accept quick join requests", description = "", type = "boolean" },
 }
 
 -- Allow case-insensitive lookup of cvars in our table (relatively slow, so match the case when possible)
