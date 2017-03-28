@@ -152,8 +152,8 @@ addon.hiddenOptions = {
 	["nameplatePersonalHideDelaySeconds"] = { prettyName = "", description = "The delay to wait before hiding the personal nameplate", type = "boolean" },
 	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean" },
 	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
-	["nameplateTargetRadialPosition"] = { prettyName = nil, description = "", type = "number"},
-	["nameplateOccludedAlphaMult"] = { prettyName = nil, description = "", type = "number"},
+	["nameplateTargetRadialPosition"] = { prettyName = nil, description = "When target is off screen, position its nameplate radially around sides and bottom", type = "number"},
+	["nameplateOccludedAlphaMult"] = { prettyName = nil, description = "Alpha multiplier of nameplates for occluded targets", type = "number"},
 
 
 	["reverseCleanupBags"] = { prettyName = REVERSE_CLEAN_UP_BAGS_TEXT, description = OPTION_TOOLTIP_REVERSE_CLEAN_UP_BAGS, type = "boolean" },
