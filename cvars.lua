@@ -73,7 +73,7 @@ addon.combatProtected = {
 	["uiScaleMultiplier"] = true,
 	["UnitNameGuildTitle"] = true,
 	["useCompactPartyFrames"] = true,
-	["useUiScale"] = true,	
+	["useUiScale"] = true,
 }
 
 addon.hiddenOptions = {
@@ -202,14 +202,14 @@ addon.hiddenOptions = {
 	["wholeChatWindowClickable"] = { prettyName = nil, description = OPTION_TOOLTIP_CHAT_WHOLE_WINDOW_CLICKABLE, type = "boolean" },
 	["useEnglishAudio"] = { prettyName = nil, description = OPTION_TOOLTIP_USE_ENGLISH_AUDIO, type = "boolean" },
 	["ChatSoundVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_, type = "number" },
-	["reducedLagTolerance"] = { prettyName = "Custom Lag Tolerance", description = OPTION_TOOLTIP_REDUCED_LAG_TOLERANCE, type = "boolean" },
+	--["reducedLagTolerance"] = { prettyName = "Custom Lag Tolerance", description = OPTION_TOOLTIP_REDUCED_LAG_TOLERANCE, type = "boolean" },
 	["EnableMicrophone"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_MICROPHONE, type = "boolean" },
 	["autoOpenLootHistory"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_OPEN_LOOT_HISTORY, type = "boolean" },
 	["showVKeyCastbarOnlyOnTarget"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_CASTBAR_IN_V_KEY_ONLY_ON_TARGET, type = "boolean" },
 	["displaySpellActivationOverlays"] = { prettyName = nil, description = OPTION_TOOLTIP_DISPLAY_SPELL_ALERTS, type = "boolean" },
 	["hdPlayerModels"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_HD_MODELS, type = "boolean" },
 	["autoLootKey"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_LOOT_KEY, type = "boolean" }, -- TODO TYPE
-	["MaxSpellStartRecoveryOffset"] = { prettyName = LAG_TOLERANCE, description = "Determines how far ahead of the \'end of a spell\' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system. Ideally, you\'ll want to set this to your in-game latency. Note: For this cvar to work, reducedLagTolerance must be enabled.", type = "number" },
+	["SpellQueueWindow"] = { prettyName = LAG_TOLERANCE, description = "Determines how far ahead of the \'end of a spell\' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system. Ideally, you\'ll want to set this to your in-game latency.", type = "number" },
 	["advancedCombatLogging"] = { prettyName = nil, description = OPTION_TOOLTIP_ADVANCED_COMBAT_LOGGING, type = "boolean" },
 	["disableServerNagle"] = { prettyName = nil, description = OPTION_TOOLTIP_OPTIMIZE_NETWORK_SPEED, type = "boolean" },
 	-- Camera
@@ -385,7 +385,7 @@ addon.hiddenOptions = {
 	["targetStatusText"] = { prettyName = STATUS_TEXT_TARGET, description = OPTION_TOOLTIP_STATUS_TEXT_TARGET, type = "boolean"}, -- removed
 	["alternateResourceText"] = { prettyName = ALTERNATE_RESOURCE_TEXT, description = OPTION_TOOLTIP_ALTERNATE_RESOURCE, type = "boolean"}, -- removed
 	["xpBarText"] = { prettyName = XP_BAR_TEXT, description = OPTION_TOOLTIP_XP_BAR, type = "boolean" },
-	
+
 	["violenceLevel"] = { prettyName = "Violence Level", description = "Sets the violence level of the game", type = "number" },
 	["ffxGlow"] = { prettyName = "FFX Glow", description = "full screen glow effect", type = "boolean" },
 	["releaseUITextures"] = { prettyName = "Release UI Textures", description = "Release Hidden UI Textures by default", type = "boolean" },
@@ -402,8 +402,8 @@ addon.hiddenOptions = {
 	["cursorsizepreferred"] = { prettyName = "Cursor Size", description = "0 = 32x32, 1 = 48x48, 2 = 64x64, -1 = autodetect", type = "number" },
 	["ffxDeath"] = { prettyName = "FFX Death", description = "Enables full screen death effect", type = "boolean" },
 	["WorldTextScale"] = { prettyName = "World Text Scale", description = "The scale of in-world damage numbers, xp gain, artifact gains, etc", type = "number" },
-	
-	
+
+
 	-- 7.1.5 dump (1/16/17)
 	["BrowserNavigateLog"] = { description = "Enables Logging of browser navigation requests (Requires /reload)" },
 	--["CACHE-WGOB-GameObjectsHotfixCount"] = {},

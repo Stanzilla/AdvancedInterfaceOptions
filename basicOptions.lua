@@ -797,30 +797,11 @@ attackOnAssist:SetPoint("TOPLEFT", stopAutoAttack, "BOTTOMLEFT", 0, -4)
 local castOnKeyDown = newCheckbox(AIO_C, 'ActionButtonUseKeyDown')
 castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
 
-local reducedLagTolerance = newCheckbox(AIO_C, 'reducedLagTolerance')
-reducedLagTolerance:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
-
 local spellStartRecovery = newSlider(AIO_C, 'SpellQueueWindow', 0, 400)
-spellStartRecovery:SetPoint('TOPLEFT', reducedLagTolerance, 'BOTTOMLEFT', 24, -8)
+spellStartRecovery:SetPoint('TOPLEFT', castOnKeyDown, 'BOTTOMLEFT', 24, -12)
 spellStartRecovery.minMaxValues = {spellStartRecovery:GetMinMaxValues()}
 spellStartRecovery.minText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[1], MILLISECONDS_ABBR)
 spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[2], MILLISECONDS_ABBR)
-
-reducedLagTolerance:HookScript('OnClick', function(self)
-	if self:GetChecked() then
-		spellStartRecovery:Enable()
-	else
-		spellStartRecovery:Disable()
-	end
-end)
-
-reducedLagTolerance:HookScript('OnShow', function(self)
-	if self:GetChecked() then
-		spellStartRecovery:Enable()
-	else
-		spellStartRecovery:Disable()
-	end
-end)
 
 -- Hook up options to addon panel
 InterfaceOptions_AddCategory(AIO, addonName)
