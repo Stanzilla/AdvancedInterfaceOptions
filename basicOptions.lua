@@ -800,7 +800,7 @@ castOnKeyDown:SetPoint("TOPLEFT", attackOnAssist, "BOTTOMLEFT", 0, -4)
 local reducedLagTolerance = newCheckbox(AIO_C, 'reducedLagTolerance')
 reducedLagTolerance:SetPoint("TOPLEFT", castOnKeyDown, "BOTTOMLEFT", 0, -4)
 
-local spellStartRecovery = newSlider(AIO_C, 'MaxSpellStartRecoveryOffset', 0, 400)
+local spellStartRecovery = newSlider(AIO_C, 'SpellQueueWindow', 0, 400)
 spellStartRecovery:SetPoint('TOPLEFT', reducedLagTolerance, 'BOTTOMLEFT', 24, -8)
 spellStartRecovery.minMaxValues = {spellStartRecovery:GetMinMaxValues()}
 spellStartRecovery.minText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[1], MILLISECONDS_ABBR)
