@@ -72,7 +72,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 			AdvancedInterfaceOptionsSaved['AccountVars'] = {}
 		end
 		for cvar, value in pairs(AdvancedInterfaceOptionsSaved.AccountVars) do
-			if addon.hiddenOptions[cvar] then -- confirm we still use this cvar
+			if addon.hiddenOptions[cvar] and addon:CVarExists(cvar) then -- confirm we still use this cvar
 				if GetCVar(cvar) ~= value then
 					SetCVar(cvar, value)
 					-- print('Loading cvar', cvar, value)
