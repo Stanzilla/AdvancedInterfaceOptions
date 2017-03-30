@@ -207,7 +207,7 @@ local function sliderEnable(self)
 end
 
 local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, setValue)
-	local cvarTable = addon.hiddenOptions[cvar]
+	local cvarTable = addon.hiddenOptions[cvar] or {}
 	local label = cvarTable['prettyName'] or cvar
 	local description = cvarTable['description'] or ''
 
