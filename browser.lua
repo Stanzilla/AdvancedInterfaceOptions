@@ -91,6 +91,10 @@ FilterBox:SetScript('OnEscapePressed', function(self)
 	self:SetAutoFocus(false) -- Allow focus to clear when escape is pressed
 	self:ClearFocus()
 end)
+FilterBox:SetScript('OnEnterPressed', function(self)
+	self:SetAutoFocus(false) -- Clear focus when enter is pressed because ketho said so
+	self:ClearFocus()
+end)
 FilterBox:SetScript('OnEditFocusGained', function(self)
 	self:SetAutoFocus(true)
 	self:HighlightText()
