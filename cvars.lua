@@ -737,7 +737,7 @@ addon.hiddenOptions = {
 	["minimapInsideZoom"] = { description = "The current indoor minimap zoom level" },
 	["minimapPortalMax"] = { description = "Max Number of Portals to traverse for minimap" },
 	-- ["minimapShapeshiftTracking"] = { description = "Stores shapeshift-specific tracking spells that were active last session." },
-	["minimapShowArchBlobs"] = { description = "Stores whether to show the quest blobs on the minimap." },
+	["minimapShowArchBlobs"] = { description = "Stores whether to show archaeology blobs on the minimap." },
 	["minimapShowQuestBlobs"] = { description = "Stores whether to show the quest blobs on the minimap." },
 	-- ["minimapTrackedInfo"] = {},
 	-- ["minimapTrackedInfov2"] = { description = "Stores the minimap tracking that was active last session." },
