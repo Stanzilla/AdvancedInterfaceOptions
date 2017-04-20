@@ -102,11 +102,12 @@ function addon:RecordCVar(cvar, value) -- Save cvar to DB for loading later
 			end
 		end
 		if found then -- only record cvars that exist in our database
-			if GetCVar(cvar) == GetCVarDefault(cvar) then -- don't bother recording if default value
-				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
-			else
+			-- If we don't save the value if it's set to the default, and something else changes it from the default, we won't know to set it back
+			--if GetCVar(cvar) == GetCVarDefault(cvar) then -- don't bother recording if default value
+			--	AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
+			--else
 				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = GetCVar(cvar) -- not necessarily the same as "value"
-			end
+			--end
 		end
 	end
 end
