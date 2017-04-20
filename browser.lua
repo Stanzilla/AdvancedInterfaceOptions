@@ -22,33 +22,54 @@ end
 
 -------------------------------------------------------
 -- Track cvars set by the interface and other addons
+-- hook setcvar early, record to a temporary table and commit to saved vars when we finish loading
+
+local SVLoaded = false -- we can't record any changes until after our own saved vars have loaded
+local TempTraces = {} -- [cvar:lower()] = {source, value}
+
+function E:Init()
+	SVLoaded = true
+	for cvar, trace in pairs(TempTraces) do -- commit temp vars to sv
+		local source, value = trace.source, trace.value
+		local currentValue = GetCVar(cvar)
+		if value == currentValue then -- only record if the 2 values match, otherwise we probably overwrote it with our own 
+			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar ] = source
+			addon:RecordCVar(cvar, value)
+		end
+	end
+end
+
 local function TraceCVar(cvar, value, ...)
 	if not addon:CVarExists(cvar) then return end
 	local trace = debugstack(2)
 	local func, source, lineNum = trace:match("in function `([^']+)'%s*([^:%[]+):(%d+)")
 	if source then
-		-- local blizzardAddon = source:match('(B?l?i?z?zard_.+)')
-		-- local addonName, file = source:match('^.?.?.?I?n?t?e?r?f?a?c?e?\\?A?d?d?O?n?s?\\([^\\]+)\\?(.*)$')
-		-- source is Interface\FrameXML\ChatFrame.lua if we've manually typed /script or /console
-		-- print('|cffffccff' .. source .. ':' .. lineNum .. '|r', cvar, value)
-		AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
-		addon:RecordCVar(cvar, value)
+		local realValue = GetCVar(cvar) -- the client does some conversions to the original value
+		if SVLoaded then
+			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
+			addon:RecordCVar(cvar, realValue)
+		else
+			-- this will still record blame for an addon even if we overwrite their setting
+			TempTraces[cvar:lower()] = {
+				source = source .. ':' .. lineNum,
+				value = realValue,
+			}
+		end
 	end
 end
 
-function E:Init()
-	hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
-	hooksecurefunc('ConsoleExec', function(msg)
-		local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
-		if cmd then
-			if cmd:lower() == 'set' then -- /console SET cvar value
-				TraceCVar(cvar, value)
-			else -- /console cvar value
-				TraceCVar(cmd, cvar)
-			end
+hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
+hooksecurefunc('ConsoleExec', function(msg)
+	local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
+	if cmd then
+		if cmd:lower() == 'set' then -- /console SET cvar value
+			TraceCVar(cvar, value)
+		else -- /console cvar value
+			TraceCVar(cmd, cvar)
 		end
-	end)
-end
+	end
+end)
+
 
 local SetCVar = function(cvar, value)
 	addon:SetCVar(cvar, value)
