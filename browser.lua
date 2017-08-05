@@ -196,7 +196,10 @@ local function RefreshCVarList()
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
 	for cvar, tbl in pairs(CVarList) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
-		tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
+		
+		if not(type(value) == 'string' and value:byte(2) == 1) then -- hack to strip tracking variables from our table, maybe look for a better solution
+			tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
+		end
 	end
 	--ListFrame:SetItems(CVarTable)
 end

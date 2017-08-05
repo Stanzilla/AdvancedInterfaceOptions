@@ -144,7 +144,7 @@ local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
 local function checkboxSetCVar(self, checked) addon:SetCVar(self.cvar, checked) end
 local function checkboxOnClick(self)
 	local checked = self:GetChecked()
-	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	-- PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff") -- doesn't work in 7.3, presumably the sound names have changed
 	self:SetValue(checked)
 end
 
