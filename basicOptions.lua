@@ -126,8 +126,6 @@ function addon:SetCVar(cvar, value, ...) -- save our cvar to the db
 	end
 end
 
-
-
 local AIO = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO:Hide()
 AIO:SetAllPoints()
@@ -144,7 +142,7 @@ local function checkboxSetChecked(self) self:SetChecked(self:GetValue()) end
 local function checkboxSetCVar(self, checked) addon:SetCVar(self.cvar, checked) end
 local function checkboxOnClick(self)
 	local checked = self:GetChecked()
-	-- PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff") -- doesn't work in 7.3, presumably the sound names have changed
+    PlaySound(checked and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
 	self:SetValue(checked)
 end
 
