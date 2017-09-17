@@ -197,7 +197,7 @@ local function RefreshCVarList()
 	for cvar, tbl in pairs(CVarList) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
 
-		if not(type(value) == 'string' and value:byte(2) == 1) then -- hack to strip tracking variables from our table, maybe look for a better solution
+		if not(type(value) == 'string' and (value:byte(2) == 1 or value:byte(1) == 2)) then -- hack to strip tracking variables and filters from our table, maybe look for a better solution
 			tinsert(CVarTable, {cvar, cvar, tbl.description or '', isDefault and value or ('|cffff0000' .. value .. '|r')})
 		end
 	end
