@@ -766,7 +766,7 @@ local nameplateAtBase = newCheckbox(AIO_NP, 'nameplateOtherAtBase')
 nameplateAtBase:SetPoint("TOPLEFT", nameplateDistance, "BOTTOMLEFT", 0, -16)
 nameplateAtBase:SetScript('OnClick', function(self)
 	local checked = self:GetChecked()
-	PlaySound(checked and "igMainMenuOptionCheckBoxOn" or "igMainMenuOptionCheckBoxOff")
+	PlaySound(checked and SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON or SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_OFF)
 	self:SetValue(checked and 2 or 0)
 end)
 
