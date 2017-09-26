@@ -4,7 +4,8 @@ local _G = _G
 local _SetCVar = SetCVar -- Keep a local copy of SetCVar so we don't call the hooked version
 local SetCVar = function(...) -- Suppress errors trying to set read-only cvars
 	-- Not ideal, but the api doesn't give us this information
-	return pcall(function(...) return _SetCVar(...) end)
+	local status, err = pcall(function(...) return _SetCVar(...) end, ...)
+	return status
 end
 
 -- luacheck: globals GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
