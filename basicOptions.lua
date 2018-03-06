@@ -11,8 +11,8 @@ end
 -- luacheck: globals GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
 -- luacheck: globals UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
 -- luacheck: globals AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- luacheck: globals BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
--- luacheck: globals TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS UVARINFO
+-- luacheck: globals BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show
+-- luacheck: globals UVARINFO
 
 AdvancedInterfaceOptionsSaved = {}
 
@@ -22,7 +22,6 @@ local DefaultSettings = {
 	CharVars = {}, -- (todo) character-specific cvar settings? [charName-realm] = { [cvar] = value }
 	EnforceSettings = false, -- true to load cvars from our saved variables every time we log in
 	-- this will override anything that sets a cvar outside of this addon
-	CustomVars = {}, -- custom options for missing/removed cvars
 	ModifiedCVars = {}, -- [cvar:lower()] = 'last addon to modify it'
 }
 
@@ -40,7 +39,6 @@ function E:VARIABLES_LOADED()
 	end
 end
 
-local statusTextOptions
 function E:ADDON_LOADED(addon_name)
 	if addon_name == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
@@ -65,12 +63,6 @@ end
 
 function E:Init() -- Runs after our saved variables are loaded and cvars have been loaded
 	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
-
-	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
-		if statusTextOptions[k] then
-			statusTextOptions[k](v and "statusText")
-		end
-	end
 
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
@@ -291,18 +283,6 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	return slider
 end
 
--------------
--- Custom vars
--------------
-
-local function getCustomVar(self)
-	return AdvancedInterfaceOptionsSaved.CustomVars[self.cvar]
-end
-
-local function setCustomVar(self, value)
-	AdvancedInterfaceOptionsSaved.CustomVars[self.cvar] = value
-end
-
 -----------
 -- Main options
 -----------
@@ -454,7 +434,6 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 				addon:SetCVar(cvar, default)
 			end
 		end
-		wipe(AdvancedInterfaceOptionsSaved.CustomVars)
 		AIO:Hide()
 		AIO:Show()
 	end,
@@ -625,119 +604,6 @@ fctPeriodicEnergyGains:SetPoint("TOPLEFT", fctEnergyGains, "BOTTOMLEFT", 0, -4)
 fctHonorGains:SetPoint("TOPLEFT", fctPeriodicEnergyGains, "BOTTOMLEFT", 0, -4)
 fctAuras:SetPoint("TOPLEFT", fctHonorGains, "BOTTOMLEFT", 0, -4)
 
--- Status Text section
-local AIO_ST = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
-AIO_ST:Hide()
-AIO_ST:SetAllPoints()
-AIO_ST.name = STATUSTEXT_LABEL
-AIO_ST.parent = addonName
-
-local Title_ST = AIO_ST:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
-Title_ST:SetJustifyV('TOP')
-Title_ST:SetJustifyH('LEFT')
-Title_ST:SetPoint('TOPLEFT', 16, -16)
-Title_ST:SetText(AIO_ST.name)
-
-local SubText_ST = AIO_ST:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-SubText_ST:SetMaxLines(3)
-SubText_ST:SetNonSpaceWrap(true)
-SubText_ST:SetJustifyV('TOP')
-SubText_ST:SetJustifyH('LEFT')
-SubText_ST:SetPoint('TOPLEFT', Title_ST, 'BOTTOMLEFT', 0, -8)
-SubText_ST:SetPoint('RIGHT', -32, 0)
-SubText_ST:SetText(STATUSTEXT_SUBTEXT)
-
-local function setStatusTextBars(frame, value)
-	frame.healthbar.cvar = value
-	frame.manabar.cvar = value
-	TextStatusBar_UpdateTextString(frame.healthbar)
-	TextStatusBar_UpdateTextString(frame.manabar)
-end
-
-statusTextOptions = {
-	playerStatusText = function(value)
-		setStatusTextBars(PlayerFrame, value)
-	end,
-	petStatusText = function(value)
-		setStatusTextBars(PetFrame, value)
-	end,
-	partyStatusText = function(value)
-		for i = 1, MAX_PARTY_MEMBERS do
-			setStatusTextBars(_G["PartyMemberFrame"..i], value)
-		end
-	end,
-	targetStatusText = function(value)
-		setStatusTextBars(TargetFrame, value)
-	end,
-	alternateResourceText = function(value)
-		PlayerFrameAlternateManaBar.cvar = value
-		TextStatusBar_UpdateTextString(PlayerFrameAlternateManaBar)
-	end,
-}
-
-local function setStatusText(self, value)
-	setCustomVar(self, value)
-	statusTextOptions[self.cvar](value and "statusText")
-end
-
-local stPlayer = newCheckbox(AIO_ST, 'playerStatusText', getCustomVar, setStatusText)
-local stPet = newCheckbox(AIO_ST, 'petStatusText', getCustomVar, setStatusText)
-local stParty = newCheckbox(AIO_ST, 'partyStatusText', getCustomVar, setStatusText)
-local stTarget = newCheckbox(AIO_ST, 'targetStatusText', getCustomVar, setStatusText)
-local stAltResource = newCheckbox(AIO_ST, 'alternateResourceText', getCustomVar, setStatusText)
-local stXpBar = newCheckbox(AIO_ST, 'xpBarText', nil, function(self, checked)
-	checkboxSetCVar(self, checked)
-	TextStatusBar_UpdateTextString(MainMenuExpBar)
-end)
-
-local stToggleStatusText = newCheckbox(AIO_ST, 'statusText',
-	function(self) -- getter
-		local value = checkboxGetCVar(self)
-		stPlayer:SetEnabled(value)
-		stPet:SetEnabled(value)
-		stParty:SetEnabled(value)
-		stTarget:SetEnabled(value)
-		stAltResource:SetEnabled(value)
-		stXpBar:SetEnabled(value)
-		return value
-	end,
-	function(self, value) -- setter
-		addon:SetCVar('statusText', value, 'STATUS_TEXT_DISPLAY') -- forces text on status bars to update
-		stPlayer:SetEnabled(value)
-		stPet:SetEnabled(value)
-		stParty:SetEnabled(value)
-		stTarget:SetEnabled(value)
-		stAltResource:SetEnabled(value)
-		stXpBar:SetEnabled(value)
-	end
-)
-
-stToggleStatusText:SetPoint("TOPLEFT", SubText_ST, "BOTTOMLEFT", 0, -8)
-stPlayer:SetPoint("TOPLEFT", stToggleStatusText, "BOTTOMLEFT", 10, -4)
-stPet:SetPoint("TOPLEFT", stPlayer, "BOTTOMLEFT", 0, -4)
-stParty:SetPoint("TOPLEFT", stPet, "BOTTOMLEFT", 0, -4)
-stTarget:SetPoint("TOPLEFT", stParty, "BOTTOMLEFT", 0, -4)
-stAltResource:SetPoint("TOPLEFT", stTarget, "BOTTOMLEFT", 0, -4)
-stXpBar:SetPoint("TOPLEFT", stAltResource, "BOTTOMLEFT", 0, -4)
-
-local function stTextDisplaySetValue(self)
-	addon:SetCVar('statusTextDisplay', self.value, 'STATUS_TEXT_DISPLAY')
-end
-
--- TODO: figure out why the built-in tooltipTitle and tooltipText attributes don't work
-local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
-	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
-	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
-	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
-})
-stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
-stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
-stTextDisplay:HookScript("OnEnter", function(self)
-	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
-	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
-end)
-stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
-
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_NP:Hide()
@@ -816,7 +682,6 @@ InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
-InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 -- Slash handler
