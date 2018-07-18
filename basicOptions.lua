@@ -73,6 +73,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 	end
 
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
+		--[[
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
 			AdvancedInterfaceOptionsSaved['AccountVars'] = {}
 		end
@@ -88,6 +89,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
 			end
 		end
+		--]]
 	end
 end
 
