@@ -435,6 +435,7 @@ local enforceBox = newCheckbox(AIO, nil,
 	'Enforce Settings on Startup',
 	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.")
 enforceBox:SetPoint("LEFT", title, "RIGHT", 5, 0)
+enforceBox:Disable(true)
 
 -- Button to reset all of our settings back to their defaults
 StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
