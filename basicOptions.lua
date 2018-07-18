@@ -66,6 +66,7 @@ end
 function E:Init() -- Runs after our saved variables are loaded and cvars have been loaded
 	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
 
+	--[[
 	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
 		if statusTextOptions[k] then
 			statusTextOptions[k](v and "statusText")
@@ -73,7 +74,6 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 	end
 
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
-		--[[
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
 			AdvancedInterfaceOptionsSaved['AccountVars'] = {}
 		end
@@ -89,8 +89,8 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 				AdvancedInterfaceOptionsSaved.AccountVars[cvar] = nil
 			end
 		end
-		--]]
 	end
+	--]]
 end
 
 function addon:RecordCVar(cvar, value) -- Save cvar to DB for loading later
@@ -818,7 +818,7 @@ InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_C, addonName)
 InterfaceOptions_AddCategory(AIO_FCT, addonName)
-InterfaceOptions_AddCategory(AIO_ST, addonName)
+-- InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
 -- Slash handler
