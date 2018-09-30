@@ -34,7 +34,7 @@ function E:Init()
 		local currentValue = GetCVar(cvar)
 		if value == currentValue then -- only record if the 2 values match, otherwise we probably overwrote it with our own
 			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar ] = source
-			addon:RecordCVar(cvar, value)
+			-- addon:RecordCVar(cvar, value)
 		end
 	end
 end
@@ -47,7 +47,7 @@ local function TraceCVar(cvar, value, ...)
 		local realValue = GetCVar(cvar) -- the client does some conversions to the original value
 		if SVLoaded then
 			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
-			addon:RecordCVar(cvar, realValue)
+			addon:DontRecordCVar(cvar, realValue)
 		else
 			-- this will still record blame for an addon even if we overwrite their setting
 			TempTraces[cvar:lower()] = {
