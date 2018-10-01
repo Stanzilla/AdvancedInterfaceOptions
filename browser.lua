@@ -34,7 +34,7 @@ function E:Init()
 		local currentValue = GetCVar(cvar)
 		if value == currentValue then -- only record if the 2 values match, otherwise we probably overwrote it with our own
 			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar ] = source
-			-- addon:RecordCVar(cvar, value)
+			addon:DontRecordCVar(cvar, value)
 		end
 	end
 end

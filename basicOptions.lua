@@ -15,7 +15,7 @@ end
 -- luacheck: globals TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS UVARINFO
 
 AdvancedInterfaceOptionsSaved = {}
-local DBVersion = 2
+local DBVersion = 3
 
 local CVarBlacklist = {
 	-- Lowercase list of cvars to never record the value for, even if the user manually sets them
@@ -225,7 +225,11 @@ end
 -----------
 local function sliderGetCVar(self) return GetCVar(self.cvar) end
 local function sliderRefresh(self) self:SetValue(self:GetCVarValue()) end
-local function sliderSetCVar(self, checked) addon:SetCVar(self.cvar, checked) end
+local function sliderSetCVar(self, value, userInput)
+	if userInput then -- only record value if user manually changed it
+		addon:SetCVar(self.cvar, value)
+	end
+end
 
 local function sliderDisable(self)
 	self.text:SetTextColor(GRAY_FONT_COLOR.r, GRAY_FONT_COLOR.g, GRAY_FONT_COLOR.b)
@@ -449,6 +453,7 @@ local enforceBox = newCheckbox(AIO, nil,
 	end,
 	function(self, checked) -- setter
 		AdvancedInterfaceOptionsSaved.EnforceSettings = checked
+		--[[
 		if checked then
 			AdvancedInterfaceOptionsSaved.AccountVars = {}
 			--for widget, cvar in pairs(Widgets) do
@@ -460,6 +465,7 @@ local enforceBox = newCheckbox(AIO, nil,
 				end
 			end
 		end
+		--]]
 	end,
 	'Enforce Settings on Startup',
 	"Reapplies all settings when you log in or change characters.\n\nCheck this if your settings aren't being saved between sessions.")
