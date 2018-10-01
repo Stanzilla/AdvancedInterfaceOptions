@@ -78,11 +78,13 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 	end
 	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
 
+	--[[
 	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
 		if statusTextOptions[k] then
 			statusTextOptions[k](v and "statusText")
 		end
 	end
+	--]]
 
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
