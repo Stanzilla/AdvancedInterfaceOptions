@@ -14,6 +14,8 @@ end
 -- luacheck: globals BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
 -- luacheck: globals TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS UVARINFO
 
+local IsClassic = select(4, GetBuildInfo()) < 20000
+
 AdvancedInterfaceOptionsSaved = {}
 local DBVersion = 3
 
@@ -363,14 +365,16 @@ local fadeMap = newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
-local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
-	function(self)
-		return GetSortBagsRightToLeft()
-	end,
-	function(self, checked)
-		SetSortBagsRightToLeft(checked)
-	end
-)
+if not IsClassic then
+    local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
+        function(self)
+            return GetSortBagsRightToLeft()
+        end,
+        function(self, checked)
+            SetSortBagsRightToLeft(checked)
+        end
+    )
+end
 local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
 	function(self)
 		return GetInsertItemsLeftToRight()
@@ -443,9 +447,14 @@ fadeMap:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
 secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
-reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
-lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
-enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
+if not IsClassic then
+    reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
+    lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
+    enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
+else
+    lootLeftmostBag:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
+    enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
+end
 
 
 -- Checkbox to enforce all settings through reloads
