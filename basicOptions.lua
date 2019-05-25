@@ -365,8 +365,9 @@ local fadeMap = newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
+local reverseCleanupBags;
 if not IsClassic then
-    local reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
+    reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
         function(self)
             return GetSortBagsRightToLeft()
         end,
