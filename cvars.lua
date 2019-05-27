@@ -1,8 +1,6 @@
 local addonName, addon = ...
 local _G = _G
 
--- luacheck: globals UIDropDownMenu_AddButton
-
 addon.combatProtected = {
 	-- List of cvars that can't be modified in combat
 	["alwaysShowActionBars"] = true,
@@ -153,7 +151,7 @@ addon.hiddenOptions = {
 	["ShowNamePlateLoseAggroFlash"] = { prettyName = nil, description = "When enabled, if you are a tank role and lose aggro, the nameplate with briefly flash.", type = "boolean" },
 	["ShowClassColorInNameplate"] = { prettyName = SHOW_CLASS_COLOR_IN_V_KEY, description = OPTION_TOOLTIP_SHOW_CLASS_COLOR_IN_V_KEY, type = "boolean" },
 	["ShowClassColorInFriendlyNameplate"] = { prettyName = "Class color friendly nameplates", description = "Class color for friendly nameplates", type = "boolean" },
-	
+
 	["nameplateTargetRadialPosition"] = { prettyName = nil, description = "When target is off screen, position its nameplate radially around sides and bottom", type = "number"},
 	["nameplateOccludedAlphaMult"] = { prettyName = nil, description = "Alpha multiplier of nameplates for occluded targets", type = "number"},
 
@@ -182,7 +180,7 @@ addon.hiddenOptions = {
 	["colorblindWeaknessFactor"] = { prettyName = nil, description = OPTION_TOOLTIP_ADJUST_COLORBLIND_STRENGTH, type = "boolean" },
 	["autoLootDefault"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_LOOT_DEFAULT, type = "boolean" },
 	["autoLootRate"] = { prettyName = "Auto Loot Rate", description = "Rate in milliseconds to tick auto loot", type = "number" },
-	["ChatAmbienceVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_, type = "boolean" },
+	["ChatAmbienceVolume"] = { prettyName = nil, description = "", type = "boolean" },
 	["threatShowNumeric"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_NUMERIC_THREAT, type = "boolean" },
 	["rightActionBar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_MULTIBAR3, type = "boolean" },
 	["emphasizeMySpellEffects"] = { prettyName = nil, description = OPTION_TOOLTIP_EMPHASIZE_MY_SPELLS, type = "boolean" },
@@ -206,7 +204,7 @@ addon.hiddenOptions = {
 
 	["wholeChatWindowClickable"] = { prettyName = nil, description = OPTION_TOOLTIP_CHAT_WHOLE_WINDOW_CLICKABLE, type = "boolean" },
 	["useEnglishAudio"] = { prettyName = nil, description = OPTION_TOOLTIP_USE_ENGLISH_AUDIO, type = "boolean" },
-	["ChatSoundVolume"] = { prettyName = nil, description = OPTION_TOOLTIP_, type = "number" },
+	["ChatSoundVolume"] = { prettyName = nil, description = "", type = "number" },
 	--["reducedLagTolerance"] = { prettyName = "Custom Lag Tolerance", description = OPTION_TOOLTIP_REDUCED_LAG_TOLERANCE, type = "boolean" },
 	["EnableMicrophone"] = { prettyName = nil, description = OPTION_TOOLTIP_ENABLE_MICROPHONE, type = "boolean" },
 	["autoOpenLootHistory"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_OPEN_LOOT_HISTORY, type = "boolean" },
@@ -1002,10 +1000,10 @@ addon.hiddenOptions = {
 	["worldQuestFilterProfessionMaterials"] = { description = "If enabled, world quests with profession material rewards will be shown on the map" },
 	["CastTimingEnhancements"] = { prettyName = nil, description = "Hold chain precasts, and predict anim timed casts", type = "boolean" },
 	["autoAcceptQuickJoinRequests"] = { prettyName = "Auto-accept quick join requests", description = "", type = "boolean" },
-	
+
 	["AimingStrafeLeftUsesMoveBackwards"] = { description = "Uses backwards move anim when aiming a ranged weapon and strafing to the left" },
 	["DebugTorsoTwist"] = { description = "Debug visualization for Torso Twist: 1 = Player, 2 = Target, 3 = All" },
-	
+
 	["lodObjectFadeScale"] = {},
 }
 
@@ -1040,7 +1038,7 @@ for _, info in pairs(C_Console.GetAllCommands()) do
 		local value = GetCVar(info.command)
 		local optionTable = {
 			-- prettyName = info.command, -- the api doesn't provide pretty names, so the only way to keep these would be to create a table for them
-			description = info.help,		
+			description = info.help,
 		}
 		addon.hiddenOptions[info.command] = optionTable
 	end

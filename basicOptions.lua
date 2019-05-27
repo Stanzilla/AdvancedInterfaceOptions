@@ -8,12 +8,6 @@ local SetCVar = function(...) -- Suppress errors trying to set read-only cvars
 	return status
 end
 
--- luacheck: globals GetSortBagsRightToLeft SetSortBagsRightToLeft GetInsertItemsLeftToRight SetInsertItemsLeftToRight
--- luacheck: globals UIDropDownMenu_AddButton UIDropDownMenu_CreateInfo UIDropDownMenu_SetSelectedValue
--- luacheck: globals AdvancedInterfaceOptionsSaved COMBAT_TEXT_FLOAT_MODE
--- luacheck: globals BlizzardOptionsPanel_UpdateCombatText GameFontHighlightSmall StaticPopup_Show PetFrame PlayerFrame TargetFrame
--- luacheck: globals TextStatusBar_UpdateTextString PlayerFrameAlternateManaBar MainMenuExpBar MAX_PARTY_MEMBERS UVARINFO
-
 local IsClassic = select(4, GetBuildInfo()) < 20000
 
 AdvancedInterfaceOptionsSaved = {}
@@ -365,7 +359,7 @@ local fadeMap = newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
-local reverseCleanupBags;
+local reverseCleanupBags
 if not IsClassic then
     reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
         function(self)
@@ -448,6 +442,7 @@ fadeMap:SetPoint("TOPLEFT", playerGuildTitles, "BOTTOMLEFT", 0, -4)
 secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
+
 if not IsClassic then
     reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
@@ -456,7 +451,6 @@ else
     lootLeftmostBag:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
 end
-
 
 -- Checkbox to enforce all settings through reloads
 local enforceBox = newCheckbox(AIO, nil,
@@ -522,7 +516,6 @@ resetButton:SetScript('OnClick', function(self)
 	StaticPopup_Show('AIO_RESET_EVERYTHING')
 end)
 
-
 -- Chat section
 local AIO_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_Chat:Hide()
@@ -550,7 +543,6 @@ local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
 
 chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
-
 
 -- Floating Combat Text section
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)

@@ -2,8 +2,6 @@ local addonName, addon = ...
 local _G = _G
 local E = addon:Eve()
 
--- luacheck: globals ListFrame GameTooltip SLASH_AIO1 InterfaceOptionsFrame_OpenToCategory SLASH_CVAR1 AdvancedInterfaceOptionsSaved
-
 function addon:CVarExists(cvar)
 	return pcall(function() return GetCVarDefault(cvar) end)
 end

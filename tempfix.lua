@@ -20,8 +20,6 @@ LockdownText:SetTextColor(1, 0, 0)
 LockdownText:SetPoint('CENTER')
 LockdownText:SetText("CAN'T MODIFY CVARS IN COMBAT")
 
-
-
 local OkayGo = CreateFrame('Button', nil, InterfaceOptionsFrameOkay)
 OkayGo:Hide()
 OkayGo:SetAllPoints()
