@@ -168,7 +168,9 @@ AIO:SetAllPoints()
 AIO.name = addonName
 
 -- Register all of our widgets here so we can iterate over them
+-- luacheck: ignore
 local Widgets = {} -- [frame] = cvar
+
 
 -------------
 -- Checkbox widget

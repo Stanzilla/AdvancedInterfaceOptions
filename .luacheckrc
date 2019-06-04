@@ -46,7 +46,10 @@ globals = {
 	"CombatText_AddMessage",
 	"CooldownFrame_Set",
 	"CreateObjectPool",
-	"DEFAULT_CHAT_FRAME",
+    "DEFAULT_CHAT_FRAME",
+    "EditBox_ClearHighlight",
+    "EditBox_HighlightText",
+    "EditBox_ClearFocus",
 	"GameTooltip_Hide",
 	"GameTooltip_SetDefaultAnchor",
     "GameTooltip_UnitColor",
@@ -65,10 +68,12 @@ globals = {
     "UIDropDownMenu_Initialize",
     "UIDropDownMenu_CreateInfo",
     "UIDropDownMenu_SetSelectedValue",
+    "UIDropDownMenu_SetWidth",
     "UVARINFO",
 
 	-- FrameXML frames
 
+    "DropDownList1",
 	"GameTooltip",
 	"NamePlateDriverFrame",
 	"WorldFrame",
