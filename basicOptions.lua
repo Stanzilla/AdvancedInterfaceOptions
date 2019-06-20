@@ -595,48 +595,44 @@ end)
 fctfloatmodeDropdown:HookScript("OnLeave", GameTooltip_Hide)
 Widgets[ fctfloatmodeDropdown ] = 'floatingCombatTextFloatMode'
 
-local revUVARINFO = {}
-local UVARINFO = UVARINFO or {
-	["REMOVE_CHAT_DELAY"] = 1,
-	["LOCK_ACTIONBAR"] = 1,
-	["SHOW_BUFF_DURATIONS"] = 1,
-	["ALWAYS_SHOW_MULTIBARS"] = 1,
-	["SHOW_PARTY_PETS"] = 1,
-	["SHOW_PARTY_BACKGROUND"] = 1,
-	["SHOW_TARGET_OF_TARGET"] = 1,
-	["AUTO_QUEST_WATCH"] = 1,
-	["LOOT_UNDER_MOUSE"] = 1,
-	["AUTO_LOOT_DEFAULT"] = 1,
-	["SHOW_COMBAT_TEXT"] = 1,
-	["COMBAT_TEXT_SHOW_LOW_HEALTH_MANA"] = 1,
-	["COMBAT_TEXT_SHOW_AURAS"] = 1,
-	["COMBAT_TEXT_SHOW_AURA_FADE"] = 1,
-	["COMBAT_TEXT_SHOW_COMBAT_STATE"] = 1,
-	["COMBAT_TEXT_SHOW_DODGE_PARRY_MISS"] = 1,
-	["COMBAT_TEXT_SHOW_RESISTANCES"] = 1,
-	["COMBAT_TEXT_SHOW_REPUTATION"] = 1,
-	["COMBAT_TEXT_SHOW_REACTIVES"] = 1,
-	["COMBAT_TEXT_SHOW_FRIENDLY_NAMES"] = 1,
-	["COMBAT_TEXT_SHOW_COMBO_POINTS"] = 1,
-	["COMBAT_TEXT_SHOW_ENERGIZE"] = 1,
-	["COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE"] = 1,
-	["COMBAT_TEXT_FLOAT_MODE"] = 1,
-	["COMBAT_TEXT_SHOW_HONOR_GAINED"] = 1,
-	["ALWAYS_SHOW_MULTIBARS"] = 1,
-	["SHOW_CASTABLE_BUFFS"] = 1,
-	["SHOW_DISPELLABLE_DEBUFFS"] = 1,
-	["SHOW_ARENA_ENEMY_FRAMES"] = 1,
-	["SHOW_ARENA_ENEMY_CASTBAR"] = 1,
-	["SHOW_ARENA_ENEMY_PETS"] = 1,
+-- UVARINFO was made local in patch 8.2.0
+local uvars = {
+	removeChatDelay = "REMOVE_CHAT_DELAY",
+	lockActionBars = "LOCK_ACTIONBAR",
+	buffDurations = "SHOW_BUFF_DURATIONS",
+	alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
+	showPartyPets = "SHOW_PARTY_PETS",
+	showPartyBackground = "SHOW_PARTY_BACKGROUND",
+	showTargetOfTarget = "SHOW_TARGET_OF_TARGET",
+	autoQuestWatch = "AUTO_QUEST_WATCH",
+	lootUnderMouse = "LOOT_UNDER_MOUSE",
+	autoLootDefault = "AUTO_LOOT_DEFAULT",
+	enableFloatingCombatText = "SHOW_COMBAT_TEXT",
+	floatingCombatTextLowManaHealth = "COMBAT_TEXT_SHOW_LOW_HEALTH_MANA",
+	floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURAS",
+	floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURA_FADE",
+	floatingCombatTextCombatState = "COMBAT_TEXT_SHOW_COMBAT_STATE",
+	floatingCombatTextDodgeParryMiss = "COMBAT_TEXT_SHOW_DODGE_PARRY_MISS",
+	floatingCombatTextDamageReduction = "COMBAT_TEXT_SHOW_RESISTANCES",
+	floatingCombatTextRepChanges = "COMBAT_TEXT_SHOW_REPUTATION",
+	floatingCombatTextReactives = "COMBAT_TEXT_SHOW_REACTIVES",
+	floatingCombatTextFriendlyHealers = "COMBAT_TEXT_SHOW_FRIENDLY_NAMES",
+	floatingCombatTextComboPoints = "COMBAT_TEXT_SHOW_COMBO_POINTS",
+	floatingCombatTextEnergyGains = "COMBAT_TEXT_SHOW_ENERGIZE",
+	floatingCombatTextPeriodicEnergyGains = "COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE",
+	floatingCombatTextFloatMode = "COMBAT_TEXT_FLOAT_MODE",
+	floatingCombatTextHonorGains = "COMBAT_TEXT_SHOW_HONOR_GAINED",
+	alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
+	showCastableBuffs = "SHOW_CASTABLE_BUFFS",
+	showDispelDebuffs = "SHOW_DISPELLABLE_DEBUFFS",
+	showArenaEnemyFrames = "SHOW_ARENA_ENEMY_FRAMES",
+	showArenaEnemyCastbar = "SHOW_ARENA_ENEMY_CASTBAR",
+	showArenaEnemyPets = "SHOW_ARENA_ENEMY_PETS",
 }
-
-for k, v in pairs(UVARINFO) do
-	revUVARINFO[v.cvar] = k
-end
 
 local function FCT_SetValue(self, checked)
 	addon:SetCVar(self.cvar, checked)
-	_G[revUVARINFO[self.cvar]] = checked and "1" or "0" -- update uvars
+	_G[uvars[self.cvar]] = checked and "1" or "0"
 	BlizzardOptionsPanel_UpdateCombatText()
 end
 
