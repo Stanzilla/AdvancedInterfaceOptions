@@ -69,7 +69,6 @@ globals = {
     "UIDropDownMenu_CreateInfo",
     "UIDropDownMenu_SetSelectedValue",
     "UIDropDownMenu_SetWidth",
-    "UVARINFO",
 
 	-- FrameXML frames
 
