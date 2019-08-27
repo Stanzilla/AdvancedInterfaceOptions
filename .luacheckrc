@@ -69,6 +69,8 @@ globals = {
     "UIDropDownMenu_CreateInfo",
     "UIDropDownMenu_SetSelectedValue",
     "UIDropDownMenu_SetWidth",
+    "WOW_PROJECT_ID",
+    "WOW_PROJECT_CLASSIC",
 
 	-- FrameXML frames
 

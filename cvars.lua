@@ -287,7 +287,8 @@ addon.hiddenOptions = {
 	["showCastableBuffs"] = { prettyName = SHOW_CASTABLE_BUFFS_TEXT, description = OPTION_TOOLTIP_SHOW_CASTABLE_BUFFS, type = "boolean" },
 	["deselectOnClick"] = { prettyName = nil, description = OPTION_TOOLTIP_GAMEFIELD_DESELECT, type = "boolean" },
 	["autoQuestProgress"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_QUEST_PROGRESS, type = "boolean" },
-	["UberTooltips"] = { prettyName = USE_UBERTOOLTIPS, description = OPTION_TOOLTIP_USE_UBERTOOLTIPS, type = "boolean" },
+    ["UberTooltips"] = { prettyName = USE_UBERTOOLTIPS, description = OPTION_TOOLTIP_USE_UBERTOOLTIPS, type = "boolean" },
+    ["chatClassColorOverride"] = { prettyName = "Disable Class Colors", description = "Disables Class Colors in Chat", type = "boolean" },
 	-- Sound
 	["Sound_EnableAllSound"] = { prettyName = ENABLE_SOUND, description = OPTION_TOOLTIP_ENABLE_SOUND, type = "boolean" },
 	["Sound_EnableDSPEffects"] = { prettyName = ENABLE_DSP_EFFECTS, description = OPTION_TOOLTIP_ENABLE_DSP_EFFECTS, type = "boolean" },

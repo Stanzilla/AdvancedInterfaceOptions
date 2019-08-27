@@ -8,7 +8,9 @@ local SetCVar = function(...) -- Suppress errors trying to set read-only cvars
 	return status
 end
 
-local IsClassic = select(4, GetBuildInfo()) < 20000
+local function IsClassic()
+    return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+end
 
 AdvancedInterfaceOptionsSaved = {}
 local DBVersion = 3
@@ -362,7 +364,7 @@ local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
 local reverseCleanupBags
-if not IsClassic then
+if not IsClassic() then
     reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
         function(self)
             return GetSortBagsRightToLeft()
@@ -445,7 +447,7 @@ secureToggle:SetPoint("TOPLEFT", fadeMap, "BOTTOMLEFT", 0, -4)
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 
-if not IsClassic then
+if not IsClassic() then
     reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
@@ -542,10 +544,16 @@ SubText_Chat:SetText('These options allow you to modify various chat settings th
 
 local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
+local classColors
+if IsClassic() then
+    classColors = newCheckbox(AIO_Chat, 'chatClassColorOverride')
+end
 
 chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
-
+if IsClassic() then
+    classColors:SetPoint('TOPLEFT', chatMouseScroll, 'BOTTOMLEFT', 0, -4)
+end
 -- Floating Combat Text section
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_FCT:Hide()
