@@ -554,6 +554,7 @@ chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
 if IsClassic() then
     classColors:SetPoint('TOPLEFT', chatMouseScroll, 'BOTTOMLEFT', 0, -4)
 end
+
 -- Floating Combat Text section
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_FCT:Hide()
@@ -896,7 +897,9 @@ spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxVa
 InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_C, addonName)
-InterfaceOptions_AddCategory(AIO_FCT, addonName)
+if not IsClassic() then
+    InterfaceOptions_AddCategory(AIO_FCT, addonName)
+end
 -- InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
