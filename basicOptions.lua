@@ -292,7 +292,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 		local factor = 1 / stepSize
 		value = floor(value * factor + 0.5) / factor
 		value = max(minRange, min(maxRange, value))
-		slider:SetValue(value)
+		slider:SetValue(value, true)
 		self:SetText(value)
 		self:ClearFocus()
 	end)
