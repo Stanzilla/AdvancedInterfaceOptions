@@ -2,7 +2,7 @@
 ## Interface: 80300
 #@end-retail@
 #@non-retail@
-# ## Interface: 11302
+# ## Interface: 11304
 #@end-non-retail@
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
