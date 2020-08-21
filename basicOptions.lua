@@ -274,7 +274,7 @@ local function newSlider(parent, cvar, minRange, maxRange, stepSize, getValue, s
 	slider.maxText:SetText(maxRange)
 	slider.text:SetText(label)
 
-	local valueBox = CreateFrame('editbox', nil, slider, DoesTemplateExist("BackdropTemplate") and "BackdropTemplate" or nil)
+	local valueBox = CreateFrame('editbox', nil, slider, BackdropTemplateMixin and "BackdropTemplate")
 	valueBox:SetPoint('TOP', slider, 'BOTTOM', 0, 0)
 	valueBox:SetSize(60, 14)
 	valueBox:SetFontObject(GameFontHighlightSmall)
