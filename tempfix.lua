@@ -15,7 +15,7 @@ local LockdownBg = LockdownFrame:CreateTexture()
 LockdownBg:SetAllPoints()
 LockdownBg:SetColorTexture(0,0,0,0.6)
 
-local LockdownText = LockdownFrame:CreateFontString(nil, 'ARTWORK', 'GameFontNormalHugeOutline2')
+local LockdownText = LockdownFrame:CreateFontString(nil, 'ARTWORK', 'GameFontNormalHugeOutline')
 LockdownText:SetTextColor(1, 0, 0)
 LockdownText:SetPoint('CENTER')
 LockdownText:SetText("CAN'T MODIFY CVARS IN COMBAT")
