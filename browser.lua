@@ -3,18 +3,26 @@ local _G = _G
 local E = addon:Eve()
 
 function addon:CVarExists(cvar)
+	-- FIXME: This no longer works to identify whether a cvar exists
 	return pcall(function() return GetCVarDefault(cvar) end)
 end
 
 -- Go through list of cvars and remove any that don't currently exist
 local CVarList = {}
-for cvar in pairs(addon.hiddenOptions) do
-	local cvar_exists = addon:CVarExists(cvar) -- pcall(function() return GetCVarDefault(cvar) end)
-	if cvar_exists then
-		CVarList[cvar] = addon.hiddenOptions[cvar]
-	else
-		-- addon.hiddenOptions[cvar] = nil -- can't do this because we have exceptions for some settings that aren't cvars, should probably restructure the database
-		-- print("Warning, CVar doesn't exist:", cvar)
+for i, info in pairs(C_Console.GetAllCommands()) do
+	local cvar = info.command
+	if info.commandType == 0 -- cvar, rather than script
+	  and info.category ~= 0 -- ignore debug category
+	  and not strfind(info.command:lower(), 'debug') -- a number of commands with "debug" in their name are inexplicibly not in the "debug" category
+	  and info.category ~= 8 -- ignore GM category
+	then
+		if addon.hiddenOptions[cvar] then
+			CVarList[cvar] = addon.hiddenOptions[cvar]
+		else
+			CVarList[cvar] = {
+				description = info.help,
+			}
+		end
 	end
 end
 
