@@ -7,21 +7,24 @@ function addon:CVarExists(cvar)
 	return pcall(function() return GetCVarDefault(cvar) end)
 end
 
--- Go through list of cvars and remove any that don't currently exist
+-- C_Console.GetAllCommands() does not return the complete list of CVars on login
+-- Repopulate the list using UpdateCVarList() when the CVar browser is opened
 local CVarList = {}
-for i, info in pairs(C_Console.GetAllCommands()) do
-	local cvar = info.command
-	if info.commandType == 0 -- cvar, rather than script
-	  and info.category ~= 0 -- ignore debug category
-	  and not strfind(info.command:lower(), 'debug') -- a number of commands with "debug" in their name are inexplicibly not in the "debug" category
-	  and info.category ~= 8 -- ignore GM category
-	then
-		if addon.hiddenOptions[cvar] then
-			CVarList[cvar] = addon.hiddenOptions[cvar]
-		else
-			CVarList[cvar] = {
-				description = info.help,
-			}
+local function UpdateCVarList()
+	for i, info in pairs(C_Console.GetAllCommands()) do
+		local cvar = info.command
+		if info.commandType == 0 -- cvar, rather than script
+		and info.category ~= 0 -- ignore debug category
+		and not strfind(info.command:lower(), 'debug') -- a number of commands with "debug" in their name are inexplicibly not in the "debug" category
+		and info.category ~= 8 -- ignore GM category
+		then
+			if addon.hiddenOptions[cvar] then
+				CVarList[cvar] = addon.hiddenOptions[cvar]
+			else
+				CVarList[cvar] = {
+					description = info.help,
+				}
+			end
 		end
 	end
 end
@@ -199,6 +202,7 @@ end
 -- Update CVarTable to reflect current values
 local function RefreshCVarList()
 	wipe(CVarTable)
+	UpdateCVarList()
 	-- todo: this needs to be updated every time a cvar changes while the table is visible
 	for cvar, tbl in pairs(CVarList) do
 		local value, default, isDefault = GetPrettyCVar(cvar)
