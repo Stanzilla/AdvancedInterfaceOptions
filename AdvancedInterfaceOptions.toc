@@ -12,6 +12,7 @@
 ## X-Website: https://www.curseforge.com/wow/addons/advancedinterfaceoptions
 ## X-Curse-Project-ID: 99982
 ## X-WoWI-ID: 25002
+## X-Wago-ID: ZQ6aPNW7
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: AdvancedInterfaceOptionsSaved
