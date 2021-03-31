@@ -1,3 +1,5 @@
+# Advanced Interface Options
+
 Restores access to removed interface options in Legion and ads a CVar browser for settings galore.
 
 We are currently covering simple options for the following:
