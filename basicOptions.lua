@@ -12,6 +12,14 @@ local function IsClassic()
     return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 end
 
+local function IsBC()
+  return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+end
+
+local function IsRetail()
+  return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+end
+
 AdvancedInterfaceOptionsSaved = {}
 local DBVersion = 3
 
@@ -364,7 +372,8 @@ local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
 local reverseCleanupBags
-if not IsClassic() then
+local lootLeftmostBag
+if IsRetail() then
     reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
         function(self)
             return GetSortBagsRightToLeft()
@@ -373,15 +382,17 @@ if not IsClassic() then
             SetSortBagsRightToLeft(checked)
         end
     )
+
+    lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
+        function(self)
+            return GetInsertItemsLeftToRight()
+        end,
+        function(self, checked)
+            SetInsertItemsLeftToRight(checked)
+        end
+    )
 end
-local lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
-	function(self)
-		return GetInsertItemsLeftToRight()
-	end,
-	function(self, checked)
-		SetInsertItemsLeftToRight(checked)
-	end
-)
+
 local enableWoWMouse = newCheckbox(AIO, 'enableWoWMouse')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
@@ -449,13 +460,15 @@ secureToggle:SetPoint("TOPLEFT", IsClassic() and playerGuildTitles or fadeMap, "
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 
-if not IsClassic() then
+if IsRetail() then
     reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
-else
+elseif IsClassic() then
     lootLeftmostBag:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
+else
+    enableWoWMouse:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
 end
 
 -- Checkbox to enforce all settings through reloads
