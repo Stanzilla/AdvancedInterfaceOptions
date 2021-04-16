@@ -371,28 +371,6 @@ local fadeMap = not IsClassic() and newCheckbox(AIO, 'mapFade')
 local secureToggle = newCheckbox(AIO, 'secureAbilityToggle')
 local luaErrors = newCheckbox(AIO, 'scriptErrors')
 local targetDebuffFilter = newCheckbox(AIO, 'noBuffDebuffFilterOnTarget')
-local reverseCleanupBags
-local lootLeftmostBag
-if IsRetail() then
-    reverseCleanupBags = newCheckbox(AIO, 'reverseCleanupBags',
-        function(self)
-            return GetSortBagsRightToLeft()
-        end,
-        function(self, checked)
-            SetSortBagsRightToLeft(checked)
-        end
-    )
-
-    lootLeftmostBag = newCheckbox(AIO, 'lootLeftmostBag',
-        function(self)
-            return GetInsertItemsLeftToRight()
-        end,
-        function(self, checked)
-            SetInsertItemsLeftToRight(checked)
-        end
-    )
-end
-
 local enableWoWMouse = newCheckbox(AIO, 'enableWoWMouse')
 
 local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
@@ -460,11 +438,29 @@ secureToggle:SetPoint("TOPLEFT", IsClassic() and playerGuildTitles or fadeMap, "
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 
-if IsRetail() then
+local reverseCleanupBags = GetSortBagsRightToLeft and SetSortBagsRightToLeft and newCheckbox(AIO, 'reverseCleanupBags',
+	function(self)
+		return GetSortBagsRightToLeft()
+	end,
+	function(self, checked)
+		SetSortBagsRightToLeft(checked)
+	end
+)
+
+local lootLeftmostBag = GetInsertItemsLeftToRight and SetInsertItemsLeftToRight and newCheckbox(AIO, 'lootLeftmostBag',
+	function(self)
+		return GetInsertItemsLeftToRight()
+	end,
+	function(self, checked)
+		SetInsertItemsLeftToRight(checked)
+	end
+)
+
+if reverseCleanupBags then
     reverseCleanupBags:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     lootLeftmostBag:SetPoint("TOPLEFT", reverseCleanupBags, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
-elseif IsClassic() then
+elseif lootLeftmostBag then
     lootLeftmostBag:SetPoint("TOPLEFT", targetDebuffFilter, "BOTTOMLEFT", 0, -4)
     enableWoWMouse:SetPoint("TOPLEFT", lootLeftmostBag, "BOTTOMLEFT", 0, -4)
 else
