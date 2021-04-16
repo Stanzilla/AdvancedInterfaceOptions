@@ -555,14 +555,11 @@ SubText_Chat:SetText('These options allow you to modify various chat settings th
 
 local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
-local classColors
-if IsClassic() then
-    classColors = newCheckbox(AIO_Chat, 'chatClassColorOverride')
-end
-
 chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
+	
 if IsClassic() then
+    local classColors = newCheckbox(AIO_Chat, 'chatClassColorOverride')
     classColors:SetPoint('TOPLEFT', chatMouseScroll, 'BOTTOMLEFT', 0, -4)
 end
 
