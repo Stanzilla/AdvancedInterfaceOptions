@@ -1045,7 +1045,7 @@ function addon:GetCVars()
 		then
 			table.insert(cvars, info)
 		end
-	end	
+	end
 	return cvars
 end
 
