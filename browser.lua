@@ -51,7 +51,7 @@ end
 local function TraceCVar(cvar, value, ...)
 	if not addon:CVarExists(cvar) then return end
 	local trace = debugstack(2)
-	local func, source, lineNum = trace:match("in function `([^']+)'%s*([^:%[]+):(%d+)")
+	local source, lineNum = trace:match("in function <([^:%[>]+):(%d+)>")
 	if source then
 		local realValue = GetCVar(cvar) -- the client does some conversions to the original value
 		if SVLoaded then
