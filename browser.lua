@@ -2,28 +2,19 @@ local addonName, addon = ...
 local _G = _G
 local E = addon:Eve()
 
-function addon:CVarExists(cvar)
-	return not not select(2, pcall(function() return GetCVarInfo(cvar) end))
-end
-
 -- C_Console.GetAllCommands() does not return the complete list of CVars on login
 -- Repopulate the list using UpdateCVarList() when the CVar browser is opened
 local CVarList = {}
+
 local function UpdateCVarList()
-	for i, info in pairs(C_Console.GetAllCommands()) do
+	for i, info in pairs(addon:GetCVars()) do
 		local cvar = info.command
-		if info.commandType == 0 -- cvar, rather than script
-		and info.category ~= 0 -- ignore debug category
-		and not strfind(info.command:lower(), 'debug') -- a number of commands with "debug" in their name are inexplicibly not in the "debug" category
-		and info.category ~= 8 -- ignore GM category
-		then
-			if addon.hiddenOptions[cvar] then
-				CVarList[cvar] = addon.hiddenOptions[cvar]
-			else
-				CVarList[cvar] = {
-					description = info.help,
-				}
-			end
+		if addon.hiddenOptions[cvar] then
+			CVarList[cvar] = addon.hiddenOptions[cvar]
+		else
+			CVarList[cvar] = {
+				description = info.help,
+			}
 		end
 	end
 end
