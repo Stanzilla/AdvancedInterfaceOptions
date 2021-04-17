@@ -68,6 +68,9 @@ local function TraceCVar(cvar, value, ...)
 end
 
 hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
+if C_CVar then
+	hooksecurefunc(C_CVar, 'SetCVar', TraceCVar) -- C_CVar.SetCVar(cvar, value)
+end
 hooksecurefunc('ConsoleExec', function(msg)
 	local cmd, cvar, value = msg:match('^(%S+)%s+(%S+)%s*(%S*)')
 	if cmd then
