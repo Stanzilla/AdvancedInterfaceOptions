@@ -3,8 +3,7 @@ local _G = _G
 local E = addon:Eve()
 
 function addon:CVarExists(cvar)
-	-- FIXME: This no longer works to identify whether a cvar exists
-	return pcall(function() return GetCVarDefault(cvar) end)
+	return not not select(2, pcall(function() return GetCVarInfo(cvar) end))
 end
 
 -- C_Console.GetAllCommands() does not return the complete list of CVars on login
