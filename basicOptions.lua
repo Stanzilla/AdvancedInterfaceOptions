@@ -505,7 +505,8 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 		self:GetParent().button1:SetEnabled(self:GetText():lower() == 'irreversible')
 	end,
 	OnAccept = function()
-		for cvar in pairs(addon.hiddenOptions) do
+		for _, info in ipairs(addon:GetCVars()) do
+			local cvar = info.command
 			local current, default = GetCVarInfo(cvar)
 			if current ~= default then
 				print(format('|cffaaaaff%s|r reset from |cffffaaaa%s|r to |cffaaffaa%s|r', tostring(cvar), tostring(current), tostring(default)))
@@ -524,12 +525,114 @@ StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 }
 
 local resetButton = CreateFrame('button', nil, AIO, 'UIPanelButtonTemplate')
-resetButton:SetSize(120, 20)
-resetButton:SetText("Load Defaults")
+resetButton:SetSize(120, 22)
+resetButton:SetText("Reset Settings")
 resetButton:SetPoint('BOTTOMRIGHT', -10, 10)
 resetButton:SetScript('OnClick', function(self)
 	StaticPopup_Show('AIO_RESET_EVERYTHING')
 end)
+
+-- Backup Settings
+local function BackupSettings()
+	--[[
+		FIXME: We probably don't actually want to back up every CVar
+		Some CVars use bitfields to track progress that the player likely isn't expecting to be undone by a restore
+		We may need to manually create a list of CVars to ignore, I don't know if there's a way to automate this
+	--]]
+	local cvarBackup = {}
+	local settingCount = 0
+	for _, info in ipairs(addon:GetCVars()) do
+		-- Only record CVars that don't match their default value
+		-- NOTE: Defaults can potentially change, should we store every cvar?
+		local currentValue, defaultValue = GetCVarInfo(info.command)
+		if currentValue ~= defaultValue then
+			-- Normalize casing to simplify lookups
+			local cvar = info.command:lower()
+			cvarBackup[cvar] = currentValue
+			settingCount = settingCount + 1
+		end
+	end
+
+	-- TODO: Support multiple backups (save & restore named cvar profiles)
+	if not AdvancedInterfaceOptionsSaved.Backups then
+		AdvancedInterfaceOptionsSaved.Backups = {}
+	end
+	AdvancedInterfaceOptionsSaved.Backups[1] = {
+		timestamp = GetServerTime(),
+		cvars = cvarBackup,
+	}
+
+	print(format("AIO: Backed up %d customized CVar settings!", settingCount))
+end
+
+StaticPopupDialogs["AIO_BACKUP_SETTINGS"] = {
+	text = "Save current CVar settings to restore later?",
+	button1 = "Backup Settings",
+	button2 = "Cancel",
+	OnAccept = BackupSettings,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+}
+
+local backupButton = CreateFrame("button", nil, AIO, "UIPanelButtonTemplate")
+backupButton:SetSize(120, 22)
+backupButton:SetText("Backup Settings")
+backupButton:SetPoint("BOTTOMLEFT", resetButton, "TOPLEFT", 0, 50)
+backupButton:SetScript("OnClick", function(self)
+	StaticPopup_Show("AIO_BACKUP_SETTINGS")
+end)
+
+-- Restore Settings
+local function RestoreSettings()
+	local backup = AdvancedInterfaceOptionsSaved.Backups and AdvancedInterfaceOptionsSaved.Backups[1]
+	if backup then
+		for _, info in ipairs(addon:GetCVars()) do
+			local cvar = info.command
+			local backupValue = backup.cvars[cvar:lower()] -- Always lowercase cvar names
+			local currentValue, defaultValue = GetCVarInfo(cvar)
+			if backupValue then
+				-- Restore value from backup
+				if currentValue ~= backupValue then
+					print(format('|cffaaaaff%s|r changed from |cffffaaaa%s|r to |cffaaffaa%s|r', cvar, tostring(currentValue), tostring(backupValue)))
+					addon:SetCVar(cvar, backupValue)
+				end
+			else
+				-- CHECKME: If CVar isn't in backup and isn't set to default value, should we reset to default or ignore it?
+				if currentValue ~= defaultValue then
+					print(format('|cffaaaaff%s|r changed from |cffffaaaa%s|r to |cffaaffaa%s|r', cvar, tostring(currentValue), tostring(defaultValue)))
+					addon:SetCVar(cvar, defaultValue)
+				end
+			end
+		end
+	end
+end
+
+StaticPopupDialogs["AIO_RESTORE_SETTINGS"] = {
+	text = "Restore CVar settings from backup?\nNote: This can't be undone!",
+	button1 = "Restore Settings",
+	button2 = "Cancel",
+	OnAccept = RestoreSettings,
+	OnShow = function(self)
+		-- Disable accept button if we don't have any backups
+		self.button1:SetEnabled(AdvancedInterfaceOptionsSaved.Backups and AdvancedInterfaceOptionsSaved.Backups[1])
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3,
+	showAlert = true,
+}
+
+local restoreButton = CreateFrame("button", nil, AIO, "UIPanelButtonTemplate")
+restoreButton:SetSize(120, 22)
+restoreButton:SetText("Restore Settings")
+restoreButton:SetPoint("TOPLEFT", backupButton, "BOTTOMLEFT", 0, -2)
+restoreButton:SetScript("OnClick", function(self)
+	StaticPopup_Show("AIO_RESTORE_SETTINGS")
+end)
+
 
 -- Chat section
 local AIO_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
