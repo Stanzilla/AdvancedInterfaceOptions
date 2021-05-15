@@ -12,7 +12,7 @@ local function IsClassic()
     return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 end
 
-local function IsBC()
+local function IsBCC()
   return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 end
 
@@ -660,7 +660,7 @@ local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
 local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
 chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
 chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
-	
+
 if IsClassic() then
     local classColors = newCheckbox(AIO_Chat, 'chatClassColorOverride')
     classColors:SetPoint('TOPLEFT', chatMouseScroll, 'BOTTOMLEFT', 0, -4)

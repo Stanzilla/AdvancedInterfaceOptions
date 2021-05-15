@@ -1,6 +1,6 @@
 ## Interface: 90005
 ## Interface-Classic: 11306
-## Interface-BC: 20501
+## Interface-BCC: 20501
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
