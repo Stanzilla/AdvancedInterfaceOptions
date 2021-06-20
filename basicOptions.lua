@@ -428,7 +428,9 @@ actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 local function cameraFactor_SetValue(self, value, userInput)
 	if userInput then
 		addon:SetCVar(self.cvar, value)
-		setCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider, value)
+		if not IsRetail() then
+			setCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider, value)
+		end
 	end
 end
 
