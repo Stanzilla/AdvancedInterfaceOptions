@@ -439,9 +439,9 @@ if not IsRetail() then
 	-- blizzard options overwrites this cvar at start and is capped to 2.0
 	hooksecurefunc("BlizzardOptionsPanel_SetupControl", function(control)
 		if control == InterfaceOptionsCameraPanelMaxDistanceSlider then
-			SetCVar("cameraDistanceMaxZoomFactor", getCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider))
-			InterfaceOptionsCameraPanelMaxDistanceSlider:SetMinMaxValues(1, 3.4)
-			local text = InterfaceOptionsCameraPanelMaxDistanceSlider.Text
+			SetCVar("cameraDistanceMaxZoomFactor", getCustomVar(control))
+			control:SetMinMaxValues(1, 3.4)
+			local text = control.Text
 			text:SetText(text:GetText().." |cffffffff(15-50)|r")
 		end
 	end)
