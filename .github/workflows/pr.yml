@@ -30,7 +30,7 @@ jobs:
       - name: Create Classic Package
         uses: BigWigsMods/packager@master
         with:
-          args: -d -z -g classic -m .pkgmeta-classic
+          args: -d -z -g classic
 
       - uses: actions/upload-artifact@v2
         with:
@@ -40,7 +40,7 @@ jobs:
       - name: Create BCC Package
         uses: BigWigsMods/packager@master
         with:
-          args: -d -z -g bcc -m .pkgmeta-classic
+          args: -d -z -g bcc
 
       - uses: actions/upload-artifact@v2
         with:
