@@ -758,7 +758,7 @@ local uvars = {
 	enableFloatingCombatText = "SHOW_COMBAT_TEXT",
 	floatingCombatTextLowManaHealth = "COMBAT_TEXT_SHOW_LOW_HEALTH_MANA",
 	floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURAS",
-	floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURA_FADE",
+	floatingCombatTextAuraFade = "COMBAT_TEXT_SHOW_AURA_FADE",
 	floatingCombatTextCombatState = "COMBAT_TEXT_SHOW_COMBAT_STATE",
 	floatingCombatTextDodgeParryMiss = "COMBAT_TEXT_SHOW_DODGE_PARRY_MISS",
 	floatingCombatTextDamageReduction = "COMBAT_TEXT_SHOW_RESISTANCES",
@@ -770,7 +770,6 @@ local uvars = {
 	floatingCombatTextPeriodicEnergyGains = "COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE",
 	floatingCombatTextFloatMode = "COMBAT_TEXT_FLOAT_MODE",
 	floatingCombatTextHonorGains = "COMBAT_TEXT_SHOW_HONOR_GAINED",
-	alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
 	showCastableBuffs = "SHOW_CASTABLE_BUFFS",
 	showDispelDebuffs = "SHOW_DISPELLABLE_DEBUFFS",
 	showArenaEnemyFrames = "SHOW_ARENA_ENEMY_FRAMES",
@@ -1033,9 +1032,7 @@ spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxVa
 InterfaceOptions_AddCategory(AIO, addonName)
 InterfaceOptions_AddCategory(AIO_Chat, addonName)
 InterfaceOptions_AddCategory(AIO_C, addonName)
-if not IsClassic() then
-    InterfaceOptions_AddCategory(AIO_FCT, addonName)
-end
+InterfaceOptions_AddCategory(AIO_FCT, addonName)
 -- InterfaceOptions_AddCategory(AIO_ST, addonName)
 InterfaceOptions_AddCategory(AIO_NP, addonName)
 
