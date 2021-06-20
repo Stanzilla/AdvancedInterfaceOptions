@@ -425,8 +425,34 @@ actionCamModeDropdown.initialize = function(dropdown)
 end
 actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
 
-local cameraFactor = newSlider(AIO, 'cameraDistanceMaxZoomFactor', 1, IsClassic() and 3.4 or 2.6, 0.1)
+local function cameraFactor_SetValue(self, value, userInput)
+	if userInput then
+		addon:SetCVar(self.cvar, value)
+		setCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider, value)
+	end
+end
+
+local cameraFactor = newSlider(AIO, 'cameraDistanceMaxZoomFactor', 1, not IsRetail() and 3.4 or 2.6, 0.1, nil, cameraFactor_SetValue)
 cameraFactor:SetPoint('TOPLEFT', actionCamModeDropdown, 'BOTTOMLEFT', 20, -20)
+
+if not IsRetail() then
+	-- blizzard options overwrites this cvar at start and is capped to 2.0
+	hooksecurefunc("BlizzardOptionsPanel_SetupControl", function(control)
+		if control == InterfaceOptionsCameraPanelMaxDistanceSlider then
+			SetCVar("cameraDistanceMaxZoomFactor", getCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider))
+			InterfaceOptionsCameraPanelMaxDistanceSlider:SetMinMaxValues(1, 3.4)
+			local text = InterfaceOptionsCameraPanelMaxDistanceSlider.Text
+			text:SetText(text:GetText().." |cffffffff(15-50)|r")
+		end
+	end)
+
+	-- also update from the blizzard slider otherwise it can lead to confusing behavior where it gets overwritten
+	InterfaceOptionsCameraPanelMaxDistanceSlider:HookScript("OnValueChanged", function(self, value, userInput)
+		if userInput then
+			setCustomVar(InterfaceOptionsCameraPanelMaxDistanceSlider, value)
+		end
+	end)
+end
 
 playerTitles:SetPoint("TOPLEFT", subText, "BOTTOMLEFT", 0, -8)
 playerGuilds:SetPoint("TOPLEFT", playerTitles, "BOTTOMLEFT", 0, -4)
