@@ -1,6 +1,6 @@
-## Interface: 90100
-## Interface-Classic: 11306
-## Interface-BCC: 20501
+## Interface: 90105
+## Interface-Classic: 11401
+## Interface-BCC: 20502
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
