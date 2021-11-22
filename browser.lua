@@ -40,9 +40,35 @@ end
 
 local function TraceCVar(cvar, value, ...)
 	if not addon:CVarExists(cvar) then return end
+
+	--[=[
+		-- Example calls to debugstack(2) as of patch 9.1.5
+		-- A call to `SetCVar' results in this hook running twice because SetCVar is a wrapper for C_CVar.SetCVar
+
+		1) `C_CVar.SetCVar' traces to `SetCVar' in CvarUtil.lua
+		[string "=[C]"]: in function `SetCVar'
+		[string "@Interface\SharedXML\CvarUtil.lua"]:13: in function <Interface\SharedXML\CvarUtil.lua:9>
+		[string "=[C]"]: in function `SetCVar'
+		[string "@Interface\AddOns\AdvancedInterfaceOptions\browser.lua"]:89: in main chunk
+
+		2) `SetCVar' traces to the function that invoked it
+		[string "=[C]"]: in function `SetCVar'
+		[string "@Interface\AddOns\AdvancedInterfaceOptions\browser.lua"]:89: in main chunk
+	]=]
+
 	local trace = debugstack(2)
-	local source, lineNum = trace:match("in function <([^:%[>]+):(%d+)>")
-	if source then
+	local source, lineNum = trace:match("\"@([^\"]+)\"%]:(%d+)")
+	if not source then
+		-- Attempt to pull source out of "in function <file:line>" string
+		source, lineNum = trace:match("in function <([^:%[>]+):(%d+)>")
+		if not source then
+			-- Give up and record entire traceback
+			source = trace
+			lineNum = "(unhandled exception)"
+		end
+	end
+	-- Ignore C_CVar.SetCVar hook if it originated from CvarUtil.lua
+	if source and not source:lower():find("[\\/]sharedxml[\\/]cvarutil%.lua") then
 		local realValue = GetCVar(cvar) -- the client does some conversions to the original value
 		if SVLoaded then
 			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
@@ -58,7 +84,7 @@ local function TraceCVar(cvar, value, ...)
 end
 
 hooksecurefunc('SetCVar', TraceCVar) -- /script SetCVar(cvar, value)
-if C_CVar then
+if C_CVar and C_CVar.SetCVar then
 	hooksecurefunc(C_CVar, 'SetCVar', TraceCVar) -- C_CVar.SetCVar(cvar, value)
 end
 hooksecurefunc('ConsoleExec', function(msg)
