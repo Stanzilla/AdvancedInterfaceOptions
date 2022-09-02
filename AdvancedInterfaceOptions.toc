@@ -1,6 +1,7 @@
 ## Interface: 90207
 ## Interface-Classic: 11402
 ## Interface-BCC: 20504
+## Interface-Wrath: 30400
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
