@@ -47,3 +47,13 @@ jobs:
           name: AIO-PR${{ github.event.number }}-bcc
           path: .release/
 
+      - name: Create Wrath Package
+        uses: BigWigsMods/packager@master
+        with:
+          args: -d -z -g wrath
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: AIO-PR${{ github.event.number }}-wrath
+          path: .release/
+
