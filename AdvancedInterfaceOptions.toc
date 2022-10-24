@@ -1,4 +1,4 @@
-## Interface: 90207
+## Interface: 100000
 ## Interface-Classic: 11402
 ## Interface-BCC: 20504
 ## Interface-Wrath: 30400
@@ -20,4 +20,3 @@ cvars.lua
 basicOptions.lua
 browser.lua
 
-tempfix.lua

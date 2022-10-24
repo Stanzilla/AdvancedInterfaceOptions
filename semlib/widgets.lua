@@ -222,14 +222,14 @@ function addon:CreateListFrame(parent, w, h, cols)
 	frame.SetScripts = scrollscripts
 
 	-- scrollbar
-	local scrollUpBg = frame:CreateTexture(nil, nil, 1)
+	local scrollUpBg = frame:CreateTexture(nil, nil, nil, 1)
 	scrollUpBg:SetTexture([[Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar]])
 	scrollUpBg:SetPoint('TOPRIGHT', 0, -2)--TOPLEFT', scrollbar, 'TOPRIGHT', -3, 2)
 	scrollUpBg:SetTexCoord(0, 0.46875, 0.0234375, 0.9609375)
 	scrollUpBg:SetSize(30, 120)
 
 
-	local scrollDownBg = frame:CreateTexture(nil, nil, 1)
+	local scrollDownBg = frame:CreateTexture(nil, nil, nil, 1)
 	scrollDownBg:SetTexture([[Interface\ClassTrainerFrame\UI-ClassTrainer-ScrollBar]])
 	scrollDownBg:SetPoint('BOTTOMRIGHT', 0, 1)
 	scrollDownBg:SetTexCoord(0.53125, 1, 0.03125, 1)
@@ -237,7 +237,7 @@ function addon:CreateListFrame(parent, w, h, cols)
 	--scrollDownBg:SetAlpha(0)
 
 
-	local scrollMidBg = frame:CreateTexture(nil, nil, 2) -- fill in the middle gap, a bit hacky
+	local scrollMidBg = frame:CreateTexture(nil, nil, nil, 2) -- fill in the middle gap, a bit hacky
 	scrollMidBg:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]], false, true)
 	--scrollMidBg:SetPoint('RIGHT', -1, 0)
 	scrollMidBg:SetTexCoord(0, 0.44, 0.75, 0.98)
