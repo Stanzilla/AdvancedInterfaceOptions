@@ -56,7 +56,7 @@ globals = {
     "InterfaceOptions_AddCategory",
     "InterfaceOptionsFrame_OpenToCategory",
     "TextStatusBar_UpdateTextString",
-    "BlizzardOptionsPanel_UpdateCombatText",
+	"CombatText_UpdateDisplayedMessages",
 	"SecureButton_GetModifiedUnit",
 	"SlashCmdList",
 	"SmoothStatusBarMixin",

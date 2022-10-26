@@ -20,6 +20,13 @@ local function IsRetail()
   return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 end
 
+local function BlizzardOptionsPanel_UpdateCombatText()
+	-- Hack to call CombatText_UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
+	if CombatText_UpdateDisplayedMessages then
+		CombatText_UpdateDisplayedMessages()
+	end
+end
+
 AdvancedInterfaceOptionsSaved = {}
 local DBVersion = 3
 
