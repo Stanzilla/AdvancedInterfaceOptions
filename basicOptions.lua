@@ -473,21 +473,21 @@ secureToggle:SetPoint("TOPLEFT", IsClassic() and playerGuildTitles or fadeMap, "
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 
-local reverseCleanupBags = GetSortBagsRightToLeft and SetSortBagsRightToLeft and newCheckbox(AIO, 'reverseCleanupBags',
+local reverseCleanupBags = C_Container.GetSortBagsRightToLeft and C_Container.SetSortBagsRightToLeft and newCheckbox(AIO, 'reverseCleanupBags',
 	function(self)
-		return GetSortBagsRightToLeft()
+		return C_Container.GetSortBagsRightToLeft()
 	end,
 	function(self, checked)
-		SetSortBagsRightToLeft(checked)
+		C_Container.SetSortBagsRightToLeft(checked)
 	end
 )
 
-local lootLeftmostBag = GetInsertItemsLeftToRight and SetInsertItemsLeftToRight and newCheckbox(AIO, 'lootLeftmostBag',
+local lootLeftmostBag = C_Container.GetInsertItemsLeftToRight and C_Container.SetInsertItemsLeftToRight and newCheckbox(AIO, 'lootLeftmostBag',
 	function(self)
-		return GetInsertItemsLeftToRight()
+		return C_Container.GetInsertItemsLeftToRight()
 	end,
 	function(self, checked)
-		SetInsertItemsLeftToRight(checked)
+		C_Container.SetInsertItemsLeftToRight(checked)
 	end
 )
 
