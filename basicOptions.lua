@@ -473,21 +473,28 @@ secureToggle:SetPoint("TOPLEFT", IsClassic() and playerGuildTitles or fadeMap, "
 luaErrors:SetPoint("TOPLEFT", secureToggle, "BOTTOMLEFT", 0, -4)
 targetDebuffFilter:SetPoint("TOPLEFT", luaErrors, "BOTTOMLEFT", 0, -4)
 
-local reverseCleanupBags = C_Container.GetSortBagsRightToLeft and C_Container.SetSortBagsRightToLeft and newCheckbox(AIO, 'reverseCleanupBags',
+-- Retail 10.0.2 moved these functions under the `C_Container` namespace, but Classic still has them as globals
+-- This should support both game versions
+local GetSortBagsRightToLeft = GetSortBagsRightToLeft or C_Container.GetSortBagsRightToLeft
+local SetSortBagsRightToLeft = SetSortBagsRightToLeft or C_Container.SetSortBagsRightToLeft
+local GetInsertItemsLeftToRight = GetInsertItemsLeftToRight or C_Container.GetInsertItemsLeftToRight
+local SetInsertItemsLeftToRight = SetInsertItemsLeftToRight or C_Container.SetInsertItemsLeftToRight
+
+local reverseCleanupBags = GetSortBagsRightToLeft and SetSortBagsRightToLeft and newCheckbox(AIO, 'reverseCleanupBags',
 	function(self)
-		return C_Container.GetSortBagsRightToLeft()
+		return GetSortBagsRightToLeft()
 	end,
 	function(self, checked)
-		C_Container.SetSortBagsRightToLeft(checked)
+		SetSortBagsRightToLeft(checked)
 	end
 )
 
-local lootLeftmostBag = C_Container.GetInsertItemsLeftToRight and C_Container.SetInsertItemsLeftToRight and newCheckbox(AIO, 'lootLeftmostBag',
+local lootLeftmostBag = GetInsertItemsLeftToRight and SetInsertItemsLeftToRight and newCheckbox(AIO, 'lootLeftmostBag',
 	function(self)
-		return C_Container.GetInsertItemsLeftToRight()
+		return GetInsertItemsLeftToRight()
 	end,
 	function(self, checked)
-		C_Container.SetInsertItemsLeftToRight(checked)
+		SetInsertItemsLeftToRight(checked)
 	end
 )
 
