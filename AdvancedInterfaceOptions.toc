@@ -5,6 +5,7 @@
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
+## IconTexture: 134521
 ## Notes: Restores access to removed interface options in Legion
 ## X-Category: Interface Enhancements
 ## X-Website: https://www.curseforge.com/wow/addons/advancedinterfaceoptions
