@@ -39,7 +39,6 @@ globals = {
 
 	-- FrameXML misc
     "C_Timer",
-    "C_Console",
 	"ChatFrame_AddMessageEventFilter",
 	"COMBAT_TEXT_SCROLL_FUNCTION",
 	"CombatLogGetCurrentEventInfo",
@@ -1505,6 +1504,11 @@ globals = {
 	"ConfirmTalentWipe",
 	"ConsoleAddMessage",
 	"ConsoleExec",
+	"ConsoleGetAllCommands",
+	"ConsoleGetColorFromType",
+	"ConsoleGetFontHeight",
+	"ConsolePrintAllMatchingCommands",
+	"ConsoleSetFontHeight",
 	"ContainerIDToInventoryID",
 	"ContainerRefundItemPurchase",
 	"ConvertToParty",
