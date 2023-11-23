@@ -17,6 +17,7 @@
 ## SavedVariables: AdvancedInterfaceOptionsSaved
 
 semlib\semlib.xml
+utils.lua
 cvars.lua
 basicOptions.lua
 browser.lua

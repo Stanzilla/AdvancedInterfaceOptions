@@ -2,6 +2,8 @@ local addonName, addon = ...
 local _G = _G
 local E = addon:Eve()
 
+-- local GetCVarInfo = addon.GetCVarInfo
+
 -- C_Console.GetAllCommands() does not return the complete list of CVars on login
 -- Repopulate the list using UpdateCVarList() when the CVar browser is opened
 local CVarList = {}
