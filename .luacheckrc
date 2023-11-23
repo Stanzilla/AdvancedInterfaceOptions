@@ -428,6 +428,7 @@ globals = {
 	"C_CVar.GetCVarBitfield",
 	"C_CVar.GetCVarBool",
 	"C_CVar.GetCVarDefault",
+	"C_CVar.GetCVarInfo",
 	"C_CVar.RegisterCVar",
 	"C_CVar.ResetTestCVars",
 	"C_CVar.SetCVar",
