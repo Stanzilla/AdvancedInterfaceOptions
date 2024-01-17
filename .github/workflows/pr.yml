@@ -37,11 +37,6 @@ jobs:
           name: AIO-PR${{ github.event.number }}-classic
           path: .release/
 
-      - name: Create BCC Package
-        uses: BigWigsMods/packager@master
-        with:
-          args: -d -z -g bcc
-
       - uses: actions/upload-artifact@v2
         with:
           name: AIO-PR${{ github.event.number }}-bcc
