@@ -212,7 +212,7 @@ addon.hiddenOptions = {
 	["displaySpellActivationOverlays"] = { prettyName = nil, description = OPTION_TOOLTIP_DISPLAY_SPELL_ALERTS, type = "boolean" },
 	["hdPlayerModels"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_HD_MODELS, type = "boolean" },
 	["autoLootKey"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_LOOT_KEY, type = "boolean" }, -- TODO TYPE
-	["SpellQueueWindow"] = { prettyName = LAG_TOLERANCE, description = "Determines how far ahead of the \'end of a spell\' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system. Ideally, you\'ll want to set this to your in-game latency.", type = "number" },
+	["SpellQueueWindow"] = { prettyName = SPELL_QUEUE_WINDOW, description = "Determines how far ahead of the \'end of a spell\' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system.", type = "number" },
 	["advancedCombatLogging"] = { prettyName = nil, description = OPTION_TOOLTIP_ADVANCED_COMBAT_LOGGING, type = "boolean" },
 	["disableServerNagle"] = { prettyName = nil, description = OPTION_TOOLTIP_OPTIMIZE_NETWORK_SPEED, type = "boolean" },
 	-- Camera
