@@ -14,10 +14,6 @@ local function IsClassic()
     return WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 end
 
-local function IsBCC()
-  return WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-end
-
 local function IsRetail()
   return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 end
