@@ -69,8 +69,8 @@ local function TraceCVar(cvar, value, ...)
 			lineNum = "(unhandled exception)"
 		end
 	end
-	-- Ignore C_CVar.SetCVar hook if it originated from CvarUtil.lua
-	if source and not source:lower():find("[\\/]sharedxml[\\/]cvarutil%.lua") then
+	-- Ignore C_CVar.SetCVar hook if it originated from CvarUtil.lua or ClassicCvarUtil.lua
+	if source and not (source:lower():find("[_\\/]sharedxml[\\/]cvarutil%.lua") or source:lower():find("[_\\/]sharedxml[\\/]classiccvarutil%.lua")) then
 		local realValue = GetCVar(cvar) -- the client does some conversions to the original value
 		if SVLoaded then
 			AdvancedInterfaceOptionsSaved.ModifiedCVars[ cvar:lower() ] = source .. ':' .. lineNum
