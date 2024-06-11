@@ -958,18 +958,18 @@ local function stTextDisplaySetValue(self)
 end
 
 -- TODO: figure out why the built-in tooltipTitle and tooltipText attributes don't work
-local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
-	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
-	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
-	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
-})
-stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
-stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
-stTextDisplay:HookScript("OnEnter", function(self)
-	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
-	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
-end)
-stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
+-- local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
+-- 	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
+-- 	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
+-- 	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
+-- })
+-- stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
+-- stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
+-- stTextDisplay:HookScript("OnEnter", function(self)
+-- 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+-- 	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
+-- end)
+-- stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
 
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
@@ -1042,21 +1042,36 @@ spellStartRecovery.minText:SetFormattedText("%d %s", spellStartRecovery.minMaxVa
 spellStartRecovery.maxText:SetFormattedText("%d %s", spellStartRecovery.minMaxValues[2], MILLISECONDS_ABBR)
 
 -- Hook up options to addon panel
-InterfaceOptions_AddCategory(AIO, addonName)
-InterfaceOptions_AddCategory(AIO_Chat, addonName)
-InterfaceOptions_AddCategory(AIO_C, addonName)
-InterfaceOptions_AddCategory(AIO_FCT, addonName)
--- InterfaceOptions_AddCategory(AIO_ST, addonName)
-InterfaceOptions_AddCategory(AIO_NP, addonName)
+local category = Settings.RegisterCanvasLayoutCategory(AIO, AIO.name, AIO.name)
+local chatSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, AIO_Chat, AIO_Chat.name, AIO_Chat.name)
+chatSubcategory.ID = AIO_Chat.name;
+local cSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, AIO_C, AIO_C.name, AIO_C.name)
+cSubcategory.ID = AIO_C.name;
+local fctSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, AIO_FCT, AIO_FCT.name, AIO_FCT.name)
+fctSubcategory.ID = AIO_FCT.name;
+local stSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, AIO_ST, AIO_ST.name, AIO_ST.name)
+stSubcategory.ID = AIO_ST.name;
+local npSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, AIO_NP, AIO_NP.name, AIO_NP.name)
+npSubcategory.ID = AIO_NP.name;
+local cvarsSubcategory = Settings.RegisterCanvasLayoutSubcategory(category, addon.OptionsPanel, addon.OptionsPanel.name, addon.OptionsPanel.name)
+cvarsSubcategory.ID = addon.OptionsPanel.name;
+Settings.RegisterAddOnCategory(category)
 
 -- Slash handler
 SlashCmdList.AIO = function(msg)
 	msg = msg:lower()
 	if not InCombatLockdown() then
-		InterfaceOptionsFrame_OpenToCategory(addonName)
-		InterfaceOptionsFrame_OpenToCategory(addonName)
+        Settings.OpenToCategory(category.ID)
 	else
 		DEFAULT_CHAT_FRAME:AddMessage(format("%s: Can't modify interface options in combat", addonName))
 	end
 end
 SLASH_AIO1 = "/aio"
+
+SlashCmdList.CVAR = function()
+	if not InCombatLockdown() then
+        -- Does not work, opens to main category
+        Settings.OpenToCategory(category.ID, cvarsSubcategory.ID)
+	end
+end
+SLASH_CVAR1 = "/cvar"
