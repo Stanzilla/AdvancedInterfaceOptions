@@ -112,6 +112,7 @@ OptionsPanel:Hide()
 OptionsPanel:SetAllPoints()
 OptionsPanel.name = "CVar Browser"
 OptionsPanel.parent = addonName
+addon.OptionsPanel = OptionsPanel
 
 local Title = OptionsPanel:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
 Title:SetJustifyV('TOP')
@@ -127,8 +128,6 @@ SubText:SetJustifyH('LEFT')
 SubText:SetPoint('TOPLEFT', Title, 'BOTTOMLEFT', 0, -8)
 SubText:SetPoint('RIGHT', -32, 0)
 SubText:SetText('These options allow you to modify various CVars within the game.')
-
-InterfaceOptions_AddCategory(OptionsPanel, addonName)
 
 -- FilterBox should adjust the contents of the list frame based on the input text
 -- todo: Display grey "Search" text in the box if it's empty
@@ -375,11 +374,3 @@ hooksecurefunc('SetCVar', FilteredRefresh)
 
 -- should we even bother checking what the console command did?
 hooksecurefunc('ConsoleExec', FilteredRefresh)
-
-SlashCmdList.CVAR = function()
-	if not InCombatLockdown() then
-		InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
-		InterfaceOptionsFrame_OpenToCategory(OptionsPanel)
-	end
-end
-SLASH_CVAR1 = "/cvar"
