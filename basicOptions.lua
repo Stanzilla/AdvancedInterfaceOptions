@@ -110,8 +110,12 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 		end
 	end
 
+    --Register our options with the Blizzard Addon Options panel
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions", addon:CreateGeneralOptions())
-   local optionsFrame, categoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
+    AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Chat", addon:CreateChatOptions())
+
+    local _, mainCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
+    AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Chat", "Chat", "AdvancedInterfaceOptions")
 
 
     -------------------------------------------------------------------------
@@ -121,7 +125,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     SlashCmdList.AIO = function(msg)
         msg = msg:lower()
         if not InCombatLockdown() then
-            Settings.OpenToCategory(categoryID)
+            Settings.OpenToCategory(mainCategoryID)
         else
             DEFAULT_CHAT_FRAME:AddMessage(format("%s: Can't modify interface options in combat", addonName))
         end

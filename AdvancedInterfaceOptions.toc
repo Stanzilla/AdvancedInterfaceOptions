@@ -22,6 +22,7 @@ utils.lua
 cvars.lua
 
 gui\GeneralConfigPanel.lua
+gui\ChatConfigPanel.lua
 
 browser.lua
 basicOptions.lua

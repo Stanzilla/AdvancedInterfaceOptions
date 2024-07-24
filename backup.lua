@@ -1,36 +1,4 @@
 
--- Chat section
-local AIO_Chat = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
-AIO_Chat:Hide()
-AIO_Chat:SetAllPoints()
-AIO_Chat.name = "Chat"
-AIO_Chat.parent = addonName
-
-local Title_Chat = AIO_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontNormalLarge')
-Title_Chat:SetJustifyV('TOP')
-Title_Chat:SetJustifyH('LEFT')
-Title_Chat:SetPoint('TOPLEFT', 16, -16)
-Title_Chat:SetText(AIO_Chat.name)
-
-local SubText_Chat = AIO_Chat:CreateFontString(nil, 'ARTWORK', 'GameFontHighlightSmall')
-SubText_Chat:SetMaxLines(3)
-SubText_Chat:SetNonSpaceWrap(true)
-SubText_Chat:SetJustifyV('TOP')
-SubText_Chat:SetJustifyH('LEFT')
-SubText_Chat:SetPoint('TOPLEFT', Title_Chat, 'BOTTOMLEFT', 0, -8)
-SubText_Chat:SetPoint('RIGHT', -32, 0)
-SubText_Chat:SetText('These options allow you to modify various chat settings that are no longer part of the default UI.')
-
-local chatMouseScroll = newCheckbox(AIO_Chat, 'chatMouseScroll')
-local chatDelay = newCheckbox(AIO_Chat, 'removeChatDelay')
-chatDelay:SetPoint('TOPLEFT', SubText_Chat, 'BOTTOMLEFT', 0, -8)
-chatMouseScroll:SetPoint('TOPLEFT', chatDelay, 'BOTTOMLEFT', 0, -4)
-
-if IsClassic() then
-    local classColors = newCheckbox(AIO_Chat, 'chatClassColorOverride')
-    classColors:SetPoint('TOPLEFT', chatMouseScroll, 'BOTTOMLEFT', 0, -4)
-end
-
 -- Floating Combat Text section
 local AIO_FCT = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)
 AIO_FCT:Hide()
