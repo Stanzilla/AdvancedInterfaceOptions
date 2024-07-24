@@ -20,6 +20,11 @@ function addon:CreateChatOptions()
                 fontSize = "medium",
                 order = 1,
             },
+            header = {
+                type = "header",
+                name = "",
+                order = 10,
+            },
             chatMouseScroll = {
                 type = "toggle",
                 name = CHAT_MOUSE_WHEEL_SCROLL,
@@ -32,7 +37,7 @@ function addon:CreateChatOptions()
                     self:SetCVar("chatMouseScroll", value)
                 end,
                 width="full",
-                order = 2,
+                order = 11,
             },
             removeChatDelay = {
                 type = "toggle",
@@ -45,7 +50,7 @@ function addon:CreateChatOptions()
                     self:SetCVar("removeChatDelay", value)
                 end,
                 width="full",
-                order = 3,
+                order = 12,
             },
             chatClassColorOverride = {
                 type = "toggle",
@@ -61,7 +66,7 @@ function addon:CreateChatOptions()
                     return not self.IsClassicEra()
                 end,
                 width="full",
-                order = 4,
+                order = 13,
             },
         }
     }

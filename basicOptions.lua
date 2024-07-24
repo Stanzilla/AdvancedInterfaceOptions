@@ -113,9 +113,11 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     --Register our options with the Blizzard Addon Options panel
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions", addon:CreateGeneralOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Chat", addon:CreateChatOptions())
+    AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Combat", addon:CreateCombatOptions())
 
     local _, mainCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Chat", "Chat", "AdvancedInterfaceOptions")
+    AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Combat", "Combat", "AdvancedInterfaceOptions")
 
 
     -------------------------------------------------------------------------

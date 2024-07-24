@@ -23,6 +23,7 @@ cvars.lua
 
 gui\GeneralConfigPanel.lua
 gui\ChatConfigPanel.lua
+gui\CombatConfigPanel.lua
 
 browser.lua
 basicOptions.lua

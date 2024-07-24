@@ -190,9 +190,9 @@ function addon:CreateGeneralOptions()
                 order = 20,
             },
             -------------------------------------------------
-            miscHeader = {
+            cameraHeader = {
                 type = "header",
-                name = "Miscellaneous Options",
+                name = "",
                 order = 30,
             },
             trackQuestSorting = {
