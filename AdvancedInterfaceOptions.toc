@@ -17,7 +17,11 @@
 
 semlib\semlib.xml
 libs\embeds.xml
+
 utils.lua
 cvars.lua
+
+gui\GeneralConfigPanel.lua
+
 browser.lua
 basicOptions.lua
