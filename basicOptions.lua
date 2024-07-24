@@ -114,10 +114,13 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions", addon:CreateGeneralOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Chat", addon:CreateChatOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Combat", addon:CreateCombatOptions())
+    AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Nameplate", addon:CreateNameplateOptions())
+
 
     local _, mainCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Chat", "Chat", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Combat", "Combat", "AdvancedInterfaceOptions")
+    AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Nameplate", "Nameplates", "AdvancedInterfaceOptions")
 
 
     -------------------------------------------------------------------------

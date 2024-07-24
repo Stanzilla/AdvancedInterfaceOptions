@@ -24,6 +24,7 @@ cvars.lua
 gui\GeneralConfigPanel.lua
 gui\ChatConfigPanel.lua
 gui\CombatConfigPanel.lua
+gui\NameplateConfigPanel.lua
 
 browser.lua
 basicOptions.lua
