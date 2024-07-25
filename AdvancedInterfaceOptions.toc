@@ -1,4 +1,4 @@
-## Interface: 110000
+## Interface: 110000, 110002
 ## Interface-Vanilla: 11502
 ## Interface-Cata: 40400
 ## Title: Advanced Interface Options
@@ -16,7 +16,7 @@
 ## SavedVariables: AdvancedInterfaceOptionsSaved
 
 semlib\semlib.xml
-libs\embeds.xml
+embeds.xml
 
 utils.lua
 cvars.lua
