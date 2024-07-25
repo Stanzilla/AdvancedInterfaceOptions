@@ -7,22 +7,33 @@ local THIRD_WIDTH = 1.25
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
+local function setStatusTextBars(frame, value)
+    frame.healthbar.cvar = value
+    frame.manabar.cvar = value
+    if not addon.IsClassicEra() and not addon.IsClassic() then
+        frame.healthbar:UpdateTextString()
+        frame.manabar:UpdateTextString()
+    else
+        TextStatusBar_UpdateTextString(frame.healthbar)
+        TextStatusBar_UpdateTextString(frame.manabar)
+    end
+end
 
 local statusTextVals = {
     playerStatusText = function(value)
-        addon.setStatusTextBars(PlayerFrame, value)
+        setStatusTextBars(PlayerFrame, value)
     end,
     petStatusText = function(value)
-        addon.setStatusTextBars(PetFrame, value)
+        setStatusTextBars(PetFrame, value)
     end,
     --TODO: This appears to be deprecated
     partyStatusText = function(value)
         for i = 1, MAX_PARTY_MEMBERS do
-            addon.setStatusTextBars(_G["PartyMemberFrame"..i], value)
+            setStatusTextBars(_G["PartyMemberFrame"..i], value)
         end
     end,
     targetStatusText = function(value)
-        addon.setStatusTextBars(TargetFrame, value)
+        setStatusTextBars(TargetFrame, value)
     end,
     alternateResourceText = function(value)
         PlayerFrameAlternateManaBar.cvar = value
@@ -42,19 +53,8 @@ local statusTextVals = {
     end,
 }
 
-function addon.setStatusTextBars(frame, value)
-    frame.healthbar.cvar = value
-    frame.manabar.cvar = value
-    if not addon.IsClassicEra() and not addon.IsClassic() then
-        frame.healthbar:UpdateTextString()
-        frame.manabar:UpdateTextString()
-    else
-        TextStatusBar_UpdateTextString(frame.healthbar)
-        TextStatusBar_UpdateTextString(frame.manabar)
-    end
-end
 
-function addon.setStatusText(cvar, value)
+local function setStatusText(cvar, value)
     addon.setCustomVar(cvar, value)
     statusTextVals[cvar](value and "statusText")
 end
@@ -127,7 +127,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("playerStatusText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("playerStatusText", value)
+                    setStatusText("playerStatusText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
@@ -143,7 +143,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("petStatusText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("petStatusText", value)
+                    setStatusText("petStatusText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
@@ -159,7 +159,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("partyStatusText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("partyStatusText", value)
+                    setStatusText("partyStatusText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
@@ -179,7 +179,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("targetStatusText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("targetStatusText", value)
+                    setStatusText("targetStatusText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
@@ -195,7 +195,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("alternateResourceText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("alternateResourceText", value)
+                    setStatusText("alternateResourceText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
@@ -215,7 +215,7 @@ function addon:CreateStatusTextOptions()
                     return self.getCustomVar("xpBarText")
                 end,
                 set = function(_, value)
-                    self.setStatusText("xpBarText", value)
+                    setStatusText("xpBarText", value)
                 end,
                 disabled = function()
                     return not self.getCustomVar("statusText")
