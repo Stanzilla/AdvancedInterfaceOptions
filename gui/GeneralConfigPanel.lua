@@ -157,6 +157,12 @@ function addon:CreateGeneralOptions()
                     end
                 end,
                 set = function(_, value)
+                    -- This is a dirty hack for SetSortBagsRightToLeft not instantly updating the bags
+                    -- Force a refresh of the UI after a set amount of time to make the checkbox reflect the new value
+                    C_Timer.After(.5, function()
+                        LibStub("AceConfigRegistry-3.0"):NotifyChange("AdvancedInterfaceOptions")
+                    end)
+
                     if C_Container and C_Container.SetSortBagsRightToLeft then
                         C_Container.SetSortBagsRightToLeft(value)
                     elseif SetSortBagsRightToLeft then
@@ -181,10 +187,16 @@ function addon:CreateGeneralOptions()
                     end
                 end,
                 set = function(_, value)
+                    -- This is a dirty hack for SetInsertItemsLeftToRight not instantly updating the bags
+                    -- Force a refresh of the UI after a set amount of time to make the checkbox reflect the new value
+                    C_Timer.After(.5, function()
+                        LibStub("AceConfigRegistry-3.0"):NotifyChange("AdvancedInterfaceOptions")
+                    end)
+
                     if C_Container and C_Container.SetInsertItemsLeftToRight then
-                        return C_Container.SetInsertItemsLeftToRight()
+                        return C_Container.SetInsertItemsLeftToRight(value)
                     elseif SetInsertItemsLeftToRight then
-                        SetInsertItemsLeftToRight()
+                        SetInsertItemsLeftToRight(value)
                     end
                 end,
                 disabled = function()
