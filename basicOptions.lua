@@ -382,27 +382,45 @@ local questSortingLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighligh
 questSortingLabel:SetPoint('TOPLEFT', enableWoWMouse, 'BOTTOMLEFT', 0, 0)
 questSortingLabel:SetText('Select quest sorting mode:')
 
-local questSortingDropdown = CreateFrame("Frame", "AIOQuestSorting", AIO, "UIDropDownMenuTemplate")
+local questSortingDropdown = CreateFrame(IsRetail() and "DropdownButton" or "Frame", "AIOQuestSorting", AIO, IsRetail() and "WowStyle1DropdownTemplate" or "UIDropDownMenuTemplate")
 questSortingDropdown:SetPoint("TOPLEFT", questSortingLabel, "BOTTOMLEFT", -16, -10)
-questSortingDropdown.initialize = function(dropdown)
+do
 	local sortMode = { "top", "proximity" }
-	for i, mode in next, sortMode do
-		local info = UIDropDownMenu_CreateInfo()
-		info.text = sortMode[i]
-		info.value = sortMode[i]
-		info.func = function(self)
-			addon:SetCVar("trackQuestSorting", self.value)
-			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+	if IsRetail() then
+		local function questSortingMenuGenerator(dropdown, rootDescription)
+			for i, mode in next, sortMode do
+				rootDescription:CreateButton(sortMode[i], function()
+					addon:SetCVar("trackQuestSorting", sortMode[i])
+					questSortingDropdown:SetText(sortMode[i])
+				end)
+			end
 		end
-		UIDropDownMenu_AddButton(info)
+
+		local current, default = GetCVarInfo("trackQuestSorting")
+		questSortingDropdown:SetDefaultText(current or default)
+		questSortingDropdown:SetupMenu(questSortingMenuGenerator)
+	else
+		questSortingDropdown.initialize = function(dropdown)
+			for i, mode in next, sortMode do
+				local info = UIDropDownMenu_CreateInfo()
+				info.text = sortMode[i]
+				info.value = sortMode[i]
+				info.func = function(self)
+					addon:SetCVar("trackQuestSorting", self.value)
+					UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+				end
+				UIDropDownMenu_AddButton(info)
+			end
+			UIDropDownMenu_SetSelectedValue(dropdown, (GetCVarInfo("trackQuestSorting")))
+		end
 	end
-	UIDropDownMenu_SetSelectedValue(dropdown, (GetCVarInfo("trackQuestSorting")))
 end
-questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize)
+if not IsRetail() then questSortingDropdown:HookScript("OnShow", questSortingDropdown.initialize) end
 questSortingDropdown:HookScript("OnEnter", function(self)
 	if not self.isDisabled then
+		local current, default = GetCVarInfo("trackQuestSorting")
 		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
-		GameTooltip:SetText(_G["OPTION_TOOLTIP_TRACK_QUEST_"..strupper(self.selectedValue)], nil, nil, nil, nil, true)
+		GameTooltip:SetText(_G["OPTION_TOOLTIP_TRACK_QUEST_"..strupper(current or default)], nil, nil, nil, nil, true)
 	end
 end)
 questSortingDropdown:HookScript("OnLeave", GameTooltip_Hide)
@@ -412,23 +430,39 @@ local actionCamModeLabel = AIO:CreateFontString(nil, 'ARTWORK', 'GameFontHighlig
 actionCamModeLabel:SetPoint('TOPLEFT', questSortingDropdown, 'BOTTOMLEFT', 16, 0)
 actionCamModeLabel:SetText('Select Action Cam mode:')
 
-local actionCamModeDropdown = CreateFrame("Frame", "AIOActionCamMode", AIO, "UIDropDownMenuTemplate")
+local actionCamModeDropdown = CreateFrame(IsRetail() and "DropdownButton" or "Frame", "AIOActionCamMode", AIO, IsRetail() and "WowStyle1DropdownTemplate" or "UIDropDownMenuTemplate")
 actionCamModeDropdown:SetPoint("TOPLEFT", actionCamModeLabel, "BOTTOMLEFT", -16, -10)
-actionCamModeDropdown.initialize = function(dropdown)
+do
 	local sortMode = { "basic", "full", "off", "default" }
-	for i, mode in next, sortMode do
-		local info = UIDropDownMenu_CreateInfo()
-		info.text = sortMode[i]
-		info.value = sortMode[i]
-		info.func = function(self)
-			ConsoleExec("actioncam "..self.value)
-			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+	if IsRetail() then
+		local function actionCamModeMenuGenerator(dropdown, rootDescription)
+			for i, mode in next, sortMode do
+				rootDescription:CreateButton(sortMode[i], function()
+					ConsoleExec("actioncam "..sortMode[i])
+					actionCamModeDropdown:SetText(sortMode[i])
+				end)
+			end
 		end
-		UIDropDownMenu_AddButton(info)
+
+		actionCamModeDropdown:SetDefaultText("off") -- TODO: This is wrong, obviously
+		actionCamModeDropdown:SetupMenu(actionCamModeMenuGenerator)
+	else
+		actionCamModeDropdown.initialize = function(dropdown)
+			for i, mode in next, sortMode do
+				local info = UIDropDownMenu_CreateInfo()
+				info.text = sortMode[i]
+				info.value = sortMode[i]
+				info.func = function(self)
+					ConsoleExec("actioncam "..self.value)
+					UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+				end
+				UIDropDownMenu_AddButton(info)
+			end
+			UIDropDownMenu_SetSelectedValue(dropdown, "off") -- TODO: This is wrong, obviously
+		end
 	end
-	UIDropDownMenu_SetSelectedValue(dropdown, "off") -- TODO: This is wrong, obviously
 end
-actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize)
+if not IsRetail() then actionCamModeDropdown:HookScript("OnShow", actionCamModeDropdown.initialize) end
 
 local function cameraFactor_SetValue(self, value, userInput)
 	if userInput then
@@ -729,24 +763,43 @@ SubText_FCT:SetPoint('TOPLEFT', Title_FCT, 'BOTTOMLEFT', 0, -8)
 SubText_FCT:SetPoint('RIGHT', -32, 0)
 SubText_FCT:SetText(COMBATTEXT_SUBTEXT)
 
-local fctfloatmodeDropdown = CreateFrame("Frame", "AIOfctFloatMode", AIO_FCT, "UIDropDownMenuTemplate")
-fctfloatmodeDropdown.initialize = function(dropdown)
+local fctfloatmodeDropdown = CreateFrame(IsRetail() and "DropdownButton" or "Frame", "AIOfctFloatMode", AIO_FCT, IsRetail() and "WowStyle1DropdownTemplate" or "UIDropDownMenuTemplate")
+do
 	local floatMode = { COMBAT_TEXT_SCROLL_UP, COMBAT_TEXT_SCROLL_DOWN, COMBAT_TEXT_SCROLL_ARC }
-	for i, mode in next, floatMode do
-		local info = UIDropDownMenu_CreateInfo()
-		info.text = floatMode[i]
-		info.value = tostring(i)
-		info.func = function(self)
-			addon:SetCVar("floatingCombatTextFloatMode", self.value)
-			UIDropDownMenu_SetSelectedValue(dropdown, self.value)
-			COMBAT_TEXT_FLOAT_MODE = self.value
-			BlizzardOptionsPanel_UpdateCombatText()
+	if IsRetail() then
+		local function fctfloatmodeMenuGenerator(dropdown, rootDescription)
+			for i, mode in next, floatMode do
+				rootDescription:CreateButton(floatMode[i], function()
+					addon:SetCVar("floatingCombatTextFloatMode", tostring(i))
+					fctfloatmodeDropdown:SetText(floatMode[i])
+					COMBAT_TEXT_FLOAT_MODE = tostring(i)
+					BlizzardOptionsPanel_UpdateCombatText()
+				end)
+			end
 		end
-		UIDropDownMenu_AddButton(info)
+
+		local current, default = GetCVarInfo("floatingCombatTextFloatMode")
+		fctfloatmodeDropdown:SetDefaultText(floatMode[tonumber(current or default)])
+		fctfloatmodeDropdown:SetupMenu(fctfloatmodeMenuGenerator)
+	else
+		fctfloatmodeDropdown.initialize = function(dropdown)
+			for i, mode in next, floatMode do
+				local info = UIDropDownMenu_CreateInfo()
+				info.text = floatMode[i]
+				info.value = tostring(i)
+				info.func = function(self)
+					addon:SetCVar("floatingCombatTextFloatMode", self.value)
+					UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+					COMBAT_TEXT_FLOAT_MODE = self.value
+					BlizzardOptionsPanel_UpdateCombatText()
+				end
+				UIDropDownMenu_AddButton(info)
+			end
+			UIDropDownMenu_SetSelectedValue(dropdown, GetCVar("floatingCombatTextFloatMode"))
+		end
 	end
-	UIDropDownMenu_SetSelectedValue(dropdown, GetCVar("floatingCombatTextFloatMode"))
 end
-fctfloatmodeDropdown:HookScript("OnShow", fctfloatmodeDropdown.initialize)
+if not IsRetail() then fctfloatmodeDropdown:HookScript("OnShow", fctfloatmodeDropdown.initialize) end
 fctfloatmodeDropdown:HookScript("OnEnter", function(self)
 	if not self.isDisabled then
 		GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
@@ -953,23 +1006,28 @@ stTarget:SetPoint("TOPLEFT", stParty, "BOTTOMLEFT", 0, -4)
 stAltResource:SetPoint("TOPLEFT", stTarget, "BOTTOMLEFT", 0, -4)
 stXpBar:SetPoint("TOPLEFT", stAltResource, "BOTTOMLEFT", 0, -4)
 
-local function stTextDisplaySetValue(self)
-	addon:SetCVar('statusTextDisplay', self.value, 'STATUS_TEXT_DISPLAY')
+local function stTextDisplaySetValue(value)
+	addon:SetCVar('statusTextDisplay', value, 'STATUS_TEXT_DISPLAY')
 end
 
 -- TODO: figure out why the built-in tooltipTitle and tooltipText attributes don't work
--- local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
--- 	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
--- 	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
--- 	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
--- })
--- stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
--- stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
--- stTextDisplay:HookScript("OnEnter", function(self)
--- 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
--- 	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
--- end)
--- stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
+local stTextDisplay
+do
+	local stTextMode = {
+		{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
+		{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
+		{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
+	}
+	local current, default = GetCVarInfo('statusTextDisplay')
+	stTextDisplay = addon:CreateDropdown(AIO_ST, 130, stTextMode, current or default)
+end
+stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
+if not IsRetail() then stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end) end
+stTextDisplay:HookScript("OnEnter", function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
+	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
+end)
+stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
 
 -- Nameplate section
 local AIO_NP = CreateFrame('Frame', nil, InterfaceOptionsFramePanelContainer)

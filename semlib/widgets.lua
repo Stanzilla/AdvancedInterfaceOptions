@@ -1,5 +1,9 @@
 local addonName, addon = ...
 
+local function IsRetail()
+  return WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+end
+
 function addon:CreateString(parent, text, width, justify)
 	local str = parent:CreateFontString(nil, 'OVERLAY', 'GameFontHighlightSmallLeft')
 	str:SetText(text)
@@ -481,7 +485,7 @@ local function initmenu(items)
 end
 
 function addon:CreateDropdown(parent, width, items, defaultValue)
-	local dropdown = CreateFrame('frame', addonName .. 'DropDownMenu' .. DropdownCount, parent, 'UIDropDownMenuTemplate')
+	local dropdown = CreateFrame(IsRetail() and 'DropdownButton' or 'Frame', addonName .. 'DropDownMenu' .. DropdownCount, parent, IsRetail() and 'WowStyle1DropdownTemplate' or 'UIDropDownMenuTemplate')
 	-- todo: redo all of this
 	--dropdown:EnableMouse(true)
 	DropdownCount = DropdownCount + 1
@@ -491,54 +495,84 @@ function addon:CreateDropdown(parent, width, items, defaultValue)
 	--UIDropDownMenu_Initialize(dropdown, function()
 	dropdown.SetValue = function(dropdown, value)
 		dropdown.value = value
-		dropdown:initialize()
+		if not IsRetail() then dropdown:initialize() end
 	end
 
-	dropdown.initialize = function(dropdown)
-		--local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
-		for i, tbl in ipairs(items) do
-			local info = UIDropDownMenu_CreateInfo()
-			--info.value = v[1]
-			--info.text = v[2]
-
-			for k, v in pairs(tbl) do
-				info[k] = v
-				if not defaultValue and k == 'value' then
-					defaultValue = v
-				end
+	if IsRetail() then
+		local function dropdownMenuGenerator(_, rootDescription)
+			for i, tbl in ipairs(items) do
+				rootDescription:CreateButton(tbl.text, function()
+					if tbl.func then
+						tbl.func(tbl.value)
+					end
+					dropdown:SetText(tbl.text)
+					dropdown.value = tbl.value
+				end)
 			end
-
-
-			info.func = function(self)
-				if tbl.func then
-					tbl.func(self)
-				end
-				--UIDropDownMenu_SetSelectedID(dropdown, self:GetID(), true)
-				UIDropDownMenu_SetSelectedValue(dropdown, self.value)
-				dropdown.value = self.value
-			end
-
-			--if info.isTitle then
-				--info.text = '-' .. info.text .. '-'
-			--end
-
-			UIDropDownMenu_AddButton(info)
 		end
-		-- dropdown:SetValue(dropdown.value or defaultValue)
-		UIDropDownMenu_SetSelectedValue(dropdown, dropdown.value or defaultValue)
+
+		if not defaultValue then
+			defaultValue = items[1].value
+		end
+		local defaultText = tostring(defaultValue)
+		for i, tbl in ipairs(items) do
+			if tbl.value == defaultValue then
+				defaultText = tbl.text
+				break
+			end
+		end
+		dropdown:SetDefaultText(defaultText)
+		dropdown.value = defaultValue
+		dropdown:SetupMenu(dropdownMenuGenerator)
+		dropdown:SetWidth(width or 160)
+	else
+		dropdown.initialize = function(dropdown)
+			--local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
+			for i, tbl in ipairs(items) do
+				local info = UIDropDownMenu_CreateInfo()
+				--info.value = v[1]
+				--info.text = v[2]
+
+				for k, v in pairs(tbl) do
+					info[k] = v
+					if not defaultValue and k == 'value' then
+						defaultValue = v
+					end
+				end
+
+
+				info.func = function(self)
+					if tbl.func then
+						tbl.func(self.value)
+					end
+					--UIDropDownMenu_SetSelectedID(dropdown, self:GetID(), true)
+					UIDropDownMenu_SetSelectedValue(dropdown, self.value)
+					dropdown.value = self.value
+				end
+
+				--if info.isTitle then
+					--info.text = '-' .. info.text .. '-'
+				--end
+
+				UIDropDownMenu_AddButton(info)
+			end
+			-- dropdown:SetValue(dropdown.value or defaultValue)
+			UIDropDownMenu_SetSelectedValue(dropdown, dropdown.value or defaultValue)
+		end
+
+		--UIDropDownMenu_SetSelectedID(dropdown, defaultID or 1)
+		--UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
+		dropdown:SetValue(defaultValue)
+		UIDropDownMenu_SetWidth(dropdown, width or 160)
 	end
 
-
-	--UIDropDownMenu_SetSelectedID(dropdown, defaultID or 1)
-	--UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
-	dropdown:SetValue(defaultValue)
-	UIDropDownMenu_SetWidth(dropdown, width or 160)
-
-	_G[dropdown:GetName() .. 'Button']:HookScript('OnClick', function(self)
-		DropDownList1:ClearAllPoints()
-		DropDownList1:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, 0)
-		--ToggleDropDownMenu(nil, nil, dropdown, dropdown, 0, 0)
-	end)
+	if not IsRetail() then
+		_G[dropdown:GetName() .. 'Button']:HookScript('OnClick', function(self)
+			DropDownList1:ClearAllPoints()
+			DropDownList1:SetPoint('TOPRIGHT', self, 'BOTTOMRIGHT', 0, 0)
+			--ToggleDropDownMenu(nil, nil, dropdown, dropdown, 0, 0)
+		end)
+	end
 
 	return dropdown
 end
