@@ -62,8 +62,8 @@ function addon:CreateChatOptions()
                 set = function(_, value)
                     self:SetCVar("chatClassColorOverride", value)
                 end,
-                disabled = function()
-                    return not self.IsClassicEra()
+                hidden = function()
+                    return not self.IsClassicEra() and not self.IsClassic()
                 end,
                 width="full",
                 order = 13,

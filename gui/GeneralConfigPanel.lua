@@ -100,8 +100,8 @@ function addon:CreateGeneralOptions()
                 set = function(_, value)
                     self:SetCVar("mapFade", value)
                 end,
-                disabled = function()
-                    return self.IsClassicEra()
+                hidden = function()
+                    return self.IsClassicEra() or self.IsClassic()
                 end,
                 width="full",
                 order = 14,
@@ -169,7 +169,7 @@ function addon:CreateGeneralOptions()
                         SetSortBagsRightToLeft(value)
                     end
                 end,
-                disabled = function()
+                hidden = function()
                     return self.IsClassicEra() or self.IsClassic()
                 end,
                 width="full",
@@ -199,7 +199,7 @@ function addon:CreateGeneralOptions()
                         SetInsertItemsLeftToRight(value)
                     end
                 end,
-                disabled = function()
+                hidden = function()
                     return self.IsClassicEra() or self.IsClassic()
                 end,
                 width="full",
