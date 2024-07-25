@@ -26,6 +26,11 @@ function addon:CreateGeneralOptions()
                 fontSize = "medium",
                 order = 1,
             },
+            header = {
+                type = "header",
+                name = "",
+                order = 2,
+            },
             enforceBox = {
                 type = "toggle",
                 name = "Enforce Settings on Startup",
@@ -37,7 +42,7 @@ function addon:CreateGeneralOptions()
                     AdvancedInterfaceOptionsSaved.EnforceSettings = value
                 end,
                 width="full",
-                order = 2,
+                order = 3,
             },
             -------------------------------------------------
             generalHeader = {
