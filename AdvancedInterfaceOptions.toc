@@ -26,6 +26,7 @@ gui\ChatConfigPanel.lua
 gui\CombatConfigPanel.lua
 gui\FloatingCombatTextConfigPanel.lua
 gui\NameplateConfigPanel.lua
+gui\CVarConfigPanel.lua
 
 browser.lua
 basicOptions.lua

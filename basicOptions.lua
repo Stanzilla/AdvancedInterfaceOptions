@@ -116,15 +116,18 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Combat", addon:CreateCombatOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_FloatingCombatText", addon:CreateFloatingCombatTextOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Nameplate", addon:CreateNameplateOptions())
+    AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_cVar", addon:CreateCVarOptions())
 
 
-    local _, mainCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
+    local categoryFrame, mainCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Chat", "Chat", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Combat", "Combat", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_FloatingCombatText", "Floating Combat Text", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Nameplate", "Nameplates", "AdvancedInterfaceOptions")
+    local cVarFrame, cVarCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_cVar", "cVar Browser", "AdvancedInterfaceOptions")
 
-
+    -- Inject our custom cVar browser into the panel created by Ace3
+    addon:PopulateCVarPanel(cVarFrame)
     -------------------------------------------------------------------------
     -------------------------------------------------------------------------
 
@@ -142,7 +145,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     --[[SlashCmdList.CVAR = function()
         if not InCombatLockdown() then
             -- Does not work, opens to main category
-            Settings.OpenToCategory(category.ID, cvarsSubcategory.ID)
+            Settings.OpenToCategory(cVarCategoryID)
         end
     end
     SLASH_CVAR1 = "/cvar"]]
