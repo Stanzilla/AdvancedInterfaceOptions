@@ -152,12 +152,19 @@ function addon:CreateGeneralOptions()
                 get = function()
                     if C_Container and C_Container.GetSortBagsRightToLeft then
                         return C_Container.GetSortBagsRightToLeft()
-                    else
-                        return false
+                    elseif GetInsertItemsRightToLeft then
+                        return GetInsertItemsRightToLeft()
                     end
                 end,
                 set = function(_, value)
-                    C_Container.SetSortBagsRightToLeft(value)
+                    if C_Container and C_Container.SetSortBagsRightToLeft then
+                        C_Container.SetSortBagsRightToLeft(value)
+                    elseif SetSortBagsRightToLeft then
+                        SetSortBagsRightToLeft(value)
+                    end
+                end,
+                disabled = function()
+                    return self.IsClassicEra() or self.IsClassic()
                 end,
                 width="full",
                 order = 18,
@@ -169,15 +176,19 @@ function addon:CreateGeneralOptions()
                 get = function()
                     if C_Container and C_Container.GetInsertItemsLeftToRight then
                         return C_Container.GetInsertItemsLeftToRight()
-                    else
-                        return false
+                    elseif GetInsertItemsLeftToRight then
+                        GetInsertItemsLeftToRight()
                     end
                 end,
                 set = function(_, value)
-                    C_Container.SetInsertItemsLeftToRight(value)
+                    if C_Container and C_Container.SetInsertItemsLeftToRight then
+                        return C_Container.SetInsertItemsLeftToRight()
+                    elseif SetInsertItemsLeftToRight then
+                        SetInsertItemsLeftToRight()
+                    end
                 end,
                 disabled = function()
-                    return self.IsClassicEra()
+                    return self.IsClassicEra() or self.IsClassic()
                 end,
                 width="full",
                 order = 19,
