@@ -215,7 +215,6 @@ end
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 
---TODO: This is the start of the GUI Code
 -- Button to reset all of our settings back to their defaults
 StaticPopupDialogs['AIO_RESET_EVERYTHING'] = {
 	text = 'Type "IRREVERSIBLE" into the text box to reset all CVars to their default settings',

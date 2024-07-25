@@ -1,4 +1,13 @@
 
+local function getCustomVar(self)
+    return AdvancedInterfaceOptionsSaved.CustomVars[self.cvar]
+end
+
+local function setCustomVar(self, value)
+    AdvancedInterfaceOptionsSaved.CustomVars[self.cvar] = value
+end
+
+
 -- UVARINFO was made local in patch 8.2.0
 --[[local uvars = {
     removeChatDelay = "REMOVE_CHAT_DELAY",
