@@ -34,6 +34,15 @@ function addon.getActionCamMode()
     end
 end
 
+function addon.getCustomVar(cvar)
+    return AdvancedInterfaceOptionsSaved.CustomVars[cvar]
+end
+
+function addon.setCustomVar(cvar, value)
+    AdvancedInterfaceOptionsSaved.CustomVars[cvar] = value
+end
+
+
 -- C_Console.GetAllCommands is now ConsoleGetAllCommands as of 10.2.0
 addon.GetAllCommands = ConsoleGetAllCommands or C_Console and C_Console.GetAllCommands
 

@@ -31,6 +31,7 @@ function addon:CreateGeneralOptions()
                 name = "",
                 order = 2,
             },
+            -------------------------------------------------
             enforceBox = {
                 type = "toggle",
                 name = "Enforce Settings on Startup",

@@ -25,6 +25,7 @@ function addon:CreateNameplateOptions()
                 name = "",
                 order = 10,
             },
+            -------------------------------------------------
             nameplateOtherAtBase = {
                 type = "toggle",
                 name = "Nameplate at Base",

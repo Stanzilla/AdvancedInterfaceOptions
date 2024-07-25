@@ -5,6 +5,54 @@ local _, addon = ...
 local THIRD_WIDTH = 1.25
 local HALF_WIDTH = 1.5
 
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
+
+-- UVARINFO was made local in patch 8.2.0
+local uvars = {
+    removeChatDelay = "REMOVE_CHAT_DELAY",
+    lockActionBars = "LOCK_ACTIONBAR",
+    buffDurations = "SHOW_BUFF_DURATIONS",
+    alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
+    showPartyPets = "SHOW_PARTY_PETS",
+    showPartyBackground = "SHOW_PARTY_BACKGROUND",
+    showTargetOfTarget = "SHOW_TARGET_OF_TARGET",
+    autoQuestWatch = "AUTO_QUEST_WATCH",
+    lootUnderMouse = "LOOT_UNDER_MOUSE",
+    autoLootDefault = "AUTO_LOOT_DEFAULT",
+    enableFloatingCombatText = "SHOW_COMBAT_TEXT",
+    floatingCombatTextLowManaHealth = "COMBAT_TEXT_SHOW_LOW_HEALTH_MANA",
+    floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURAS",
+    floatingCombatTextAuraFade = "COMBAT_TEXT_SHOW_AURA_FADE",
+    floatingCombatTextCombatState = "COMBAT_TEXT_SHOW_COMBAT_STATE",
+    floatingCombatTextDodgeParryMiss = "COMBAT_TEXT_SHOW_DODGE_PARRY_MISS",
+    floatingCombatTextDamageReduction = "COMBAT_TEXT_SHOW_RESISTANCES",
+    floatingCombatTextRepChanges = "COMBAT_TEXT_SHOW_REPUTATION",
+    floatingCombatTextReactives = "COMBAT_TEXT_SHOW_REACTIVES",
+    floatingCombatTextFriendlyHealers = "COMBAT_TEXT_SHOW_FRIENDLY_NAMES",
+    floatingCombatTextComboPoints = "COMBAT_TEXT_SHOW_COMBO_POINTS",
+    floatingCombatTextEnergyGains = "COMBAT_TEXT_SHOW_ENERGIZE",
+    floatingCombatTextPeriodicEnergyGains = "COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE",
+    floatingCombatTextFloatMode = "COMBAT_TEXT_FLOAT_MODE",
+    floatingCombatTextHonorGains = "COMBAT_TEXT_SHOW_HONOR_GAINED",
+    showCastableBuffs = "SHOW_CASTABLE_BUFFS",
+    showDispelDebuffs = "SHOW_DISPELLABLE_DEBUFFS",
+    showArenaEnemyFrames = "SHOW_ARENA_ENEMY_FRAMES",
+    showArenaEnemyCastbar = "SHOW_ARENA_ENEMY_CASTBAR",
+    showArenaEnemyPets = "SHOW_ARENA_ENEMY_PETS",
+}
+
+local function BlizzardOptionsPanel_UpdateCombatText()
+    -- Hack to call CombatText_UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
+    if CombatText_UpdateDisplayedMessages then
+        CombatText_UpdateDisplayedMessages()
+    end
+end
+
+function addon.FCT_SetValue(cvar, checked)
+    _G[uvars[cvar]] = checked and "1" or "0"
+    BlizzardOptionsPanel_UpdateCombatText()
+end
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
@@ -163,6 +211,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("enableFloatingCombatText", value)
+                    self.FCT_SetValue("enableFloatingCombatText", value)
                 end,
                 width = HALF_WIDTH,
                 order = 21,
@@ -186,6 +235,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     addon:SetCVar("floatingCombatTextFloatMode", value)
+                    BlizzardOptionsPanel_UpdateCombatText()
                 end,
                 width = THIRD_WIDTH,
                 order = 22,
@@ -199,6 +249,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextDodgeParryMiss", value)
+                    self.FCT_SetValue("floatingCombatTextDodgeParryMiss", value)
                 end,
                 width = HALF_WIDTH,
                 order = 23,
@@ -212,6 +263,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextDamageReduction", value)
+                    self.FCT_SetValue("floatingCombatTextDamageReduction", value)
                 end,
                 width = HALF_WIDTH,
                 order = 24,
@@ -225,6 +277,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextRepChanges", value)
+                    self.FCT_SetValue("floatingCombatTextRepChanges", value)
                 end,
                 width = HALF_WIDTH,
                 order = 25,
@@ -238,6 +291,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextReactives", value)
+                    self.FCT_SetValue("floatingCombatTextReactives", value)
                 end,
                 width = HALF_WIDTH,
                 order = 26,
@@ -251,6 +305,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextFriendlyHealers", value)
+                    self.FCT_SetValue("floatingCombatTextFriendlyHealers", value)
                 end,
                 width = HALF_WIDTH,
                 order = 27,
@@ -264,6 +319,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextCombatState", value)
+                    self.FCT_SetValue("floatingCombatTextCombatState", value)
                 end,
                 width = HALF_WIDTH,
                 order = 28,
@@ -290,6 +346,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextLowManaHealth", value)
+                    self.FCT_SetValue("floatingCombatTextLowManaHealth", value)
                 end,
                 width = HALF_WIDTH,
                 order = 30,
@@ -303,6 +360,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextEnergyGains", value)
+                    self.FCT_SetValue("floatingCombatTextEnergyGains", value)
                 end,
                 width = HALF_WIDTH,
                 order = 31,
@@ -316,6 +374,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextComboPoints", value)
+                    self.FCT_SetValue("floatingCombatTextComboPoints", value)
                 end,
                 width = HALF_WIDTH,
                 order = 32,
@@ -329,6 +388,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextPeriodicEnergyGains", value)
+                    self.FCT_SetValue("floatingCombatTextPeriodicEnergyGains", value)
                 end,
                 width = HALF_WIDTH,
                 order = 33,
@@ -342,6 +402,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextHonorGains", value)
+                    self.FCT_SetValue("floatingCombatTextHonorGains", value)
                 end,
                 width = HALF_WIDTH,
                 order = 34,
@@ -355,6 +416,7 @@ function addon:CreateFloatingCombatTextOptions()
                 end,
                 set = function(_, value)
                     self:SetCVar("floatingCombatTextAuras", value)
+                    self.FCT_SetValue("floatingCombatTextAuras", value)
                 end,
                 width = HALF_WIDTH,
                 order = 35,

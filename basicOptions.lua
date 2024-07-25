@@ -13,13 +13,6 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 
 local GetCVarInfo = addon.GetCVarInfo
 
-local function BlizzardOptionsPanel_UpdateCombatText()
-	-- Hack to call CombatText_UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
-	if CombatText_UpdateDisplayedMessages then
-		CombatText_UpdateDisplayedMessages()
-	end
-end
-
 AdvancedInterfaceOptionsSaved = {}
 local DBVersion = 3
 
@@ -53,7 +46,6 @@ function E:VARIABLES_LOADED()
 	end
 end
 
-local statusTextOptions
 function E:ADDON_LOADED(addon_name)
 	if addon_name == addonName then
 		E:UnregisterEvent('ADDON_LOADED')
@@ -84,13 +76,6 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
 	end
 	MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings) -- Repair database if keys are missing
 
-	--[[
-	for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
-		if statusTextOptions[k] then
-			statusTextOptions[k](v and "statusText")
-		end
-	end
-	--]]
 
 	if AdvancedInterfaceOptionsSaved.EnforceSettings then
 		if not AdvancedInterfaceOptionsSaved.AccountVars then
@@ -115,6 +100,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Chat", addon:CreateChatOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Combat", addon:CreateCombatOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_FloatingCombatText", addon:CreateFloatingCombatTextOptions())
+    AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_StatusText", addon:CreateStatusTextOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_Nameplate", addon:CreateNameplateOptions())
     AceConfigRegistry:RegisterOptionsTable("AdvancedInterfaceOptions_cVar", addon:CreateCVarOptions())
 
@@ -123,6 +109,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Chat", "Chat", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Combat", "Combat", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_FloatingCombatText", "Floating Combat Text", "AdvancedInterfaceOptions")
+    AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_StatusText", "Status Text", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Nameplate", "Nameplates", "AdvancedInterfaceOptions")
     local cVarFrame, cVarCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_cVar", "cVar Browser", "AdvancedInterfaceOptions")
 

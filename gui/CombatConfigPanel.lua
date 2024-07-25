@@ -25,6 +25,7 @@ function addon:CreateCombatOptions()
                 name = "",
                 order = 10,
             },
+            -------------------------------------------------
             stopAutoAttackOnTargetChange = {
                 type = "toggle",
                 name = STOP_AUTO_ATTACK,

@@ -25,6 +25,7 @@ function addon:CreateChatOptions()
                 name = "",
                 order = 10,
             },
+            -------------------------------------------------
             chatMouseScroll = {
                 type = "toggle",
                 name = CHAT_MOUSE_WHEEL_SCROLL,
@@ -33,7 +34,6 @@ function addon:CreateChatOptions()
                     return C_CVar.GetCVarBool("chatMouseScroll")
                 end,
                 set = function(_, value)
-                    print(value)
                     self:SetCVar("chatMouseScroll", value)
                 end,
                 width="full",
