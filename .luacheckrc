@@ -1,7 +1,8 @@
 std = "lua51"
 max_line_length = false
 exclude_files = {
-	".luacheckrc"
+	".luacheckrc",
+    "libs/"
 }
 ignore = {
 	"11./SLASH_.*", -- Setting an undefined (Slash handler) global variable
@@ -53,6 +54,7 @@ globals = {
 	"GameTooltip_Hide",
 	"GameTooltip_SetDefaultAnchor",
     "GameTooltip_UnitColor",
+    "GetInsertItemsRightToLeft",
     "InterfaceOptions_AddCategory",
     "InterfaceOptionsFrame_OpenToCategory",
     "TextStatusBar_UpdateTextString",
@@ -73,6 +75,7 @@ globals = {
     "WOW_PROJECT_MAINLINE",
     "WOW_PROJECT_CLASSIC",
     "WOW_PROJECT_BURNING_CRUSADE_CLASSIC",
+    "WOW_PROJECT_CATACLYSM_CLASSIC",
 
 	-- FrameXML frames
 
@@ -95,6 +98,8 @@ globals = {
     "UIPanelWindows",
     "UIParent",
     "UISpecialFrames",
+    "Settings",
+    "PartyMemberFrame1",
 	-- FrameXML globals
 
 	"MAX_PVP_TALENT_COLUMNS",
@@ -342,6 +347,7 @@ globals = {
 	"C_ChallengeMode.StartChallengeMode",
 	"C_ClassTrial.GetClassTrialLogoutTimeSeconds",
 	"C_ClassTrial.IsClassTrialCharacter",
+    "C_Container"   ,
 	"C_Commentator",
 	"C_Commentator.AddPlayerOverrideName",
 	"C_Commentator.ClearCameraTarget",

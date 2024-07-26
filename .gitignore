@@ -1,2 +1,5 @@
 cvars2.dump
 debug.lua
+.vscode/
+.idea/
+libs/

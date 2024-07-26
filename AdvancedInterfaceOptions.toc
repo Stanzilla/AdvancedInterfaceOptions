@@ -1,4 +1,4 @@
-## Interface: 110000, 100207
+## Interface: 110000, 110002
 ## Interface-Vanilla: 11502
 ## Interface-Cata: 40400
 ## Title: Advanced Interface Options
@@ -16,7 +16,18 @@
 ## SavedVariables: AdvancedInterfaceOptionsSaved
 
 semlib\semlib.xml
+embeds.xml
+
 utils.lua
 cvars.lua
+
+gui\GeneralConfigPanel.lua
+gui\ChatConfigPanel.lua
+gui\CombatConfigPanel.lua
+gui\FloatingCombatTextConfigPanel.lua
+gui\StatusTextConfigPanel.lua
+gui\NameplateConfigPanel.lua
+gui\CVarConfigPanel.lua
+
 browser.lua
 basicOptions.lua
