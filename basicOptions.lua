@@ -111,7 +111,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_FloatingCombatText", "Floating Combat Text", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_StatusText", "Status Text", "AdvancedInterfaceOptions")
     AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_Nameplate", "Nameplates", "AdvancedInterfaceOptions")
-    local cVarFrame, cVarCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_cVar", "cVar Browser", "AdvancedInterfaceOptions")
+    local cVarFrame, cVarCategoryID = AceConfigDialog:AddToBlizOptions("AdvancedInterfaceOptions_cVar", "CVar Browser", "AdvancedInterfaceOptions")
 
     -- Inject our custom cVar browser into the panel created by Ace3
     addon:PopulateCVarPanel(cVarFrame)
