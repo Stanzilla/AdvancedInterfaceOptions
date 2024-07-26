@@ -54,6 +54,7 @@ globals = {
 	"GameTooltip_Hide",
 	"GameTooltip_SetDefaultAnchor",
     "GameTooltip_UnitColor",
+    "GetInsertItemsRightToLeft",
     "InterfaceOptions_AddCategory",
     "InterfaceOptionsFrame_OpenToCategory",
     "TextStatusBar_UpdateTextString",
@@ -97,6 +98,8 @@ globals = {
     "UIPanelWindows",
     "UIParent",
     "UISpecialFrames",
+    "Settings",
+    "PartyMemberFrame1",
 	-- FrameXML globals
 
 	"MAX_PVP_TALENT_COLUMNS",
@@ -344,6 +347,7 @@ globals = {
 	"C_ChallengeMode.StartChallengeMode",
 	"C_ClassTrial.GetClassTrialLogoutTimeSeconds",
 	"C_ClassTrial.IsClassTrialCharacter",
+    "C_Container"   ,
 	"C_Commentator",
 	"C_Commentator.AddPlayerOverrideName",
 	"C_Commentator.ClearCameraTarget",
