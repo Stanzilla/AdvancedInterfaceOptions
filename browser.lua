@@ -1,5 +1,4 @@
-local addonName, addon = ...
-local _G = _G
+local _, addon = ...
 local E = addon:Eve()
 
 local GetCVarInfo = addon.GetCVarInfo
@@ -23,7 +22,7 @@ end
 
 -------------------------------------------------------
 -- Track cvars set by the interface and other addons
--- hook setcvar early, record to a temporary table and commit to saved vars when we finish loading
+-- hook SetCVar early, record to a temporary table and commit to saved vars when we finish loading
 
 local SVLoaded = false -- we can't record any changes until after our own saved vars have loaded
 local TempTraces = {} -- [cvar:lower()] = {source, value}
@@ -242,7 +241,7 @@ function addon:PopulateCVarPanel(OptionsPanel)
   -- Events
   local oSetCVar = SetCVar
 
-  -- todo: this needs to be updated every time a cvar changes while the table is visible
+  -- TODO: this needs to be updated every time a cvar changes while the table is visible
   RefreshCVarList()
   ListFrame:SetItems(CVarTable)
   ListFrame:SortBy(2)
@@ -280,7 +279,7 @@ function addon:PopulateCVarPanel(OptionsPanel)
   end)
 
   CVarInputBox:SetScript("OnEnterPressed", function(self)
-    -- todo: I don't like this, change it
+    -- TODO: I don't like this, change it
     oSetCVar(self.cvar, self:GetText() or "")
     self:Hide()
     FilteredRefresh()

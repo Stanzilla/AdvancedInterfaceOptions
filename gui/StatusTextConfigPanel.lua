@@ -1,10 +1,8 @@
 local _, addon = ...
 
--- Constants
-local THIRD_WIDTH = 1.25
+-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 
--------------------------------------------------------------------------
--------------------------------------------------------------------------
 local function setStatusTextBars(frame, value)
   frame.healthbar.cvar = value
   frame.manabar.cvar = value
@@ -17,14 +15,14 @@ local function setStatusTextBars(frame, value)
   end
 end
 
-local statusTextVals = {
+local statusTextValues = {
   playerStatusText = function(value)
     setStatusTextBars(PlayerFrame, value)
   end,
   petStatusText = function(value)
     setStatusTextBars(PetFrame, value)
   end,
-  --TODO: This appears to be deprecated
+  -- TODO: This appears to be deprecated
   partyStatusText = function(value)
     for i = 1, MAX_PARTY_MEMBERS do
       setStatusTextBars(_G["PartyMemberFrame" .. i], value)
@@ -33,6 +31,7 @@ local statusTextVals = {
   targetStatusText = function(value)
     setStatusTextBars(TargetFrame, value)
   end,
+  -- TODO: This appears to be deprecated
   alternateResourceText = function(value)
     PlayerFrameAlternateManaBar.cvar = value
     if not addon.IsClassicEra() and not addon.IsClassic() then
@@ -53,34 +52,8 @@ local statusTextVals = {
 
 local function setStatusText(cvar, value)
   addon.setCustomVar(cvar, value)
-  statusTextVals[cvar](value and "statusText")
+  statusTextValues[cvar](value and "statusText")
 end
-
---[[
-for k, v in pairs(AdvancedInterfaceOptionsSaved.CustomVars) do
-    if statusTextOptions[k] then
-        statusTextOptions[k](v and "statusText")
-    end
-end
---]]
-
---[[local function stTextDisplaySetValue(self)
-    addon:SetCVar('statusTextDisplay', self.value, 'STATUS_TEXT_DISPLAY')
-end]]
-
--- TODO: figure out why the built-in tooltipTitle and tooltipText attributes don't work
--- local stTextDisplay = addon:CreateDropdown(AIO_ST, 130, {
--- 	{text = STATUS_TEXT_VALUE, value = 'NUMERIC', func = stTextDisplaySetValue},
--- 	{text = STATUS_TEXT_PERCENT, value = 'PERCENT', func = stTextDisplaySetValue},
--- 	{text = STATUS_TEXT_BOTH, value = 'BOTH', func = stTextDisplaySetValue},
--- })
--- stTextDisplay:SetPoint('LEFT', stToggleStatusText, 'RIGHT', 100, -2)
--- stTextDisplay:HookScript('OnShow', function(self) self:SetValue(GetCVar('statusTextDisplay')) end)
--- stTextDisplay:HookScript("OnEnter", function(self)
--- 	GameTooltip:SetOwner(self, "ANCHOR_TOPRIGHT")
--- 	GameTooltip:SetText(OPTION_TOOLTIP_STATUS_TEXT_DISPLAY, nil, nil, nil, nil, true)
--- end)
--- stTextDisplay:HookScript("OnLeave", GameTooltip_Hide)
 
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------

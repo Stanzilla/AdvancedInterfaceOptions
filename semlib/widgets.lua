@@ -73,17 +73,12 @@ local function scrollscripts(scroll, scripts)
   end
 end
 
-local function selectscrollitem(scroll, value)
-  scroll.selected = value
-  scroll:Update()
-end
-
 local function normalize(str)
   str = str and gsub(str, "|c........", "") or ""
   return str
     :gsub("(%d+)", function(d)
-      local lenf = strlen(d)
-      return lenf < 10 and (strsub("0000000000", lenf + 1) .. d) or d -- or ''
+      local lenF = strlen(d)
+      return lenF < 10 and (strsub("0000000000", lenF + 1) .. d) or d -- or ''
       --return (d + 0) < 2147483648 and string.format('%010d', d) or d -- possible integer overflow
     end)
     :gsub("%W", "")
@@ -238,7 +233,7 @@ function addon:CreateListFrame(parent, w, h, cols)
   --scrollDownBg:SetAlpha(0)
 
   local scrollMidBg = frame:CreateTexture(nil, nil, nil, 2) -- fill in the middle gap, a bit hacky
-  scrollMidBg:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]], false, true)
+  scrollMidBg:SetTexture([[Interface\PaperDollInfoFrame\UI-Character-ScrollBar]], nil, "REPEAT")
   --scrollMidBg:SetPoint('RIGHT', -1, 0)
   scrollMidBg:SetTexCoord(0, 0.44, 0.75, 0.98)
   --scrollMidBg:SetSize(28, 80)
@@ -346,63 +341,6 @@ function addon:CreateListFrame(parent, w, h, cols)
   return frame
 end
 
---[[
-local function npcprep(npctable, scroll)
-	local newtable = {}
-	for npcID,v in pairs(npctable) do
-		tinsert(newtable, v)
-	end
-	sort(newtable, function(a,b) return a[2] < b[2] end)
-	setscrolllist(scroll, newtable)
-end
---]]
-
-local RoleStrings = {
-  TANK = "|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:32:48:0:16|t",
-  HEALER = "|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:48:64:0:16|t",
-  DAMAGER = "|TInterface/LFGFrame/LFGRole:16:16:0:0:64:16:16:32:0:16|t",
-}
-
---[[
-local waitList = newscroll(nil, UIParent, 310, 240, {{LEVEL_ABBR, 20, 'RIGHT'}, {NAME, 158}, {ITEM_LEVEL_ABBR, 25, 'RIGHT'},{RoleStrings['TANK'], 16, 'CENTER'}, {RoleStrings['HEALER'], 16, 'CENTER'}, {RoleStrings['DAMAGER'], 16, 'CENTER'}})
-waitList:SetPoint('CENTER')
---left:SetPoint("TOPRIGHT", model, "TOPLEFT", -5, 0)
-local creatures = {}
-for i=1, 100 do
-	tinsert(creatures, {random(60,90),"Name Placeholder "..i,random(460, 570),RoleStrings['TANK'], RoleStrings['HEALER'], RoleStrings['DAMAGER']})
-end
---npcprep(creatures, left)
-setscrolllist(waitList, creatures)
-
-
-scrollscripts(waitList, {
-	--["OnMouseDown"] = function(self)
-	--	selectscrollitem(waitList, self.value)
-	--end,
-	["OnEnter"] = function(self)
-		self.bg:Show()
-	end,
-	["OnLeave"] = function(self)
-		self.bg:Hide()
-	end,
-})
---]]
-
---[[
-local waitList = newscroll(nil, UIParent, 310, 240, {{CALENDAR_EVENT_DESCRIPTION, 148}, {ITEM_LEVEL_ABBR, 25, 'RIGHT'}, {RoleStrings['TANK'], 28, 'RIGHT'}, {RoleStrings['HEALER'], 28, 'RIGHT'}, {RoleStrings['DAMAGER'], 28, 'RIGHT'}})
-waitList:SetPoint('CENTER')
---left:SetPoint("TOPRIGHT", model, "TOPLEFT", -5, 0)
-local creatures = {}
-for i=1, 100 do
-	tinsert(creatures, {"Flex 1st wing, fresh!"..i, random(460, 570), random(0,2) .. ' ' .. RoleStrings['TANK'], random(0,6) .. ' ' .. RoleStrings['HEALER'], random(0,17) .. ' ' .. RoleStrings['DAMAGER']})
-end
---npcprep(creatures, left)
---setscrolllist(waitList, creatures)
-waitList:SetItems(creatures)
---]]
---table.sort(creatures, function(a,b) return a[1] < b[1] end)
---waitList:Update()
-
 -- Input boxes
 function addon:CreateInput(parent, width, defaultText, maxChars, numeric)
   local editbox = CreateFrame("EditBox", nil, parent)
@@ -471,77 +409,4 @@ function addon:CreateInput(parent, width, defaultText, maxChars, numeric)
   end
   --editbox:SetText(defaultText or '')
   return editbox
-end
-
--- Dropdown Menus
-local DropdownCount = 0
-
-local function initmenu(items)
-  local info = UIDropDownMenu_CreateInfo()
-  info.text = "Challenge Mode" --GUILD_CHALLENGE_TYPE2
-  info.func = function()
-    return
-  end
-  UIDropDownMenu_AddButton(info)
-end
-
-function addon:CreateDropdown(parent, width, items, defaultValue)
-  local dropdown = CreateFrame("frame", addonName .. "DropDownMenu" .. DropdownCount, parent, "UIDropDownMenuTemplate")
-  -- todo: redo all of this
-  --dropdown:EnableMouse(true)
-  DropdownCount = DropdownCount + 1
-  --groupTypeDropdown:SetPoint('LEFT', ilevelInput, 'RIGHT', -5, -3)
-  --groupTypeDropdown:SetPoint('TOPRIGHT', titleInput, 'BOTTOMRIGHT', 16, -8)
-  --dropdown:SetPoint('BOTTOMRIGHT', parent, 10, 0)
-  --UIDropDownMenu_Initialize(dropdown, function()
-  dropdown.SetValue = function(dropdown, value)
-    dropdown.value = value
-    dropdown:initialize()
-  end
-
-  dropdown.initialize = function(dropdown)
-    --local selectedValue = UIDropDownMenu_GetSelectedValue(dropdown)
-    for i, tbl in ipairs(items) do
-      local info = UIDropDownMenu_CreateInfo()
-      --info.value = v[1]
-      --info.text = v[2]
-
-      for k, v in pairs(tbl) do
-        info[k] = v
-        if not defaultValue and k == "value" then
-          defaultValue = v
-        end
-      end
-
-      info.func = function(self)
-        if tbl.func then
-          tbl.func(self)
-        end
-        --UIDropDownMenu_SetSelectedID(dropdown, self:GetID(), true)
-        UIDropDownMenu_SetSelectedValue(dropdown, self.value)
-        dropdown.value = self.value
-      end
-
-      --if info.isTitle then
-      --info.text = '-' .. info.text .. '-'
-      --end
-
-      UIDropDownMenu_AddButton(info)
-    end
-    -- dropdown:SetValue(dropdown.value or defaultValue)
-    UIDropDownMenu_SetSelectedValue(dropdown, dropdown.value or defaultValue)
-  end
-
-  --UIDropDownMenu_SetSelectedID(dropdown, defaultID or 1)
-  --UIDropDownMenu_SetSelectedValue(dropdown, defaultValue)
-  dropdown:SetValue(defaultValue)
-  UIDropDownMenu_SetWidth(dropdown, width or 160)
-
-  _G[dropdown:GetName() .. "Button"]:HookScript("OnClick", function(self)
-    DropDownList1:ClearAllPoints()
-    DropDownList1:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, 0)
-    --ToggleDropDownMenu(nil, nil, dropdown, dropdown, 0, 0)
-  end)
-
-  return dropdown
 end

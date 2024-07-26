@@ -1,6 +1,6 @@
 local addonName, addon = ...
 local E = addon:Eve()
-local _G = _G
+
 local _SetCVar = SetCVar -- Keep a local copy of SetCVar so we don't call the hooked version
 local SetCVar = function(...) -- Suppress errors trying to set read-only cvars
   -- Not ideal, but the api doesn't give us this information
@@ -129,6 +129,7 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
   end
   SLASH_AIO1 = "/aio"
 
+  -- TODO: Re-enable in 11.0.2 when subcategories are fixed
   --[[SlashCmdList.CVAR = function()
         if not InCombatLockdown() then
             -- Does not work, opens to main category
@@ -291,7 +292,7 @@ function addon.RestoreSettings()
           addon:SetCVar(cvar, backupValue)
         end
       else
-        -- CHECKME: If CVar isn't in backup and isn't set to default value, should we reset to default or ignore it?
+        -- TODO: If CVar isn't in backup and isn't set to default value, should we reset to default or ignore it?
         if currentValue ~= defaultValue then
           print(format("|cffaaaaff%s|r changed from |cffffaaaa%s|r to |cffaaffaa%s|r", cvar, tostring(currentValue), tostring(defaultValue)))
           addon:SetCVar(cvar, defaultValue)

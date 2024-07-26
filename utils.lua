@@ -1,4 +1,4 @@
-local addonName, addon = ...
+local _, addon = ...
 
 --------------------------------------
 -- Utility functions
@@ -45,9 +45,8 @@ end
 -- C_Console.GetAllCommands is now ConsoleGetAllCommands as of 10.2.0
 addon.GetAllCommands = ConsoleGetAllCommands or C_Console and C_Console.GetAllCommands
 
--- GetCVarInfo moved to C_CVar
 -- value, defaultValue, isStoredServerAccount, isStoredServerCharacter, isLockedFromUser, isSecure, isReadOnly
-addon.GetCVarInfo = GetCVarInfo or C_CVar and C_CVar.GetCVarInfo
+addon.GetCVarInfo = C_CVar.GetCVarInfo
 
 function addon:CVarExists(cvar)
   return not not select(

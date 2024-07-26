@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local addonName, addon = ...
 local _G = _G
 

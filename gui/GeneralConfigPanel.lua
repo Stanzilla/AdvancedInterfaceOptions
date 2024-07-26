@@ -209,6 +209,8 @@ function addon:CreateGeneralOptions()
         name = WOW_MOUSE,
         desc = OPTION_TOOLTIP_WOW_MOUSE,
         get = function()
+          -- NOTE: Currently broken, see https://github.com/Stanzilla/AdvancedInterfaceOptions/issues/83
+          ---@diagnostic disable-next-line: param-type-mismatch
           return C_CVar.GetCVarBool("enableWoWMouse")
         end,
         set = function(_, value)
@@ -269,7 +271,7 @@ function addon:CreateGeneralOptions()
         width = THIRD_WIDTH,
         order = 32,
       },
-      --TODO: This might need more work for classic
+      -- TODO: This might need more work for classic
       cameraDistanceMaxZoomFactor = {
         type = "range",
         name = MAX_FOLLOW_DIST,
