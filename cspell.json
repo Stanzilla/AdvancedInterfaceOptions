@@ -1,0 +1,31 @@
+{
+  "version": "0.2",
+  "language": "en-US",
+  "ignorePaths": [
+    "libs",
+    ".luacheckrc"
+  ],
+  "words": [
+    "ADDONCATEGORIES",
+    "Ambiguate",
+    "Cata",
+    "cffaaaaff",
+    "cffaaffaa",
+    "cffffaaaa",
+    "cffffffff",
+    "cvar",
+    "cvars",
+    "Debuff",
+    "Debuffs",
+    "Dont",
+    "Lerp",
+    "Luacheck",
+    "nebularg",
+    "NUMDIALOGS",
+    "upvalue",
+    "UVARINFO",
+    "uvars",
+    "WAGO",
+    "WOWI"
+  ]
+}
