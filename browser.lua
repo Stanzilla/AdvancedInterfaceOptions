@@ -71,11 +71,16 @@ local function TraceCVar(cvar, value, ...)
     end
   end
   -- Ignore C_CVar.SetCVar hook if it originated from ourselves or CvarUtil.lua or ClassicCvarUtil.lua
-  if source and not (source:lower():find("[\\/]advancedinterfaceoptions[\\/]") or
-          source:lower():find("[_\\/]sharedxmlbase[\\/]cvarutil%.lua") or
-          source:lower():find("[_\\/]sharedxml[\\/]cvarutil%.lua") or
-          source:lower():find("[_\\/]sharedxml[\\/]classiccvarutil%.lua") or
-          source:lower():find("[_\\/]sharedxml[\\/]classic[\\/]classiccvarutil%.lua")) then
+  if
+    source
+    and not (
+      source:lower():find("[\\/]advancedinterfaceoptions[\\/]")
+      or source:lower():find("[_\\/]sharedxmlbase[\\/]cvarutil%.lua")
+      or source:lower():find("[_\\/]sharedxml[\\/]cvarutil%.lua")
+      or source:lower():find("[_\\/]sharedxml[\\/]classiccvarutil%.lua")
+      or source:lower():find("[_\\/]sharedxml[\\/]classic[\\/]classiccvarutil%.lua")
+    )
+  then
     local realValue = GetCVar(cvar) -- the client does some conversions to the original value
     if SVLoaded then
       AdvancedInterfaceOptionsSaved.ModifiedCVars[cvar:lower()] = source .. ":" .. lineNum
@@ -139,7 +144,7 @@ function addon:PopulateCVarPanel(OptionsPanel)
     self:ClearFocus()
   end)
   FilterBox:SetScript("OnEnterPressed", function(self)
-    self:SetAutoFocus(false) -- Clear focus when enter is pressed because ketho said so
+    self:SetAutoFocus(false) -- Clear focus when enter is pressed because Ketho said so
     self:ClearFocus()
   end)
   FilterBox:SetScript("OnEditFocusGained", function(self)

@@ -1,6 +1,5 @@
 ---@diagnostic disable: undefined-global
-local addonName, addon = ...
-local _G = _G
+local _, addon = ...
 
 addon.combatProtected = {
   -- List of cvars that can't be modified in combat
@@ -235,13 +234,10 @@ addon.hiddenOptions = {
   ["advancedWatchFrame"] = { prettyName = ADVANCED_OBJECTIVES_TEXT, description = OPTION_TOOLTIP_ADVANCED_OBJECTIVES_TEXT, type = "" },
   ["watchFrameIgnoreCursor"] = { prettyName = OBJECTIVES_IGNORE_CURSOR_TEXT, description = OPTION_TOOLTIP_OBJECTIVES_IGNORE_CURSOR, type = "boolean" },
   ["guildMemberNotify"] = { prettyName = GUILDMEMBER_ALERT, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
-  ["showArenaEnemyFrames"] = { prettyName = SHOW_ARENA_ENEMY_FRAMES_TEXT, description = OPTION_TOOLTIP_SHOW_ARENA_ENEMY_FRAMES, type = "boolean" },
   ["autoClearAFK"] = { prettyName = nil, description = OPTION_TOOLTIP_CLEAR_AFK, type = "boolean" },
   ["colorblindWeaknessFactor"] = { prettyName = nil, description = OPTION_TOOLTIP_ADJUST_COLORBLIND_STRENGTH, type = "boolean" },
-  ["autoLootDefault"] = { prettyName = nil, description = OPTION_TOOLTIP_AUTO_LOOT_DEFAULT, type = "boolean" },
   ["autoLootRate"] = { prettyName = "Auto Loot Rate", description = "Rate in milliseconds to tick auto loot", type = "number" },
   ["ChatAmbienceVolume"] = { prettyName = nil, description = "", type = "boolean" },
-  ["threatShowNumeric"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_NUMERIC_THREAT, type = "boolean" },
   ["rightActionBar"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_MULTIBAR3, type = "boolean" },
   ["emphasizeMySpellEffects"] = { prettyName = nil, description = OPTION_TOOLTIP_EMPHASIZE_MY_SPELLS, type = "boolean" },
   ["chatBubblesParty"] = { prettyName = nil, description = OPTION_TOOLTIP_PARTY_CHAT_BUBBLES, type = "boolean" },
@@ -376,7 +372,6 @@ addon.hiddenOptions = {
   ["Sound_EnablePositionalLowPassFilter"] = { prettyName = ENABLE_SOFTWARE_HRTF, description = OPTION_TOOLTIP_ENABLE_SOFTWARE_HRTF, type = "boolean" },
 
   ["showTargetOfTarget"] = { prettyName = nil, description = OPTION_TOOLTIP_SHOW_TARGET_OF_TARGET, type = "boolean" },
-  ["guildMemberNotify"] = { prettyName = nil, description = OPTION_TOOLTIP_GUILDMEMBER_ALERT, type = "boolean" },
   ["showTutorials"] = { prettyName = SHOW_TUTORIALS, description = OPTION_TOOLTIP_SHOW_TUTORIALS, type = "boolean" },
   ["lossOfControl"] = { prettyName = nil, description = OPTION_TOOLTIP_LOSS_OF_CONTROL, type = "boolean" },
   ["blockChannelInvites"] = { prettyName = nil, description = OPTION_TOOLTIP_BLOCK_CHAT_CHANNEL_INVITE, type = "boolean" },
@@ -685,7 +680,7 @@ addon.hiddenOptions = {
   -- ["bloatTest"] = {},
   -- ["bloatnameplates"] = {},
   -- ["bloatthreat"] = {},
-  ["bodyQuota"] = { description = "Maximum number of componented bodies seen at once" },
+  ["bodyQuota"] = { description = "Maximum number of component bodies seen at once" },
   ["breakUpLargeNumbers"] = { description = "Toggles using commas in large numbers" },
   ["bspcache"] = { description = "BSP node caching" },
   ["calendarShowBattlegrounds"] = { description = "Whether Battleground holidays should appear in the calendar" },
@@ -1171,7 +1166,7 @@ function addon:GetCVars()
     if
       info.commandType == 0 -- cvar, rather than script
       and info.category ~= 0 -- ignore debug category
-      and not strfind(info.command:lower(), "debug") -- a number of commands with "debug" in their name are inexplicibly not in the "debug" category
+      and not strfind(info.command:lower(), "debug") -- a number of commands with "debug" in their name are inexplicably not in the "debug" category
       and info.category ~= 8 -- ignore GM category
       and addon:CVarExists(info.command) -- real cvar?
     then

@@ -66,7 +66,7 @@ function addon:CreateCombatOptions()
       SpellQueueWindow = {
         type = "range",
         name = LAG_TOLERANCE,
-        desc = "Determines how far ahead of the 'end of a spell' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system. Ideally, you'll want to set this to your in-game latency.",
+        desc = "Determines how far ahead of the 'end of a spell' start-recovery spell system can be, before allowing spell request to be sent to the server. Ie this controls the built-in lag for the ability queuing system.",
         min = 0,
         max = 400,
         step = 1,
