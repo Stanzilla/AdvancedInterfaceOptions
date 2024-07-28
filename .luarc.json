@@ -537,7 +537,8 @@
         "C_Timer",
         "hooksecurefunc",
         "GetTime",
-        "AdvancedInterfaceOptionsSaved"
+        "AdvancedInterfaceOptionsSaved",
+        "SettingsPanel"
     ],
     "diagnostics.disable": [
         "lowercase-global",

@@ -99,6 +99,7 @@ globals = {
   "UIParent",
   "UISpecialFrames",
   "Settings",
+  "SettingsPanel",
   "PartyMemberFrame1",
   -- FrameXML globals
 

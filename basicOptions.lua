@@ -129,14 +129,25 @@ function E:Init() -- Runs after our saved variables are loaded and cvars have be
   end
   SLASH_AIO1 = "/aio"
 
-  -- TODO: Re-enable in 11.0.2 when subcategories are fixed
-  --[[SlashCmdList.CVAR = function()
-        if not InCombatLockdown() then
-            -- Does not work, opens to main category
-            Settings.OpenToCategory(cVarCategoryID)
+  -- TODO: Adjust in 11.0.2 when subcategories are properly fixed
+  SlashCmdList.CVAR = function()
+    if not InCombatLockdown() then
+      for _, category in ipairs(SettingsPanel:GetCategoryList().allCategories) do
+        if category.ID == mainCategoryID and category.subcategories then
+          for _, subCategory in ipairs(category.subcategories) do
+            if subCategory.ID == cVarCategoryID then
+              SettingsPanel:Show()
+              SettingsPanel:SelectCategory(subCategory)
+              break
+            end
+          end
         end
+      end
+    else
+      DEFAULT_CHAT_FRAME:AddMessage(format("%s: Can't modify interface options in combat", addonName))
     end
-    SLASH_CVAR1 = "/cvar"]]
+  end
+  SLASH_CVAR1 = "/cvar"
 end
 
 function addon:RecordCVar(cvar, value) -- Save cvar to DB for loading later
