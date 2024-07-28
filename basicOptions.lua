@@ -40,10 +40,23 @@ local AlwaysCharacterSpecificCVars = {
   -- stopAutoAttackOnTargetChange
 }
 
+local function MergeTable(a, b) -- Non-destructively merges table b into table a
+  for k, v in pairs(b) do
+    if a[k] == nil or type(a[k]) ~= type(b[k]) then
+      a[k] = v
+      -- print('replacing key', k, v)
+    elseif type(v) == "table" then
+      a[k] = MergeTable(a[k], b[k])
+    end
+  end
+  return a
+end
+
 local AddonLoaded, VariablesLoaded = false, false
 function E:VARIABLES_LOADED()
   VariablesLoaded = true
   if AddonLoaded then
+    MergeTable(AdvancedInterfaceOptionsSaved, DefaultSettings)
     self:ADDON_LOADED(addonName)
   end
 end
@@ -56,18 +69,6 @@ function E:ADDON_LOADED(addon_name)
       E("Init")
     end
   end
-end
-
-local function MergeTable(a, b) -- Non-destructively merges table b into table a
-  for k, v in pairs(b) do
-    if a[k] == nil or type(a[k]) ~= type(b[k]) then
-      a[k] = v
-      -- print('replacing key', k, v)
-    elseif type(v) == "table" then
-      a[k] = MergeTable(a[k], b[k])
-    end
-  end
-  return a
 end
 
 function E:Init() -- Runs after our saved variables are loaded and cvars have been loaded
