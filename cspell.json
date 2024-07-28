@@ -25,6 +25,7 @@
         "Luacheck",
         "MAXFPSBK",
         "MSAA",
+        "Nagle",
         "nebularg",
         "NUMDIALOGS",
         "PERC",

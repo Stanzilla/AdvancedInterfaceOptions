@@ -538,7 +538,8 @@
         "hooksecurefunc",
         "GetTime",
         "AdvancedInterfaceOptionsSaved",
-        "SettingsPanel"
+        "SettingsPanel",
+        "SPELL_QUEUE_WINDOW"
     ],
     "diagnostics.disable": [
         "lowercase-global",
