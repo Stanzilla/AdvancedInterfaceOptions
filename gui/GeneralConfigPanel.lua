@@ -4,7 +4,7 @@ local _, addon = ...
 local THIRD_WIDTH = 1.25
 
 local maxCameraZoomFactor
-if addon.IsClassicEra() then
+if not addon.IsRetail() then
   maxCameraZoomFactor = 3.4
 else
   maxCameraZoomFactor = 2.6
