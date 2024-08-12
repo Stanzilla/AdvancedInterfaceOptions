@@ -14,7 +14,7 @@ end
 -------------------------------------------------------------------------
 
 function addon:CreateCameraOptions()
-  local combatOptions = {
+  local cameraOptions = {
     type = "group",
     childGroups = "tree",
     name = "Camera",
@@ -132,5 +132,5 @@ function addon:CreateCameraOptions()
     }
   }
 
-  return combatOptions
+  return cameraOptions
 end
