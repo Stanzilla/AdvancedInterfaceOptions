@@ -3,13 +3,6 @@ local _, addon = ...
 -- Constants
 local THIRD_WIDTH = 1.25
 
-local maxCameraZoomFactor
-if not addon.IsRetail() then
-  maxCameraZoomFactor = 3.4
-else
-  maxCameraZoomFactor = 2.6
-end
-
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
 
@@ -245,48 +238,6 @@ function addon:CreateGeneralOptions()
         end,
         width = THIRD_WIDTH,
         order = 31,
-      },
-      actionCam = {
-        type = "select",
-        name = "Select Action Cam mode:",
-        desc = "Select the mode for the Action Cam.",
-        values = {
-          ["default"] = "Default",
-          ["on"] = "On",
-          ["basic"] = "Basic",
-          ["full"] = "Full",
-        },
-        sorting = {
-          "default",
-          "on",
-          "basic",
-          "full",
-        },
-        get = function()
-          return self.getActionCamMode()
-        end,
-        set = function(_, value)
-          ConsoleExec("actioncam" .. " " .. value)
-        end,
-        width = THIRD_WIDTH,
-        order = 32,
-      },
-      -- TODO: This might need more work for classic
-      cameraDistanceMaxZoomFactor = {
-        type = "range",
-        name = MAX_FOLLOW_DIST,
-        desc = OPTION_TOOLTIP_MAX_FOLLOW_DIST,
-        min = 1,
-        max = maxCameraZoomFactor,
-        step = 0.1,
-        get = function()
-          return tonumber(C_CVar.GetCVar("cameraDistanceMaxZoomFactor"))
-        end,
-        set = function(_, value)
-          self:SetCVar("cameraDistanceMaxZoomFactor", value)
-        end,
-        width = THIRD_WIDTH,
-        order = 33,
       },
       -------------------------------------------------
       dataHeader = {
