@@ -53,6 +53,10 @@ function addon:CreateCameraOptions()
         type = "header",
         name = "Camera Collision",
         order = 20,
+        --this feature is only supported in 11.0 at the moment
+        hidden = function()
+          return not addon.IsRetail()
+        end,
       },
       cameraIndirectVisibility = {
         type = "toggle",
@@ -63,6 +67,10 @@ function addon:CreateCameraOptions()
         end,
         set = function(_, value)
           self:SetCVar("cameraIndirectVisibility", value)
+        end,
+        --this feature is only supported in 11.0 at the moment
+        hidden = function()
+          return not addon.IsRetail()
         end,
         width = THIRD_WIDTH,
         order = 21,
@@ -82,6 +90,10 @@ function addon:CreateCameraOptions()
         end,
         disabled = function()
           return not C_CVar.GetCVarBool("cameraIndirectVisibility")
+        end,
+        --this feature is only supported in 11.0 at the moment
+        hidden = function()
+          return not addon.IsRetail()
         end,
         width = THIRD_WIDTH,
         order = 22,
