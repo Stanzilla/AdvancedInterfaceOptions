@@ -1,6 +1,6 @@
-## Interface: 110000, 110002
-## Interface-Vanilla: 11502
-## Interface-Cata: 40400
+## Interface: 110100, 110007
+## Interface-Vanilla: 11506
+## Interface-Cata: 40402
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
