@@ -89,7 +89,7 @@ function addon:CreateFloatingCombatTextOptions()
       },
       floatingCombatTextCombatLogPeriodicSpells = {
         type = "toggle",
-        name = LOG_PERIODIC_EFFECTS,
+        name = LOG_PERIODIC_EFFECTS_TEXT or LOG_PERIODIC_EFFECTS,
         desc = OPTION_TOOLTIP_LOG_PERIODIC_EFFECTS,
         get = function()
           return C_CVar.GetCVarBool("floatingCombatTextCombatLogPeriodicSpells")
@@ -102,7 +102,7 @@ function addon:CreateFloatingCombatTextOptions()
       },
       floatingCombatTextPetMeleeDamage = {
         type = "toggle",
-        name = SHOW_PET_MELEE_DAMAGE,
+        name = SHOW_PET_MELEE_DAMAGE_TEXT or SHOW_PET_MELEE_DAMAGE,
         desc = OPTION_TOOLTIP_SHOW_PET_MELEE_DAMAGE,
         get = function()
           return C_CVar.GetCVarBool("floatingCombatTextPetMeleeDamage")
@@ -129,7 +129,7 @@ function addon:CreateFloatingCombatTextOptions()
       },
       floatingCombatTextCombatHealing = {
         type = "toggle",
-        name = SHOW_COMBAT_HEALING,
+        name = SHOW_COMBAT_HEALING_TEXT or SHOW_COMBAT_HEALING,
         desc = OPTION_TOOLTIP_SHOW_COMBAT_HEALING,
         get = function()
           return C_CVar.GetCVarBool("floatingCombatTextCombatHealing")
