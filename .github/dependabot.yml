@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    target-branch: 'master'
+    schedule:
+      interval: 'monthly'
+    open-pull-requests-limit: 20
+    assignees:
+      - Stanzilla
+    labels:
+      - dependencies
