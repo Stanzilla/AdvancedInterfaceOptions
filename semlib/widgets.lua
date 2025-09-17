@@ -207,6 +207,11 @@ function addon:CreateListFrame(parent, w, h, cols)
 
   frame:SetSize(w, h)
   frame:SetFrameLevel(1)
+  -- FIXME: AceConfig prevents mouse wheel from scrolling the cvar list
+  -- by rendering a mousewheel-enabled scrollframe above it
+  -- Culprit: libs\AceGUI-3.0\widgets\AceGUIContainer-ScrollFrame.lua:173
+  -- HACK: Raise our frame above theirs so we get mouse wheel events
+  frame:SetFrameStrata("HIGH")
 
   frame.scripts = {
     --["OnMouseDown"] = function(self) print(self.text:GetText()) end
