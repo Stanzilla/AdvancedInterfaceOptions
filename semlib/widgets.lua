@@ -59,6 +59,18 @@ local function updatescroll(scroll)
     end
   end
 
+  -- Disable scrollbar arrow buttons when at top or bottom of list
+  local scrollbar = scroll.scrollbar
+  if scroll.value == scroll.minValue then
+    scrollbar.ScrollUpButton:Disable()
+  else
+    scrollbar.ScrollUpButton:Enable()
+  end
+  if scroll.value >= scroll.maxValue then
+    scrollbar.ScrollDownButton:Disable()
+  else
+    scrollbar.ScrollDownButton:Enable()
+  end
   --scroll.scrollbar:SetValue(scroll.value)
 end
 
@@ -252,19 +264,10 @@ function addon:CreateListFrame(parent, w, h, cols)
   scrollbar.ScrollDownButton:SetScript("OnClick", function()
     scroll(frame, -1)
   end)
+
   scrollbar:SetScript("OnValueChanged", function(self, value)
     frame.value = floor(value)
     frame:Update()
-    if frame.value == frame.minValue then
-      self.ScrollUpButton:Disable()
-    else
-      self.ScrollUpButton:Enable()
-    end
-    if frame.value >= frame.maxValue then
-      self.ScrollDownButton:Disable()
-    else
-      self.ScrollDownButton:Enable()
-    end
   end)
   frame.scrollbar = scrollbar
 
