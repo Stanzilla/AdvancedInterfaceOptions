@@ -360,7 +360,7 @@ function addon:CreateFloatingCombatTextOptions()
       floatingCombatTextCombatHealingAbsorbSelf = {
         type = "toggle",
         name = SHOW_COMBAT_HEALING_ABSORB_SELF .. " " .. "(Self)",
-        desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_COMBAT_STATE,
+        desc = OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_SELF,
         get = function()
           return GetCVarBool_v2("floatingCombatTextCombatHealingAbsorbSelf")
         end,
