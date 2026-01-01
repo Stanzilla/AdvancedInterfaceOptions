@@ -22,7 +22,7 @@ jobs:
         with:
           args: -d -z
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: AIO-PR${{ github.event.number }}
           path: .release/
@@ -32,7 +32,7 @@ jobs:
         with:
           args: -d -z -g classic
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: AIO-PR${{ github.event.number }}-classic
           path: .release/
@@ -42,7 +42,7 @@ jobs:
         with:
           args: -d -z -g cata
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: AIO-PR${{ github.event.number }}-cata
           path: .release/
