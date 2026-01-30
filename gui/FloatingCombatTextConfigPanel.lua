@@ -74,112 +74,113 @@ function addon:CreateFloatingCombatTextOptions()
         name = "Floating Combat Text on Target",
         order = 10,
       },
-      floatingCombatTextCombatDamage = {
+      floatingCombatTextCombatDamage_v2 = {
         type = "toggle",
         name = SHOW_DAMAGE_TEXT,
         desc = OPTION_TOOLTIP_SHOW_DAMAGE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatDamage")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatDamage_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatDamage", value)
+          self:SetCVar("floatingCombatTextCombatDamage_v2", value)
         end,
         width = HALF_WIDTH,
         order = 11,
       },
-      floatingCombatTextCombatLogPeriodicSpells = {
+      floatingCombatTextCombatLogPeriodicSpells_v2 = {
         type = "toggle",
         name = LOG_PERIODIC_EFFECTS_TEXT or LOG_PERIODIC_EFFECTS,
         desc = OPTION_TOOLTIP_LOG_PERIODIC_EFFECTS,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatLogPeriodicSpells")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatLogPeriodicSpells_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatLogPeriodicSpells", value)
+          self:SetCVar("floatingCombatTextCombatLogPeriodicSpells_v2", value)
         end,
         width = HALF_WIDTH,
         order = 12,
       },
-      floatingCombatTextPetMeleeDamage = {
+      floatingCombatTextPetMeleeDamage_v2 = {
         type = "toggle",
         name = SHOW_PET_MELEE_DAMAGE_TEXT or SHOW_PET_MELEE_DAMAGE,
         desc = OPTION_TOOLTIP_SHOW_PET_MELEE_DAMAGE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextPetMeleeDamage")
+          return C_CVar.GetCVarBool("floatingCombatTextPetMeleeDamage_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextPetMeleeDamage", value)
-          self:SetCVar("floatingCombatTextPetSpellDamage", value)
+          self:SetCVar("floatingCombatTextPetMeleeDamage_v2", value)
+          self:SetCVar("floatingCombatTextPetSpellDamage_v2", value)
         end,
         width = HALF_WIDTH,
         order = 13,
       },
-      floatingCombatTextCombatDamageDirectionalScale = {
+      floatingCombatTextCombatDamageDirectionalScale_v2 = {
         type = "toggle",
         name = "Directional Scale",
         desc = "Directional damage numbers movement scale (disabled = no directional numbers)",
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatDamageDirectionalScale")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatDamageDirectionalScale_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatDamageDirectionalScale", value)
+          self:SetCVar("floatingCombatTextCombatDamageDirectionalScale_v2", value)
         end,
         width = HALF_WIDTH,
         order = 14,
       },
-      floatingCombatTextCombatHealing = {
+      floatingCombatTextCombatHealing_v2 = {
         type = "toggle",
         name = SHOW_COMBAT_HEALING_TEXT or SHOW_COMBAT_HEALING,
         desc = OPTION_TOOLTIP_SHOW_COMBAT_HEALING,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatHealing")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatHealing_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatHealing", value)
+          self:SetCVar("floatingCombatTextCombatHealing_v2", value)
         end,
         width = HALF_WIDTH,
         order = 15,
       },
-      floatingCombatTextCombatHealingAbsorbTarget = {
+      floatingCombatTextCombatHealingAbsorbTarget_v2 = {
         type = "toggle",
         name = SHOW_COMBAT_HEALING_ABSORB_TARGET .. " " .. "(Target)",
         desc = OPTION_TOOLTIP_SHOW_COMBAT_HEALING_ABSORB_TARGET,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatHealingAbsorbTarget")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatHealingAbsorbTarget_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatHealingAbsorbTarget", value)
+          self:SetCVar("floatingCombatTextCombatHealingAbsorbTarget_v2", value)
         end,
         width = HALF_WIDTH,
         order = 16,
       },
-      floatingCombatTextSpellMechanics = {
-        type = "toggle",
-        name = SHOW_TARGET_EFFECTS,
-        desc = OPTION_TOOLTIP_SHOW_TARGET_EFFECTS,
-        get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextSpellMechanics")
-        end,
-        set = function(_, value)
-          self:SetCVar("floatingCombatTextSpellMechanics", value)
-        end,
-        width = HALF_WIDTH,
-        order = 17,
-      },
-      floatingCombatTextSpellMechanicsOther = {
-        type = "toggle",
-        name = SHOW_OTHER_TARGET_EFFECTS,
-        desc = OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS,
-        get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextSpellMechanicsOther")
-        end,
-        set = function(_, value)
-          self:SetCVar("floatingCombatTextSpellMechanicsOther", value)
-        end,
-        width = HALF_WIDTH,
-        order = 18,
-      },
-      WorldTextScale = {
+      -- NOTE: Removed in 12.0?
+      -- floatingCombatTextSpellMechanics = {
+      --   type = "toggle",
+      --   name = SHOW_TARGET_EFFECTS,
+      --   desc = OPTION_TOOLTIP_SHOW_TARGET_EFFECTS,
+      --   get = function()
+      --     return C_CVar.GetCVarBool("floatingCombatTextSpellMechanics")
+      --   end,
+      --   set = function(_, value)
+      --     self:SetCVar("floatingCombatTextSpellMechanics", value)
+      --   end,
+      --   width = HALF_WIDTH,
+      --   order = 17,
+      -- },
+      -- floatingCombatTextSpellMechanicsOther = {
+      --   type = "toggle",
+      --   name = SHOW_OTHER_TARGET_EFFECTS,
+      --   desc = OPTION_TOOLTIP_SHOW_OTHER_TARGET_EFFECTS,
+      --   get = function()
+      --     return C_CVar.GetCVarBool("floatingCombatTextSpellMechanicsOther")
+      --   end,
+      --   set = function(_, value)
+      --     self:SetCVar("floatingCombatTextSpellMechanicsOther", value)
+      --   end,
+      --   width = HALF_WIDTH,
+      --   order = 18,
+      -- },
+      WorldTextScale_v2 = {
         type = "range",
         name = "World Text Scale",
         desc = "The scale of in-world damage numbers, xp gain, artifact gains, etc",
@@ -187,10 +188,10 @@ function addon:CreateFloatingCombatTextOptions()
         max = 2.5,
         step = 0.1,
         get = function()
-          return tonumber(C_CVar.GetCVar("WorldTextScale"))
+          return tonumber(C_CVar.GetCVar("WorldTextScale_v2"))
         end,
         set = function(_, value)
-          self:SetCVar("WorldTextScale", value)
+          self:SetCVar("WorldTextScale_v2", value)
         end,
         width = THIRD_WIDTH,
         order = 19,
@@ -201,6 +202,7 @@ function addon:CreateFloatingCombatTextOptions()
         name = "Floating Combat Text on Me",
         order = 20,
       },
+      -- No 'v2' version of this
       enableFloatingCombatText = {
         type = "toggle",
         name = SHOW_COMBAT_TEXT_TEXT,
@@ -215,7 +217,7 @@ function addon:CreateFloatingCombatTextOptions()
         width = HALF_WIDTH,
         order = 21,
       },
-      floatingCombatTextFloatMode = {
+      floatingCombatTextFloatMode_v2 = {
         type = "select",
         name = COMBAT_TEXT_FLOAT_MODE_LABEL,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_MODE,
@@ -230,192 +232,192 @@ function addon:CreateFloatingCombatTextOptions()
           "3",
         },
         get = function()
-          return C_CVar.GetCVar("floatingCombatTextFloatMode")
+          return C_CVar.GetCVar("floatingCombatTextFloatMode_v2")
         end,
         set = function(_, value)
-          addon:SetCVar("floatingCombatTextFloatMode", value)
+          addon:SetCVar("floatingCombatTextFloatMode_v2", value)
           BlizzardOptionsPanel_UpdateCombatText()
         end,
         width = THIRD_WIDTH,
         order = 22,
       },
-      floatingCombatTextDodgeParryMiss = {
+      floatingCombatTextDodgeParryMiss_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_DODGE_PARRY_MISS_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_DODGE_PARRY_MISS,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextDodgeParryMiss")
+          return C_CVar.GetCVarBool("floatingCombatTextDodgeParryMiss_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextDodgeParryMiss", value)
-          FCT_SetValue("floatingCombatTextDodgeParryMiss", value)
+          self:SetCVar("floatingCombatTextDodgeParryMiss_v2", value)
+          FCT_SetValue("floatingCombatTextDodgeParryMiss_v2", value)
         end,
         width = HALF_WIDTH,
         order = 23,
       },
-      floatingCombatTextDamageReduction = {
+      floatingCombatTextDamageReduction_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_RESISTANCES_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_RESISTANCES,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextDamageReduction")
+          return C_CVar.GetCVarBool("floatingCombatTextDamageReduction_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextDamageReduction", value)
-          FCT_SetValue("floatingCombatTextDamageReduction", value)
+          self:SetCVar("floatingCombatTextDamageReduction_v2", value)
+          FCT_SetValue("floatingCombatTextDamageReduction_v2", value)
         end,
         width = HALF_WIDTH,
         order = 24,
       },
-      floatingCombatTextRepChanges = {
+      floatingCombatTextRepChanges_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_REPUTATION_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_REPUTATION,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextRepChanges")
+          return C_CVar.GetCVarBool("floatingCombatTextRepChanges_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextRepChanges", value)
-          FCT_SetValue("floatingCombatTextRepChanges", value)
+          self:SetCVar("floatingCombatTextRepChanges_v2", value)
+          FCT_SetValue("floatingCombatTextRepChanges_v2", value)
         end,
         width = HALF_WIDTH,
         order = 25,
       },
-      floatingCombatTextReactives = {
+      floatingCombatTextReactives_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_REACTIVES_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_REACTIVES,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextReactives")
+          return C_CVar.GetCVarBool("floatingCombatTextReactives_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextReactives", value)
-          FCT_SetValue("floatingCombatTextReactives", value)
+          self:SetCVar("floatingCombatTextReactives_v2", value)
+          FCT_SetValue("floatingCombatTextReactives_v2", value)
         end,
         width = HALF_WIDTH,
         order = 26,
       },
-      floatingCombatTextFriendlyHealers = {
+      floatingCombatTextFriendlyHealers_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_FRIENDLY_NAMES_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_FRIENDLY_NAMES,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextFriendlyHealers")
+          return C_CVar.GetCVarBool("floatingCombatTextFriendlyHealers_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextFriendlyHealers", value)
-          FCT_SetValue("floatingCombatTextFriendlyHealers", value)
+          self:SetCVar("floatingCombatTextFriendlyHealers_v2", value)
+          FCT_SetValue("floatingCombatTextFriendlyHealers_v2", value)
         end,
         width = HALF_WIDTH,
         order = 27,
       },
-      floatingCombatTextCombatState = {
+      floatingCombatTextCombatState_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_COMBAT_STATE_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_COMBAT_STATE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatState")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatState_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatState", value)
-          FCT_SetValue("floatingCombatTextCombatState", value)
+          self:SetCVar("floatingCombatTextCombatState_v2", value)
+          FCT_SetValue("floatingCombatTextCombatState_v2", value)
         end,
         width = HALF_WIDTH,
         order = 28,
       },
-      floatingCombatTextCombatHealingAbsorbSelf = {
+      floatingCombatTextCombatHealingAbsorbSelf_v2 = {
         type = "toggle",
         name = SHOW_COMBAT_HEALING_ABSORB_SELF .. " " .. "(Self)",
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_COMBAT_STATE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextCombatHealingAbsorbSelf")
+          return C_CVar.GetCVarBool("floatingCombatTextCombatHealingAbsorbSelf_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextCombatHealingAbsorbSelf", value)
+          self:SetCVar("floatingCombatTextCombatHealingAbsorbSelf_v2", value)
         end,
         width = HALF_WIDTH,
         order = 29,
       },
-      floatingCombatTextLowManaHealth = {
+      floatingCombatTextLowManaHealth_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_LOW_HEALTH_MANA_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_LOW_HEALTH_MANA,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextLowManaHealth")
+          return C_CVar.GetCVarBool("floatingCombatTextLowManaHealth_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextLowManaHealth", value)
-          FCT_SetValue("floatingCombatTextLowManaHealth", value)
+          self:SetCVar("floatingCombatTextLowManaHealth_v2", value)
+          FCT_SetValue("floatingCombatTextLowManaHealth_v2", value)
         end,
         width = HALF_WIDTH,
         order = 30,
       },
-      floatingCombatTextEnergyGains = {
+      floatingCombatTextEnergyGains_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_ENERGIZE_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_ENERGIZE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextEnergyGains")
+          return C_CVar.GetCVarBool("floatingCombatTextEnergyGains_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextEnergyGains", value)
-          FCT_SetValue("floatingCombatTextEnergyGains", value)
+          self:SetCVar("floatingCombatTextEnergyGains_v2", value)
+          FCT_SetValue("floatingCombatTextEnergyGains_v2", value)
         end,
         width = HALF_WIDTH,
         order = 31,
       },
-      floatingCombatTextComboPoints = {
+      floatingCombatTextComboPoints_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_COMBO_POINTS_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_COMBO_POINTS,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextComboPoints")
+          return C_CVar.GetCVarBool("floatingCombatTextComboPoints_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextComboPoints", value)
-          FCT_SetValue("floatingCombatTextComboPoints", value)
+          self:SetCVar("floatingCombatTextComboPoints_v2", value)
+          FCT_SetValue("floatingCombatTextComboPoints_v2", value)
         end,
         width = HALF_WIDTH,
         order = 32,
       },
-      floatingCombatTextPeriodicEnergyGains = {
+      floatingCombatTextPeriodicEnergyGains_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextPeriodicEnergyGains")
+          return C_CVar.GetCVarBool("floatingCombatTextPeriodicEnergyGains_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextPeriodicEnergyGains", value)
-          FCT_SetValue("floatingCombatTextPeriodicEnergyGains", value)
+          self:SetCVar("floatingCombatTextPeriodicEnergyGains_v2", value)
+          FCT_SetValue("floatingCombatTextPeriodicEnergyGains_v2", value)
         end,
         width = HALF_WIDTH,
         order = 33,
       },
-      floatingCombatTextHonorGains = {
+      floatingCombatTextHonorGains_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_HONOR_GAINED_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_HONOR_GAINED,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextHonorGains")
+          return C_CVar.GetCVarBool("floatingCombatTextHonorGains_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextHonorGains", value)
-          FCT_SetValue("floatingCombatTextHonorGains", value)
+          self:SetCVar("floatingCombatTextHonorGains_v2", value)
+          FCT_SetValue("floatingCombatTextHonorGains_v2", value)
         end,
         width = HALF_WIDTH,
         order = 34,
       },
-      floatingCombatTextAuras = {
+      floatingCombatTextAuras_v2 = {
         type = "toggle",
         name = COMBAT_TEXT_SHOW_AURAS_TEXT,
         desc = OPTION_TOOLTIP_COMBAT_TEXT_SHOW_AURAS,
         get = function()
-          return C_CVar.GetCVarBool("floatingCombatTextAuras")
+          return C_CVar.GetCVarBool("floatingCombatTextAuras_v2")
         end,
         set = function(_, value)
-          self:SetCVar("floatingCombatTextAuras", value)
-          FCT_SetValue("floatingCombatTextAuras", value)
+          self:SetCVar("floatingCombatTextAuras_v2", value)
+          FCT_SetValue("floatingCombatTextAuras_v2", value)
         end,
         width = HALF_WIDTH,
         order = 35,
