@@ -42,10 +42,10 @@ function addon:CreateNameplateOptions()
         name = "Class color friendly nameplates",
         desc = "Class color for friendly nameplates",
         get = function()
-          return C_CVar.GetCVarBool("ShowClassColorInFriendlyNameplate")
+          return C_CVar.GetCVarBool("nameplateShowFriendlyClassColor")
         end,
         set = function(_, value)
-          self:SetCVar("ShowClassColorInFriendlyNameplate", value)
+          self:SetCVar("nameplateShowFriendlyClassColor", value)
         end,
         width = "full",
         order = 12,
