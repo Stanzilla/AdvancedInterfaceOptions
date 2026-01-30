@@ -44,9 +44,9 @@ local HALF_WIDTH = 1.5
 
 local function BlizzardOptionsPanel_UpdateCombatText()
   -- Hack to call CombatText.UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
-  if CombatText and CombatText.UpdateDisplayedMessages then
-    CombatText:UpdateDisplayedMessages()
-  end
+  -- if CombatText and CombatText.UpdateDisplayedMessages then
+  --   CombatText:UpdateDisplayedMessages()
+  -- end
 end
 
 local function FCT_SetValue(cvar, checked)

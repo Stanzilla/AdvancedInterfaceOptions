@@ -44,6 +44,7 @@ globals = {
   "ChatFrame_AddMessageEventFilter",
   "COMBAT_TEXT_SCROLL_FUNCTION",
   "CombatLogGetCurrentEventInfo",
+  "CombatText",
   "CombatText_AddMessage",
   "CooldownFrame_Set",
   "CreateObjectPool",
