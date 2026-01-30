@@ -8,49 +8,51 @@ local HALF_WIDTH = 1.5
 -------------------------------------------------------------------------
 
 -- UVARINFO was made local in patch 8.2.0
-local uvars = {
-  removeChatDelay = "REMOVE_CHAT_DELAY",
-  lockActionBars = "LOCK_ACTIONBAR",
-  buffDurations = "SHOW_BUFF_DURATIONS",
-  alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
-  showPartyPets = "SHOW_PARTY_PETS",
-  showPartyBackground = "SHOW_PARTY_BACKGROUND",
-  showTargetOfTarget = "SHOW_TARGET_OF_TARGET",
-  autoQuestWatch = "AUTO_QUEST_WATCH",
-  lootUnderMouse = "LOOT_UNDER_MOUSE",
-  autoLootDefault = "AUTO_LOOT_DEFAULT",
-  enableFloatingCombatText = "SHOW_COMBAT_TEXT",
-  floatingCombatTextLowManaHealth = "COMBAT_TEXT_SHOW_LOW_HEALTH_MANA",
-  floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURAS",
-  floatingCombatTextAuraFade = "COMBAT_TEXT_SHOW_AURA_FADE",
-  floatingCombatTextCombatState = "COMBAT_TEXT_SHOW_COMBAT_STATE",
-  floatingCombatTextDodgeParryMiss = "COMBAT_TEXT_SHOW_DODGE_PARRY_MISS",
-  floatingCombatTextDamageReduction = "COMBAT_TEXT_SHOW_RESISTANCES",
-  floatingCombatTextRepChanges = "COMBAT_TEXT_SHOW_REPUTATION",
-  floatingCombatTextReactives = "COMBAT_TEXT_SHOW_REACTIVES",
-  floatingCombatTextFriendlyHealers = "COMBAT_TEXT_SHOW_FRIENDLY_NAMES",
-  floatingCombatTextComboPoints = "COMBAT_TEXT_SHOW_COMBO_POINTS",
-  floatingCombatTextEnergyGains = "COMBAT_TEXT_SHOW_ENERGIZE",
-  floatingCombatTextPeriodicEnergyGains = "COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE",
-  floatingCombatTextFloatMode = "COMBAT_TEXT_FLOAT_MODE",
-  floatingCombatTextHonorGains = "COMBAT_TEXT_SHOW_HONOR_GAINED",
-  showCastableBuffs = "SHOW_CASTABLE_BUFFS",
-  showDispelDebuffs = "SHOW_DISPELLABLE_DEBUFFS",
-  showArenaEnemyFrames = "SHOW_ARENA_ENEMY_FRAMES",
-  showArenaEnemyCastbar = "SHOW_ARENA_ENEMY_CASTBAR",
-  showArenaEnemyPets = "SHOW_ARENA_ENEMY_PETS",
-}
+-- FIXME: These globals don't seem to exist in 12.0.0
+-- local uvars = {
+--   removeChatDelay = "REMOVE_CHAT_DELAY",
+--   lockActionBars = "LOCK_ACTIONBAR",
+--   buffDurations = "SHOW_BUFF_DURATIONS",
+--   alwaysShowActionBars = "ALWAYS_SHOW_MULTIBARS",
+--   showPartyPets = "SHOW_PARTY_PETS",
+--   showPartyBackground = "SHOW_PARTY_BACKGROUND",
+--   showTargetOfTarget = "SHOW_TARGET_OF_TARGET",
+--   autoQuestWatch = "AUTO_QUEST_WATCH",
+--   lootUnderMouse = "LOOT_UNDER_MOUSE",
+--   autoLootDefault = "AUTO_LOOT_DEFAULT",
+--   enableFloatingCombatText = "SHOW_COMBAT_TEXT",
+--   floatingCombatTextLowManaHealth = "COMBAT_TEXT_SHOW_LOW_HEALTH_MANA",
+--   floatingCombatTextAuras = "COMBAT_TEXT_SHOW_AURAS",
+--   floatingCombatTextAuraFade = "COMBAT_TEXT_SHOW_AURA_FADE",
+--   floatingCombatTextCombatState = "COMBAT_TEXT_SHOW_COMBAT_STATE",
+--   floatingCombatTextDodgeParryMiss = "COMBAT_TEXT_SHOW_DODGE_PARRY_MISS",
+--   floatingCombatTextDamageReduction = "COMBAT_TEXT_SHOW_RESISTANCES",
+--   floatingCombatTextRepChanges = "COMBAT_TEXT_SHOW_REPUTATION",
+--   floatingCombatTextReactives = "COMBAT_TEXT_SHOW_REACTIVES",
+--   floatingCombatTextFriendlyHealers = "COMBAT_TEXT_SHOW_FRIENDLY_NAMES",
+--   floatingCombatTextComboPoints = "COMBAT_TEXT_SHOW_COMBO_POINTS",
+--   floatingCombatTextEnergyGains = "COMBAT_TEXT_SHOW_ENERGIZE",
+--   floatingCombatTextPeriodicEnergyGains = "COMBAT_TEXT_SHOW_PERIODIC_ENERGIZE",
+--   floatingCombatTextFloatMode = "COMBAT_TEXT_FLOAT_MODE",
+--   floatingCombatTextHonorGains = "COMBAT_TEXT_SHOW_HONOR_GAINED",
+--   showCastableBuffs = "SHOW_CASTABLE_BUFFS",
+--   showDispelDebuffs = "SHOW_DISPELLABLE_DEBUFFS",
+--   showArenaEnemyFrames = "SHOW_ARENA_ENEMY_FRAMES",
+--   showArenaEnemyCastbar = "SHOW_ARENA_ENEMY_CASTBAR",
+--   showArenaEnemyPets = "SHOW_ARENA_ENEMY_PETS",
+-- }
 
 local function BlizzardOptionsPanel_UpdateCombatText()
-  -- Hack to call CombatText_UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
-  if CombatText_UpdateDisplayedMessages then
-    CombatText_UpdateDisplayedMessages()
+  -- Hack to call CombatText.UpdateDisplayedMessages which only exists if the Blizzard_CombatText AddOn is loaded
+  if CombatText and CombatText.UpdateDisplayedMessages then
+    CombatText:UpdateDisplayedMessages()
   end
 end
 
 local function FCT_SetValue(cvar, checked)
-  _G[uvars[cvar]] = checked and "1" or "0"
-  BlizzardOptionsPanel_UpdateCombatText()
+  -- FIXME: These globals don't seem to exist in 12.0.0
+  -- _G[uvars[cvar]] = checked and "1" or "0"
+  -- BlizzardOptionsPanel_UpdateCombatText()
 end
 
 -------------------------------------------------------------------------
