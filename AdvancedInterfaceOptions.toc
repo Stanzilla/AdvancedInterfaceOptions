@@ -1,4 +1,4 @@
-## Interface: 120000, 110200, 50503, 40402, 30404, 20505, 11508
+## Interface: 120000, 110200, 50503, 40402, 30404, 20506, 11509
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
