@@ -52,7 +52,8 @@ local statusTextValues = {
 
 local function setStatusText(cvar, value)
   addon.setCustomVar(cvar, value)
-  statusTextValues[cvar](value and "statusText")
+  -- UpdateTextString reads values that are secret on a tainted stack, so it throws here
+  pcall(statusTextValues[cvar], value and "statusText")
 end
 
 -------------------------------------------------------------------------
