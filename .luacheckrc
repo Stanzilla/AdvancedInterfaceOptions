@@ -3767,6 +3767,7 @@ globals = {
   "bit.lshift",
   "bit.mod",
   "bit.rshift",
+  "canaccessvalue",
   "ceil",
   "collectgarbage",
   "coroutine.create",
