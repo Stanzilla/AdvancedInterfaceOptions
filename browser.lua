@@ -60,7 +60,14 @@ local function TraceCVar(cvar, value, ...)
     ]=]
 
   local trace = debugstack(2)
-  local source, lineNum = trace:match('"@([^"]+)"%]:(%d+)')
+  local source, lineNum
+  -- Handle `debugstack` returning a secret value
+  if trace and canaccessvalue(trace) then
+    source, lineNum = trace:match('"@([^"]+)"%]:(%d+)')
+  else
+    source = "Blizzard UI"
+    lineNum = "(secret)"
+  end
   if not source then
     -- Attempt to pull source out of "in function <file:line>" string
     source, lineNum = trace:match("in function <([^:%[>]+):(%d+)>")
