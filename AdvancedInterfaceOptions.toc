@@ -1,4 +1,4 @@
-## Interface: 120100, 120001, 50504, 40402, 30405, 20506, 11509
+## Interface: 120105, 120100, 120001, 50504, 40402, 30405, 20506, 11509
 # WOW_INTERFACE_TARGETS: mainline-beta, mainline-test, mainline, mists-test, mists, cata, wrath, tbc-test, tbc, vanilla
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
