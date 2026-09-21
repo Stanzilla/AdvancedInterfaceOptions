@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
 
       - id: toc
-        uses: Nnoggie/wow-interface-updater@9566e33fd0abb13201221f8f35fd93e7beef0129 # v1.1.0
+        uses: Nnoggie/wow-interface-updater@301fd537df6485cae5e20c4a28ddd42d9f48cd36 # v1.2.0
         with:
           toc-glob: AdvancedInterfaceOptions.toc
 
