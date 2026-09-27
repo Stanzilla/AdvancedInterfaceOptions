@@ -1,5 +1,5 @@
-## Interface: 120105, 120100, 120001, 50504, 40402, 30405, 20506, 11509
-# WOW_INTERFACE_TARGETS: standard-beta, standard-test, standard, mists-test, mists, cata, wrath, tbc-test, tbc, vanilla
+## Interface: 120105, 120100, 120001, 50504, 40402, 30405, 20506, 16001, 11509
+# WOW_INTERFACE_TARGETS: standard-beta, standard-test, standard, mists-test, mists, cata, wrath, tbc-test, tbc, forever, forever-beta, vanilla
 ## Title: Advanced Interface Options
 ## Author: Stanzilla, Semlar
 ## Version: @project-version@
